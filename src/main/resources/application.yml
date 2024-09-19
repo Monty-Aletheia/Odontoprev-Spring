@@ -7,9 +7,9 @@ spring:
   application:
     name: challenger
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521:xe
-    username: seu_usuario
-    password: sua_senha
+    url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:xe
+    username: rm553912
+    password: 141204
     driver-class-name: oracle.jdbc.OracleDriver
   jpa:
     database-platform: org.hibernate.dialect.Oracle12cDialect

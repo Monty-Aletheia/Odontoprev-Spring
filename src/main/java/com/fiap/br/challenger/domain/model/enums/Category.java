@@ -1,5 +1,5 @@
 package com.fiap.br.challenger.domain.model.enums;
 
-public enum Categoria {
+public enum Category {
     PREVENTIVO, CORRETIVO, ESTETICO
 }
