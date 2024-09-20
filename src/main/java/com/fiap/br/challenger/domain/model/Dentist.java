@@ -4,18 +4,21 @@ import com.fiap.br.challenger.domain.model.enums.RiskStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "tb_dentist")
 @Data
 public class Dentist {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false)
     private String name;
 
+    @Column()
     private String specialty;
 
     @Column(name = "registration_number", unique = true, nullable = false)

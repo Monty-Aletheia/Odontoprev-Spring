@@ -5,19 +5,23 @@ import com.fiap.br.challenger.domain.model.enums.RiskStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
 @Entity
 @Table(name = "tb_patient")
 @Data
 public class Patient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false)
     private String name;
 
-    private Integer age;
+    @Column(nullable = false)
+    private LocalDate birthday;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
