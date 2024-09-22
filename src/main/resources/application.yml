@@ -7,19 +7,23 @@ spring:
   application:
     name: challenger
   datasource:
-    url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:xe
+    url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl
     username: rm553912
     password: 141204
     driver-class-name: oracle.jdbc.OracleDriver
   jpa:
     database-platform: org.hibernate.dialect.Oracle12cDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     open-in-view: false
   devtools:
     restart:
       enabled: true
+  liquibase:
+    change-log: classpath:/src/main/resources/liquibase/master.xml
+    enabled: true
+
 logging:
   level:
     root: INFO
