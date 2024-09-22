@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "tb_consultation")
@@ -12,16 +13,8 @@ import java.util.Date;
 public class Consultation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "patient_id", nullable = false)
-    private Patient patient;
-
-    @ManyToOne
-    @JoinColumn(name = "dentist_id", nullable = false)
-    private Dentist dentist;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
@@ -36,4 +29,12 @@ public class Consultation {
     @Enumerated(EnumType.STRING)
     @Column(name = "risk_status", nullable = false)
     private RiskStatus riskStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id", nullable = false)
+    private Patient patient;
+
+    @ManyToOne
+    @JoinColumn(name = "dentist_id", nullable = false)
+    private Dentist dentist;
 }

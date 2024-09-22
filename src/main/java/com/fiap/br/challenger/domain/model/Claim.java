@@ -4,26 +4,15 @@ import com.fiap.br.challenger.domain.model.enums.ClaimType;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "tb_claim")
 public class Claim {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "consultation_id", nullable = false)
-    private Consultation consultation;
-
-    @ManyToOne
-    @JoinColumn(name = "patient_id", nullable = false)
-    private Patient patient;
-
-    @ManyToOne
-    @JoinColumn(name = "dentist_id", nullable = false)
-    private Dentist dentist;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(name = "occurrence_date", nullable = false)
     private LocalDate occurrenceDate;
@@ -38,4 +27,16 @@ public class Claim {
     @Lob
     @Column(name = "suggested_preventive_action")
     private String suggestedPreventiveAction;
+
+    @ManyToOne
+    @JoinColumn(name = "consultation_id", nullable = false)
+    private Consultation consultation;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id", nullable = false)
+    private Patient patient;
+
+    @ManyToOne
+    @JoinColumn(name = "dentist_id", nullable = false)
+    private Dentist dentist;
 }
