@@ -31,6 +31,24 @@
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 	</properties>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
 	<dependencies>
 
 		<dependency>
@@ -68,17 +86,13 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
-			<version>4.29.2</version>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.liquibase.ext/liquibase-hibernate6 -->
 		<dependency>
-			<groupId>org.liquibase.ext</groupId>
-			<artifactId>liquibase-hibernate6</artifactId>
-			<version>4.29.2</version>
-			<scope>runtime</scope>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-database-oracle</artifactId>
 		</dependency>
 
 		<dependency>
@@ -88,32 +102,5 @@
 		</dependency>
 
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.liquibase</groupId>
-				<artifactId>liquibase-maven-plugin</artifactId>
-				<version>4.29.2</version>
-				<configuration>
-					<propertyFile>src/main/resources/liquibase.properties</propertyFile>
-				</configuration>
-			</plugin>
-
-		</plugins>
-	</build>
 
 </project>

@@ -12,7 +12,7 @@ spring:
     password: 141204
     driver-class-name: oracle.jdbc.OracleDriver
   jpa:
-    database-platform: org.hibernate.dialect.Oracle12cDialect
+    database-platform: org.hibernate.dialect.Oracle12gDialect
     hibernate:
       ddl-auto: none
     show-sql: true
@@ -20,9 +20,13 @@ spring:
   devtools:
     restart:
       enabled: true
-  liquibase:
-    change-log: classpath:/src/main/resources/liquibase/master.xml
-    enabled: true
+
+flyway:
+  enabled: true
+  url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl
+  user: rm553912
+  password: 141204
+  locations: classpath:db/migration
 
 logging:
   level:
