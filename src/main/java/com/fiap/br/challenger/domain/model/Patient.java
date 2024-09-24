@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -38,4 +39,6 @@ public class Patient {
     @Column(name = "associated_claims")
     private String associatedClaims;
 
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    private List<Consultation> consultations;
 }

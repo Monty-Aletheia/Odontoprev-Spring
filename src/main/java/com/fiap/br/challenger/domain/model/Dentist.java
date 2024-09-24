@@ -4,6 +4,7 @@ import com.fiap.br.challenger.domain.model.enums.RiskStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -30,4 +31,7 @@ public class Dentist {
     @Enumerated(EnumType.STRING)
     @Column(name = "risk_status", nullable = false)
     private RiskStatus riskStatus;
+
+    @ManyToMany(mappedBy = "dentists", cascade = CascadeType.ALL)
+    private List<Consultation> consultations;
 }

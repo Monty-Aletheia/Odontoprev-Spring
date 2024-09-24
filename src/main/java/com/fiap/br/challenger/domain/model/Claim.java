@@ -32,11 +32,4 @@ public class Claim {
     @JoinColumn(name = "consultation_id", nullable = false)
     private Consultation consultation;
 
-    @ManyToOne
-    @JoinColumn(name = "patient_id", nullable = false)
-    private Patient patient;
-
-    @ManyToOne
-    @JoinColumn(name = "dentist_id", nullable = false)
-    private Dentist dentist;
 }

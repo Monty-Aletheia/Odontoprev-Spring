@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -23,9 +25,6 @@ public class Consultation {
     @Column(name = "consultation_value", nullable = false, columnDefinition = "DECIMAL(10, 2) NOT NULL")
     private Double consultationValue;
 
-    @Column(name = "claims")
-    private Boolean claims;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "risk_status", nullable = false)
     private RiskStatus riskStatus;
@@ -34,7 +33,12 @@ public class Consultation {
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-    @ManyToOne
-    @JoinColumn(name = "dentist_id", nullable = false)
-    private Dentist dentist;
+    @ManyToMany
+    @JoinTable(name = "consultation_dentist",
+            joinColumns = @JoinColumn(name = "consultation_id"),
+            inverseJoinColumns = @JoinColumn(name = "dentist_id"))
+    private List<Dentist> dentists;
+
+    @OneToMany(mappedBy = "consultation", cascade = CascadeType.ALL)
+    private Set<Claim> claims;
 }
