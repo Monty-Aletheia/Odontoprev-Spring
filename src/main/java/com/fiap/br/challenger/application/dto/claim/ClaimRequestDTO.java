@@ -11,4 +11,5 @@ public record ClaimRequestDTO(
         ClaimType claimType,
         String suggestedPreventiveAction,
         UUID consultationId) {
+
 }

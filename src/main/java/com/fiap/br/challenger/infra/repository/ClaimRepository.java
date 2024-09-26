@@ -9,5 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface ClaimRepository extends JpaRepository<Claim, UUID> {
-    Optional<Claim> findByUuid(UUID uuid);
+    Optional<Claim> findById(UUID id);
 }
+

@@ -12,11 +12,10 @@ spring:
     password: 141204
     driver-class-name: oracle.jdbc.OracleDriver
   jpa:
-    database-platform: org.hibernate.dialect.Oracle12gDialect
-    hibernate:
-      ddl-auto: none
     show-sql: true
-    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
   devtools:
     restart:
       enabled: true

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class DentistService {
@@ -29,7 +28,7 @@ public class DentistService {
     }
 
     public Optional<DentistResponseDTO> getDentistsByUUID(UUID id) {
-        return dentistRepository.findByUuid(id).map(dentistMapper::toDto);
+        return dentistRepository.findById(id).map(dentistMapper::toDto);
     }
 
     @Transactional

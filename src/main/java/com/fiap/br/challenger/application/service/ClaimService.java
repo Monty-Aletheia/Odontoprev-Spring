@@ -30,7 +30,7 @@ public class ClaimService {
     }
 
     public Optional<ClaimResponseDTO> getClaimByUUID(UUID id) {
-        return claimRepository.findByUuid(id).map(claimMapper::toDto);
+        return claimRepository.findById(id).map(claimMapper::toDto);
     }
 
     @Transactional
@@ -42,7 +42,7 @@ public class ClaimService {
 
     public void deleteClaim(UUID id) {
         if (!claimRepository.existsById(id)) {
-            throw new EntityNotFoundException("Reclamação não existe: " + id);
+            throw new EntityNotFoundException("O sinistro não existe: " + id);
         }
         claimRepository.deleteById(id);
     }

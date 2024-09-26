@@ -29,7 +29,7 @@ public class PatientService {
     }
 
     public Optional<PatientResponseDTO> getPatientByUUID(UUID id) {
-        return patientRepository.findByUuid(id)
+        return patientRepository.findById(id)
                 .map(patientMapper::toDto);
     }
 
@@ -41,7 +41,7 @@ public class PatientService {
 
     public void deletePatient(UUID id) {
         if (!patientRepository.existsById(id)) {
-            throw new EntityNotFoundException("Patient not found");
+            throw new EntityNotFoundException("Patient não existe");
         }
         patientRepository.deleteById(id);
     }

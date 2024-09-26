@@ -2,12 +2,14 @@ package com.fiap.br.challenger.domain.model;
 
 import com.fiap.br.challenger.domain.model.enums.ClaimType;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
 @Table(name = "tb_claim")
+@Data
 public class Claim {
 
     @Id

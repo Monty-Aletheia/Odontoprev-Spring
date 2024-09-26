@@ -29,6 +29,9 @@ public class Consultation {
     @Column(name = "risk_status", nullable = false)
     private RiskStatus riskStatus;
 
+    @Column()
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
