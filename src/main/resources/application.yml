@@ -19,18 +19,16 @@ spring:
   devtools:
     restart:
       enabled: true
-
-flyway:
-  enabled: true
-  url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl
-  user: rm553912
-  password: 141204
-  locations: classpath:db/migration
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
 
 logging:
   level:
     root: INFO
     br: DEBUG
+    org.flywaydb: DEBUG
     org:
       hibernate:
         SQL: DEBUG
