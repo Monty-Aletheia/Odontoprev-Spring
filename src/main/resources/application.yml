@@ -28,7 +28,6 @@ logging:
   level:
     root: INFO
     br: DEBUG
-    org.flywaydb: DEBUG
     org:
       hibernate:
         SQL: DEBUG

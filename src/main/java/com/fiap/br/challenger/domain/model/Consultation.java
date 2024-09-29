@@ -18,11 +18,11 @@ public class Consultation {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(name = "consultation_date", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date date;
+    private Date consultationDate;
 
-    @Column(name = "consultation_value", nullable = false, columnDefinition = "DECIMAL(10, 2) NOT NULL")
+    @Column(name = "consultation_value", nullable = false)
     private Double consultationValue;
 
     @Enumerated(EnumType.STRING)
