@@ -10,15 +10,19 @@ import java.util.Set;
 import java.util.UUID;
 
 public record ConsultationRequestDTO(
-        @NotNull
-        Date date,
-        @NotNull
+        @NotNull(message = "Consultation date is required.")
+        Date consultationDate,
+
+        @NotNull(message = "Consultation value is required.")
         Double consultationValue,
-        @NotNull
+
+        @NotNull(message = "Risk status is required.")
         RiskStatus riskStatus,
-        @NotNull
+
+        @NotNull(message = "Patient ID is required.")
         UUID patientId,
-        @NotNull
+
+        @NotNull(message = "List of dentists is required.")
         List<UUID> dentistIds,
 
         String description,

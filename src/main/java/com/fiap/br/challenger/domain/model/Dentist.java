@@ -25,7 +25,7 @@ public class Dentist {
     @Column(name = "registration_number", unique = true, nullable = false)
     private String registrationNumber;
 
-    @Column(name = "claims_rate", columnDefinition = "DECIMAL(5, 2) DEFAULT 0.00")
+    @Column(name = "claims_rate")
     private Double claimsRate;
 
     @Enumerated(EnumType.STRING)
