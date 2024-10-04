@@ -36,7 +36,7 @@ public class Consultation {
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-    @ManyToMany
+    @ ManyToMany
     @JoinTable(name = "consultation_dentist",
             joinColumns = @JoinColumn(name = "consultation_id"),
             inverseJoinColumns = @JoinColumn(name = "dentist_id"))

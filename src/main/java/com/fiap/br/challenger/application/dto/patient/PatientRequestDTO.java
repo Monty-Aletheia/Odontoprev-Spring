@@ -1,6 +1,5 @@
 package com.fiap.br.challenger.application.dto.patient;
 
-import com.fiap.br.challenger.application.utils.decorator.ValidEnum;
 import com.fiap.br.challenger.domain.model.enums.Gender;
 import com.fiap.br.challenger.domain.model.enums.RiskStatus;
 import jakarta.validation.constraints.NotBlank;
@@ -17,11 +16,9 @@ public record PatientRequestDTO(
         LocalDate birthday,
 
         @NotNull(message = "Gender is required.")
-        @ValidEnum(enumClass = Gender.class, message = "Gender must be a valid value.")
         Gender gender,
 
         @NotNull(message = "Risk status is required.")
-        @ValidEnum(enumClass = RiskStatus.class, message = "Risk status must be a valid value.")
         RiskStatus riskStatus,
 
         @Positive(message = "Consultation frequency must be a positive number.")

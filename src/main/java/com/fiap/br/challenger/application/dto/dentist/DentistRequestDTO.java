@@ -1,6 +1,5 @@
 package com.fiap.br.challenger.application.dto.dentist;
 
-import com.fiap.br.challenger.application.utils.decorator.ValidEnum;
 import com.fiap.br.challenger.domain.model.enums.RiskStatus;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -25,6 +24,5 @@ public record DentistRequestDTO(
         Double claimsRate,
 
         @NotNull(message = "Risk status is required.")
-        @ValidEnum(enumClass = RiskStatus.class, message = "Risk status must be a valid value.")
         RiskStatus riskStatus
 ) {}

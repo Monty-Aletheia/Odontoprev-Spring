@@ -25,7 +25,6 @@ public record ConsultationRequestDTO(
         @NotNull(message = "List of dentists is required.")
         List<UUID> dentistIds,
 
-        String description,
+        String description
 
-        Set<ClaimResponseDTO> claims) {
-}
+){}
