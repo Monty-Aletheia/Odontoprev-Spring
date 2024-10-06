@@ -8,8 +8,8 @@ spring:
     name: challenger
   datasource:
     url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl
-    username: rm553912
-    password: 141204
+    username: rm552626
+    password: 080305
     driver-class-name: oracle.jdbc.OracleDriver
   jpa:
     show-sql: true

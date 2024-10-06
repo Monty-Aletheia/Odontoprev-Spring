@@ -56,6 +56,7 @@ public class ConsultationService {
         }
 
         List<Dentist> dentists = dentistRepository.findAllById(dentistIds);
+
         if(dentists.isEmpty()){
             throw new EntityNotFoundException("Dentista de id " + patientId);
         }
