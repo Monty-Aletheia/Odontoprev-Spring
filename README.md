@@ -39,3 +39,5 @@ Spring framework.
 
 ## Listagem dos endpoints
 
+### GET 
+

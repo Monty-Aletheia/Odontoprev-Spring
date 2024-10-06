@@ -1,0 +1,370 @@
+{
+	"info": {
+		"_postman_id": "dc2f5ae2-f7c6-4ec5-a0fe-d26e4235017f",
+		"name": "Odontoprev - Spring",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34676236",
+		"_collection_link": "https://challenger-1905.postman.co/workspace/Monty-Aletheia~d4649ffc-6b16-4f63-8230-01afebde0e63/collection/28919659-dc2f5ae2-f7c6-4ec5-a0fe-d26e4235017f?action=share&source=collection_link&creator=34676236"
+	},
+	"item": [
+		{
+			"name": "Dentists",
+			"item": [
+				{
+					"name": "GET dentists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/dentists",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"dentists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ID dentists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/dentists/2bd26b03-6462-4b5e-9ba9-c14fa9310e9f",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"dentists",
+								"2bd26b03-6462-4b5e-9ba9-c14fa9310e9f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST dentists",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"João da Silva\",\r\n  \"specialty\": \"Odontologia Geral\",\r\n  \"registrationNumber\": \"123456\",\r\n  \"claimsRate\": 0.05,\r\n  \"riskStatus\": \"BAIXO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/dentists",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"dentists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE dentists",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/dentists/2bd26b03-6462-4b5e-9ba9-c14fa9310e9f",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"dentists",
+								"2bd26b03-6462-4b5e-9ba9-c14fa9310e9f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Patients",
+			"item": [
+				{
+					"name": "GET patients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/patients",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"patients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ID patients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/patients/6feda0b3-545e-413d-a207-d5bbc2be65fc",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"patients",
+								"6feda0b3-545e-413d-a207-d5bbc2be65fc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST patients",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Maria da Silva\",\r\n  \"birthday\": \"1990-05-15\",\r\n  \"gender\": \"F\",\r\n  \"riskStatus\": \"BAIXO\",\r\n  \"consultationFrequency\": 3,\r\n  \"associatedClaims\": \"Reclamação de dor de dente\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/patients",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"patients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE patients",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/patients/6feda0b3-545e-413d-a207-d5bbc2be65fc",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"patients",
+								"6feda0b3-545e-413d-a207-d5bbc2be65fc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Claims",
+			"item": [
+				{
+					"name": "GET claims",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/claims",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"claims"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ID claims",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/claims/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"claims",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST patients",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"occurrenceDate\": \"2024-09-30\",\r\n    \"value\": 150.75,\r\n    \"claimType\": \"TRATAMENTO_DESNECESSÁRIO\",  \r\n    \"suggestedPreventiveAction\": \"Increase regular check-ups\",\r\n    \"consultationId\": \"e2c56db5-2b8c-4e5a-b5c3-7a1a64a6fef2\"  \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/claims",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"claims"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE claims",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/claims/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"claims",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Consultations",
+			"item": [
+				{
+					"name": "GET consultations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/consultations",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"consultations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ID consultations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/consultations/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"consultations",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST consultations",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/consultations",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"consultations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE consultations",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/consultations/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"consultations",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
