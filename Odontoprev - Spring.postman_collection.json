@@ -3,8 +3,8 @@
 		"_postman_id": "dc2f5ae2-f7c6-4ec5-a0fe-d26e4235017f",
 		"name": "Odontoprev - Spring",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "34676236",
-		"_collection_link": "https://challenger-1905.postman.co/workspace/Monty-Aletheia~d4649ffc-6b16-4f63-8230-01afebde0e63/collection/28919659-dc2f5ae2-f7c6-4ec5-a0fe-d26e4235017f?action=share&source=collection_link&creator=34676236"
+		"_exporter_id": "28919659",
+		"_collection_link": "https://challenger-1905.postman.co/workspace/Monty-Aletheia~d4649ffc-6b16-4f63-8230-01afebde0e63/collection/28919659-dc2f5ae2-f7c6-4ec5-a0fe-d26e4235017f?action=share&source=collection_link&creator=28919659"
 	},
 	"item": [
 		{
@@ -196,9 +196,21 @@
 			"item": [
 				{
 					"name": "GET claims",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "localhost:8080/api/claims",
 							"host": [
@@ -219,7 +231,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/claims/",
+							"raw": "localhost:8080/api/claims/0e9cde01-fe06-496b-a05a-16de5b80e330",
 							"host": [
 								"localhost"
 							],
@@ -227,20 +239,20 @@
 							"path": [
 								"api",
 								"claims",
-								""
+								"0e9cde01-fe06-496b-a05a-16de5b80e330"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "POST patients",
+					"name": "POST claims",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"occurrenceDate\": \"2024-09-30\",\r\n    \"value\": 150.75,\r\n    \"claimType\": \"TRATAMENTO_DESNECESSÁRIO\",  \r\n    \"suggestedPreventiveAction\": \"Increase regular check-ups\",\r\n    \"consultationId\": \"e2c56db5-2b8c-4e5a-b5c3-7a1a64a6fef2\"  \r\n}\r\n",
+							"raw": "{\r\n    \"occurrenceDate\": \"2024-09-30\",\r\n    \"value\": 150.75,\r\n    \"claimType\": \"TRATAMENTO_DESNECESSÁRIO\",  \r\n    \"suggestedPreventiveAction\": \"Increase regular check-ups\",\r\n    \"consultationId\": \"d163ce56-f411-4761-b315-83ef569ac9b1\"  \r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -267,7 +279,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/claims/",
+							"raw": "localhost:8080/api/claims/2a32281f-9e96-4db2-9009-39c2aa1726fb",
 							"host": [
 								"localhost"
 							],
@@ -275,7 +287,7 @@
 							"path": [
 								"api",
 								"claims",
-								""
+								"2a32281f-9e96-4db2-9009-39c2aa1726fb"
 							]
 						}
 					},
@@ -311,7 +323,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/consultations/",
+							"raw": "localhost:8080/api/consultations/d163ce56-f411-4761-b315-83ef569ac9b1",
 							"host": [
 								"localhost"
 							],
@@ -319,7 +331,7 @@
 							"path": [
 								"api",
 								"consultations",
-								""
+								"d163ce56-f411-4761-b315-83ef569ac9b1"
 							]
 						}
 					},
@@ -330,6 +342,15 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"consultationDate\": \"2024-10-15\",\r\n  \"consultationValue\": 150.0,\r\n  \"riskStatus\": \"BAIXO\",\r\n  \"patientId\": \"20a26bcc-322a-4a65-a5df-9eb215f28bb5\",\r\n  \"dentistIds\": [\r\n    \"13b115db-332f-43c4-99d9-284e9e3bedd4\"\r\n  ],\r\n  \"description\": \"Consultation for a routine check-up.\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "localhost:8080/api/consultations",
 							"host": [
@@ -350,7 +371,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/consultations/",
+							"raw": "localhost:8080/api/consultations/0e9cde01-fe06-496b-a05a-16de5b80e330",
 							"host": [
 								"localhost"
 							],
@@ -358,7 +379,7 @@
 							"path": [
 								"api",
 								"consultations",
-								""
+								"0e9cde01-fe06-496b-a05a-16de5b80e330"
 							]
 						}
 					},

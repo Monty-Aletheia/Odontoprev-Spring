@@ -5,9 +5,12 @@ import com.fiap.br.challenger.application.dto.consultation.ConsultationResponseD
 import com.fiap.br.challenger.domain.model.Consultation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {PatientMapper.class, DentistMapper.class})
 public interface ConsultationMapper {
+
+    ConsultationMapper INSTANCE = Mappers.getMapper(ConsultationMapper.class);
 
     ConsultationResponseDTO toDto(Consultation e);
 

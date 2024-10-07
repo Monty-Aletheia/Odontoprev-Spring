@@ -4,6 +4,7 @@ import com.fiap.br.challenger.domain.model.enums.RiskStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +21,7 @@ public class Consultation {
 
     @Column(name = "consultation_date", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date consultationDate;
+    private LocalDate consultationDate;
 
     @Column(name = "consultation_value", nullable = false)
     private Double consultationValue;

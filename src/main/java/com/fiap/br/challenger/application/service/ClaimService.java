@@ -4,7 +4,9 @@ import com.fiap.br.challenger.application.dto.claim.ClaimResponseDTO;
 import com.fiap.br.challenger.application.dto.claim.ClaimRequestDTO;
 import com.fiap.br.challenger.application.service.mapper.ClaimMapper;
 import com.fiap.br.challenger.domain.model.Claim;
+import com.fiap.br.challenger.domain.model.Consultation;
 import com.fiap.br.challenger.infra.repository.ClaimRepository;
+import com.fiap.br.challenger.infra.repository.ConsultationRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class ClaimService {
     private ClaimRepository claimRepository;
 
     @Autowired
+    private ConsultationRepository consultationRepository;
+
+    @Autowired
     private ClaimMapper claimMapper;
 
     public List<ClaimResponseDTO> getAllClaims() {
@@ -35,7 +40,12 @@ public class ClaimService {
 
     @Transactional
     public ClaimResponseDTO createClaim(ClaimRequestDTO claimRequestDTO) {
+        Consultation consultation = consultationRepository.findById(claimRequestDTO.consultationId())
+                .orElseThrow(() -> new EntityNotFoundException("Consulta não encontrada: " + claimRequestDTO.consultationId()));
+
         Claim claim = claimMapper.toEntity(claimRequestDTO);
+        claim.setConsultation(consultation);
+
         Claim savedClaim = claimRepository.save(claim);
         return claimMapper.toDto(savedClaim);
     }
