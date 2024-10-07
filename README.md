@@ -23,7 +23,8 @@ para criar nosso Dataset, nós prototipamos um Frontend.
 Um aplicativo mobile responsável por colher dados de
 consultas, pacientes e dentistas. O backend de nossa
 aplicação está sendo feito com Java utilizando o
-Spring framework.
+Spring framework e será responsável pela persistência das
+informações colhidas pelo frontend no banco de dados.
 
 ## Diagramas
 ##
@@ -86,34 +87,12 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
    Acesse o diretório clonado:
 
    ```bash
-   Copiar código
    cd odontoprev-spring
    ```
-3. **Instale as Dependências**
+   
+3. **Rode o programa**
 
-   Execute o comando abaixo para baixar as dependências e compilar o projeto:
-
-   ```bash
-   Copiar código
-   mvn clean install
-   ```
-4. **Execute o Projeto**
-
-   Inicie a aplicação com o seguinte comando:
-
-   ```bash
-   Copiar código
-   mvn spring-boot:run
-   ```
-
-5. **Acesse a API**
-
-   Abra o navegador ou um cliente REST (como o Postman) e acesse:
-
-   ```arduino
-   Copiar código
-   http://localhost:8080
-   ```
+   Ao rodar o programa, as dependências serão instaladas e a aplicação iniciará um servidor na porta 8080.
 
 6. **Testando os Endpoints**
 
