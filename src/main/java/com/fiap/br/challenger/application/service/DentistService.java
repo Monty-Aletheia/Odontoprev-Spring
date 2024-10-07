@@ -1,10 +1,11 @@
 package com.fiap.br.challenger.application.service;
 
-import com.fiap.br.challenger.application.dto.dentist.DentistResponseDTO;
 import com.fiap.br.challenger.application.dto.dentist.DentistRequestDTO;
+import com.fiap.br.challenger.application.dto.dentist.DentistResponseDTO;
 import com.fiap.br.challenger.application.service.mapper.DentistMapper;
 import com.fiap.br.challenger.domain.model.Dentist;
 import com.fiap.br.challenger.infra.repository.DentistRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,10 @@ public class DentistService {
 
     @Transactional
     public DentistResponseDTO createDentist(DentistRequestDTO dentistRequestDTO) {
+        if (dentistRepository.findByRegistrationNumber(dentistRequestDTO.registrationNumber()).isPresent()) {
+            throw new EntityExistsException("Dentista já existe");
+        }
+
         Dentist dentist = dentistMapper.toEntity(dentistRequestDTO);
         Dentist savedDentist = dentistRepository.save(dentist);
         return dentistMapper.toDto(savedDentist);

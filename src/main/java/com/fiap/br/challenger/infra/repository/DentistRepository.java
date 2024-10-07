@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface DentistRepository extends JpaRepository<Dentist, UUID> {
     Optional<Dentist> findById(UUID id);
+    Optional<Dentist> findByRegistrationNumber(String registrationNumber);
 }

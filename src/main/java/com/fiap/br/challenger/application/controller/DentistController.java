@@ -3,6 +3,7 @@ package com.fiap.br.challenger.application.controller;
 import com.fiap.br.challenger.application.dto.dentist.DentistResponseDTO;
 import com.fiap.br.challenger.application.dto.dentist.DentistRequestDTO;
 import com.fiap.br.challenger.application.service.DentistService;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,13 @@ public class DentistController {
 
     @PostMapping()
     public ResponseEntity<?> createDentist(@RequestBody @Valid DentistRequestDTO dentistRequestDTO) {
-        DentistResponseDTO responseDTO = dentistService.createDentist(dentistRequestDTO);
-        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+        try {
+            DentistResponseDTO responseDTO = dentistService.createDentist(dentistRequestDTO);
+            return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+        } catch (EntityExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @DeleteMapping("/{id}")

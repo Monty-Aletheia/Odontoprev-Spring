@@ -34,8 +34,12 @@ public class ClaimController {
 
     @PostMapping
     public ResponseEntity<?> createClaim(@RequestBody @Valid ClaimRequestDTO claimRequestDTO) {
-        ClaimResponseDTO responseDTO = claimService.createClaim(claimRequestDTO);
-        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+        try {
+            ClaimResponseDTO responseDTO = claimService.createClaim(claimRequestDTO);
+            return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")

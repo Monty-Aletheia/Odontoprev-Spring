@@ -36,8 +36,12 @@ public class ConsultationController {
 
     @PostMapping
     public ResponseEntity<?> createConsultation(@RequestBody @Valid ConsultationRequestDTO consultationRequestDTO) {
-        ConsultationResponseDTO createdConsultation = consultationService.createConsultation(consultationRequestDTO);
-        return new ResponseEntity<>(createdConsultation, HttpStatus.CREATED);
+        try {
+            ConsultationResponseDTO createdConsultation = consultationService.createConsultation(consultationRequestDTO);
+            return new ResponseEntity<>(createdConsultation, HttpStatus.CREATED);
+        } catch (EntityNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")

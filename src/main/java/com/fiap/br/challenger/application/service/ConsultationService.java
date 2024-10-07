@@ -52,13 +52,13 @@ public class ConsultationService {
         Optional<Patient> patient = patientRepository.findById(patientId);
 
         if (patient.isEmpty()) {
-            throw new EntityNotFoundException("Paciente de id " + patientId);
+            throw new EntityNotFoundException("Paciente de id:" + patientId + " não existe");
         }
 
         List<Dentist> dentists = dentistRepository.findAllById(dentistIds);
 
         if(dentists.isEmpty()){
-            throw new EntityNotFoundException("Dentista de id " + patientId);
+            throw new EntityNotFoundException("Dentista de id:" + patientId + " não existe");
         }
 
 
