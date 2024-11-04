@@ -30,11 +30,11 @@ informações colhidas pelo frontend no banco de dados.
 ##
 ### Diagrama das entidades da camada de modelo
 ##
-![img.png](img.png)
+![img.png](docs/img.png)
 ##
 ### Diagrama lógico relacional do banco de dados
 ##
-![img_1.png](img_1.png)
+![img_1.png](docs/img_1.png)
 
 ##
 

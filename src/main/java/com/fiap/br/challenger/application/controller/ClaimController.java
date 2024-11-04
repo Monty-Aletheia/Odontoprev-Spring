@@ -6,12 +6,20 @@ import com.fiap.br.challenger.application.service.ClaimService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/claims")
@@ -21,34 +29,64 @@ public class ClaimController {
     private ClaimService claimService;
 
     @GetMapping
-    public ResponseEntity<?> listClaims() {
-        return ResponseEntity.ok(claimService.getAllClaims());
+    public ResponseEntity<List<EntityModel<ClaimResponseDTO>>> listClaims() {
+        List<ClaimResponseDTO> claims = claimService.getAllClaims();
+
+        List<EntityModel<ClaimResponseDTO>> claimModels = claims.stream()
+                .map(claim -> {
+                    Link selfLink = linkTo(methodOn(ClaimController.class).getClaimById(claim.getId())).withSelfRel();
+                    return EntityModel.of(claim, selfLink);
+                })
+                .toList();
+
+        return ResponseEntity.ok(claimModels);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getClaimById(@PathVariable UUID id) {
+    public ResponseEntity<EntityModel<ClaimResponseDTO>> getClaimById(@PathVariable UUID id) {
         Optional<ClaimResponseDTO> responseDTO = claimService.getClaimByUUID(id);
-        return responseDTO.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+
+        if (responseDTO.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ClaimResponseDTO claim = responseDTO.get();
+        EntityModel<ClaimResponseDTO> model = EntityModel.of(claim);
+
+        Link selfLink = linkTo(methodOn(ClaimController.class).getClaimById(id)).withSelfRel();
+        model.add(selfLink);
+
+        Link linkToAll = linkTo(methodOn(ClaimController.class).listClaims()).withRel("allClaims");
+        model.add(linkToAll);
+
+        return ResponseEntity.ok(model);
     }
 
     @PostMapping
-    public ResponseEntity<?> createClaim(@RequestBody @Valid ClaimRequestDTO claimRequestDTO) {
+    public ResponseEntity<EntityModel<ClaimResponseDTO>> createClaim(@RequestBody @Valid ClaimRequestDTO claimRequestDTO) {
         try {
             ClaimResponseDTO responseDTO = claimService.createClaim(claimRequestDTO);
-            return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+            EntityModel<ClaimResponseDTO> model = EntityModel.of(responseDTO);
+
+            Link selfLink = linkTo(methodOn(ClaimController.class).getClaimById(responseDTO.getId())).withSelfRel();
+            model.add(selfLink);
+
+            Link linkToAll = linkTo(methodOn(ClaimController.class).listClaims()).withRel("allClaims");
+            model.add(linkToAll);
+
+            return new ResponseEntity<>(model, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return  ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteClaim(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteClaim(@PathVariable UUID id) {
         try {
             claimService.deleteClaim(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 }
