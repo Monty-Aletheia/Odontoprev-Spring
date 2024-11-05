@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,67 +24,51 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("/consultations")
 public class ConsultationController {
 
+    private final ConsultationService consultationService;
+
     @Autowired
-    private ConsultationService consultationService;
+    public ConsultationController(ConsultationService consultationService) {
+        this.consultationService = consultationService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<EntityModel<ConsultationResponseDTO>>> listConsultations() {
-        List<ConsultationResponseDTO> consultations = consultationService.getAllConsultations();
-
-        consultations.forEach(consultation -> {
-            Link selfLink = linkTo(methodOn(ConsultationController.class).getConsultationById(consultation.getId())).withSelfRel();
-            consultation.add(selfLink);
-        });
-
-        List<EntityModel<ConsultationResponseDTO>> consultationModels = consultations.stream()
-                .map(consultation -> {
-                    Link selfLink = linkTo(methodOn(ConsultationController.class).getConsultationById(consultation.getId())).withSelfRel();
-                    return EntityModel.of(consultation, selfLink);
-                })
+    public ResponseEntity<CollectionModel<EntityModel<ConsultationResponseDTO>>> getAllConsultations() {
+        List<EntityModel<ConsultationResponseDTO>> consultationModels = consultationService.getAllConsultations().stream()
+                .map(this::toEntityModel)
                 .toList();
 
-        return ResponseEntity.ok(consultationModels);
+        Link selfLink = linkTo(methodOn(ConsultationController.class).getAllConsultations()).withSelfRel();
+        return ResponseEntity.ok(CollectionModel.of(consultationModels, selfLink));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<ConsultationResponseDTO>> getConsultationById(@PathVariable UUID id) {
-        Optional<ConsultationResponseDTO> consultation = consultationService.getConsultationByUUID(id);
-
-        if (consultation.isPresent()) {
-            ConsultationResponseDTO consultationDTO = consultation.get();
-            EntityModel<ConsultationResponseDTO> model = EntityModel.of(consultationDTO);
-
-            Link selfLink = linkTo(methodOn(ConsultationController.class).getConsultationById(id)).withSelfRel();
-            model.add(selfLink);
-
-            Link linkToAll = linkTo(methodOn(ConsultationController.class).listConsultations()).withRel("allConsultations");
-            model.add(linkToAll);
-
-            Link linkToDelete = linkTo(methodOn(ConsultationController.class).deleteConsultation(id)).withRel("deleteConsultation");
-            model.add(linkToDelete);
-
-            return ResponseEntity.ok(model);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return consultationService.getConsultationByUUID(id)
+                .map(this::toEntityModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<EntityModel<ConsultationResponseDTO>> createConsultation(@RequestBody @Valid ConsultationRequestDTO consultationRequestDTO) {
         try {
             ConsultationResponseDTO createdConsultation = consultationService.createConsultation(consultationRequestDTO);
-            EntityModel<ConsultationResponseDTO> model = EntityModel.of(createdConsultation);
-
-            Link selfLink = linkTo(methodOn(ConsultationController.class).getConsultationById(createdConsultation.getId())).withSelfRel();
-            model.add(selfLink);
-
-            Link linkToAll = linkTo(methodOn(ConsultationController.class).listConsultations()).withRel("allConsultations");
-            model.add(linkToAll);
-
-            return new ResponseEntity<>(model, HttpStatus.CREATED);
+            return new ResponseEntity<>(toEntityModel(createdConsultation), HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EntityModel<ConsultationResponseDTO>> updateConsultation(
+            @PathVariable UUID id,
+            @RequestBody @Valid ConsultationRequestDTO consultationRequestDTO) {
+        Optional<ConsultationResponseDTO> updatedConsultation = consultationService.updateConsultation(id, consultationRequestDTO);
+
+        return updatedConsultation
+                .map(this::toEntityModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
@@ -96,5 +79,15 @@ public class ConsultationController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // Helper methods
+
+    private EntityModel<ConsultationResponseDTO> toEntityModel(ConsultationResponseDTO consultation) {
+        EntityModel<ConsultationResponseDTO> model = EntityModel.of(consultation);
+        model.add(linkTo(methodOn(ConsultationController.class).getConsultationById(consultation.getId())).withSelfRel());
+        model.add(linkTo(methodOn(ConsultationController.class).getAllConsultations()).withRel("allConsultations"));
+        model.add(linkTo(methodOn(ConsultationController.class).deleteConsultation(consultation.getId())).withRel("deleteConsultation"));
+        return model;
     }
 }

@@ -19,6 +19,9 @@ public record DentistRequestDTO(
         @Size(min = 1, max = 20, message = "Registration number must be between 1 and 20 characters.")
         String registrationNumber,
 
+        @NotBlank(message = "Password is required.")
+        String password,
+
         @NotNull(message = "Claims rate is required.")
         @DecimalMin(value = "0.0", inclusive = false, message = "Claims rate must be greater than 0.")
         Double claimsRate,

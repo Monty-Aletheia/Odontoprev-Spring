@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,59 +24,50 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("/claims")
 public class ClaimController {
 
+    private final ClaimService claimService;
+
     @Autowired
-    private ClaimService claimService;
+    public ClaimController(ClaimService claimService) {
+        this.claimService = claimService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<EntityModel<ClaimResponseDTO>>> listClaims() {
-        List<ClaimResponseDTO> claims = claimService.getAllClaims();
-
-        List<EntityModel<ClaimResponseDTO>> claimModels = claims.stream()
-                .map(claim -> {
-                    Link selfLink = linkTo(methodOn(ClaimController.class).getClaimById(claim.getId())).withSelfRel();
-                    return EntityModel.of(claim, selfLink);
-                })
+    public ResponseEntity<CollectionModel<EntityModel<ClaimResponseDTO>>> listClaims() {
+        List<EntityModel<ClaimResponseDTO>> claimModels = claimService.getAllClaims().stream()
+                .map(this::toEntityModel)
                 .toList();
-
-        return ResponseEntity.ok(claimModels);
+        Link selfLink = linkTo(methodOn(ClaimController.class).listClaims()).withSelfRel();
+        return ResponseEntity.ok(CollectionModel.of(claimModels, selfLink));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<ClaimResponseDTO>> getClaimById(@PathVariable UUID id) {
-        Optional<ClaimResponseDTO> responseDTO = claimService.getClaimByUUID(id);
-
-        if (responseDTO.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        ClaimResponseDTO claim = responseDTO.get();
-        EntityModel<ClaimResponseDTO> model = EntityModel.of(claim);
-
-        Link selfLink = linkTo(methodOn(ClaimController.class).getClaimById(id)).withSelfRel();
-        model.add(selfLink);
-
-        Link linkToAll = linkTo(methodOn(ClaimController.class).listClaims()).withRel("allClaims");
-        model.add(linkToAll);
-
-        return ResponseEntity.ok(model);
+        return claimService.getClaimByUUID(id)
+                .map(this::toEntityModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<EntityModel<ClaimResponseDTO>> createClaim(@RequestBody @Valid ClaimRequestDTO claimRequestDTO) {
         try {
             ClaimResponseDTO responseDTO = claimService.createClaim(claimRequestDTO);
-            EntityModel<ClaimResponseDTO> model = EntityModel.of(responseDTO);
-
-            Link selfLink = linkTo(methodOn(ClaimController.class).getClaimById(responseDTO.getId())).withSelfRel();
-            model.add(selfLink);
-
-            Link linkToAll = linkTo(methodOn(ClaimController.class).listClaims()).withRel("allClaims");
-            model.add(linkToAll);
-
-            return new ResponseEntity<>(model, HttpStatus.CREATED);
+            return new ResponseEntity<>(toEntityModel(responseDTO), HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
-            return  ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EntityModel<ClaimResponseDTO>> updateClaim(
+            @PathVariable UUID id,
+            @RequestBody @Valid ClaimRequestDTO claimRequestDTO) {
+        Optional<ClaimResponseDTO> updatedClaim = claimService.updateClaim(id, claimRequestDTO);
+
+        return updatedClaim
+                .map(this::toEntityModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
@@ -88,5 +78,12 @@ public class ClaimController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    private EntityModel<ClaimResponseDTO> toEntityModel(ClaimResponseDTO claim) {
+        EntityModel<ClaimResponseDTO> model = EntityModel.of(claim);
+        model.add(linkTo(methodOn(ClaimController.class).getClaimById(claim.getId())).withSelfRel());
+        model.add(linkTo(methodOn(ClaimController.class).listClaims()).withRel("allClaims"));
+        return model;
     }
 }

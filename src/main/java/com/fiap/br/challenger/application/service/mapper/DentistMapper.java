@@ -13,4 +13,12 @@ public interface DentistMapper {
 
     @Mapping(target = "id", ignore = true)
     Dentist toEntity(DentistRequestDTO dto);
+
+    default void updateEntityFromDto(Dentist entity, DentistRequestDTO dto) {
+        entity.setName(dto.name());
+        entity.setSpecialty(dto.specialty());
+        entity.setClaimsRate(dto.claimsRate());
+        entity.setRegistrationNumber(dto.registrationNumber());
+        entity.setRiskStatus(dto.riskStatus());
+    }
 }

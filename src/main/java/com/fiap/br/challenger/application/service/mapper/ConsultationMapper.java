@@ -14,4 +14,11 @@ public interface ConsultationMapper {
 
     @Mapping(target = "id", ignore = true)
     Consultation toEntity(ConsultationRequestDTO dto);
+
+    default void updateEntityFromDto(Consultation entity, ConsultationRequestDTO dto) {
+        entity.setConsultationDate(dto.consultationDate());
+        entity.setConsultationValue(dto.consultationValue());
+        entity.setDescription(dto.description());
+        entity.setRiskStatus(dto.riskStatus());
+    }
 }

@@ -15,4 +15,11 @@ public interface ClaimMapper {
 
     @Mapping(target = "id", ignore = true)
     Claim toEntity(ClaimRequestDTO dto);
+
+    default void updateEntityFromDto(Claim entity, ClaimRequestDTO dto) {
+        entity.setClaimType(dto.claimType());
+        entity.setValue(dto.value());
+        entity.setOccurrenceDate(dto.occurrenceDate());
+        entity.setSuggestedPreventiveAction(dto.suggestedPreventiveAction());
+    }
 }

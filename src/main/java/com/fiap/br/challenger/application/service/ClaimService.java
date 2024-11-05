@@ -9,6 +9,8 @@ import com.fiap.br.challenger.infra.repository.ClaimRepository;
 import com.fiap.br.challenger.infra.repository.ConsultationRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +19,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Data
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ClaimService {
 
-    @Autowired
-    private ClaimRepository claimRepository;
+    private final ClaimRepository claimRepository;
 
-    @Autowired
-    private ConsultationRepository consultationRepository;
+    private final ConsultationRepository consultationRepository;
 
-    @Autowired
-    private ClaimMapper claimMapper;
+    private final ClaimMapper claimMapper;
 
     public List<ClaimResponseDTO> getAllClaims() {
         return claimRepository.findAll().stream()
@@ -50,6 +51,24 @@ public class ClaimService {
         return claimMapper.toDto(savedClaim);
     }
 
+    @Transactional
+    public Optional<ClaimResponseDTO> updateClaim(UUID id, ClaimRequestDTO claimRequestDTO) {
+        Claim claimToUpdate = claimRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Sinistro não encontrado: " + id));
+
+        claimMapper.updateEntityFromDto(claimToUpdate, claimRequestDTO);
+
+        if (claimRequestDTO.consultationId() != null) {
+            Consultation consultation = consultationRepository.findById(claimRequestDTO.consultationId())
+                    .orElseThrow(() -> new EntityNotFoundException("Consulta não encontrada: " + claimRequestDTO.consultationId()));
+            claimToUpdate.setConsultation(consultation);
+        }
+
+        Claim updatedClaim = claimRepository.save(claimToUpdate);
+        return Optional.of(claimMapper.toDto(updatedClaim));
+    }
+
+    @Transactional
     public void deleteClaim(UUID id) {
         if (!claimRepository.existsById(id)) {
             throw new EntityNotFoundException("O sinistro não existe: " + id);

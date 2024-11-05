@@ -11,6 +11,8 @@ import com.fiap.br.challenger.infra.repository.DentistRepository;
 import com.fiap.br.challenger.infra.repository.PatientRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,19 +21,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Data
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ConsultationService {
 
-    @Autowired
-    private ConsultationRepository consultationRepository;
-
-    @Autowired
-    private ConsultationMapper consultationMapper;
-
-    @Autowired
-    private PatientRepository patientRepository;
-
-    @Autowired
-    private DentistRepository dentistRepository;
+    private final ConsultationRepository consultationRepository;
+    private final ConsultationMapper consultationMapper;
+    private final PatientRepository patientRepository;
+    private final DentistRepository dentistRepository;
 
     public List<ConsultationResponseDTO> getAllConsultations() {
         return consultationRepository.findAll().stream()
@@ -69,6 +66,30 @@ public class ConsultationService {
 
 
         return consultationMapper.toDto(savedConsultation);
+    }
+
+    @Transactional
+    public Optional<ConsultationResponseDTO> updateConsultation(UUID id, ConsultationRequestDTO consultationRequestDTO) {
+        Consultation existingConsultation = consultationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Consulta não encontrada: " + id));
+
+        UUID patientId = consultationRequestDTO.patientId();
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new EntityNotFoundException("Paciente de id: " + patientId + " não existe"));
+
+        List<UUID> dentistIds = consultationRequestDTO.dentistIds();
+        List<Dentist> dentists = dentistRepository.findAllById(dentistIds);
+        if (dentists.size() != dentistIds.size()) {
+            throw new EntityNotFoundException("Um ou mais dentistas não foram encontrados com os IDs fornecidos");
+        }
+
+        consultationMapper.updateEntityFromDto(existingConsultation,consultationRequestDTO);
+        existingConsultation.setPatient(patient);
+        existingConsultation.setDentists(dentists);
+
+        Consultation updatedConsultation = consultationRepository.save(existingConsultation);
+
+        return Optional.ofNullable(consultationMapper.toDto(updatedConsultation));
     }
 
     @Transactional
