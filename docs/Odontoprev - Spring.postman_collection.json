@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "dc2f5ae2-f7c6-4ec5-a0fe-d26e4235017f",
+		"_postman_id": "4219a22f-02a5-4136-8d55-109bb8bd48a1",
 		"name": "Odontoprev - Spring",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "28919659",
-		"_collection_link": "https://challenger-1905.postman.co/workspace/Monty-Aletheia~d4649ffc-6b16-4f63-8230-01afebde0e63/collection/28919659-dc2f5ae2-f7c6-4ec5-a0fe-d26e4235017f?action=share&source=collection_link&creator=28919659"
+		"_exporter_id": "28919659"
 	},
 	"item": [
 		{
@@ -56,7 +55,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"João da Silva\",\r\n  \"specialty\": \"Odontologia Geral\",\r\n  \"registrationNumber\": \"123456\",\r\n  \"claimsRate\": 0.05,\r\n  \"riskStatus\": \"BAIXO\"\r\n}",
+							"raw": "{\r\n  \"name\": \"João da Silva\",\r\n  \"password\": \"12345678\",\r\n  \"specialty\": \"Odontologia Geral\",\r\n  \"registrationNumber\": \"123321321\",\r\n  \"claimsRate\": 0.05,\r\n  \"riskStatus\": \"BAIXO\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -78,12 +77,21 @@
 					"response": []
 				},
 				{
-					"name": "DELETE dentists",
+					"name": "PUT dentists",
 					"request": {
-						"method": "DELETE",
+						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Test\",\r\n  \"password\": \"adasdadas\",\r\n  \"specialty\": \"Odontologia Geral\",\r\n  \"registrationNumber\": \"123456\",\r\n  \"claimsRate\": 0.05,\r\n  \"riskStatus\": \"BAIXO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "localhost:8080/api/dentists/2bd26b03-6462-4b5e-9ba9-c14fa9310e9f",
+							"raw": "localhost:8080/api/dentists/264aff77-2b3b-fe4c-e063-103ca8c0eb90",
 							"host": [
 								"localhost"
 							],
@@ -91,7 +99,27 @@
 							"path": [
 								"api",
 								"dentists",
-								"2bd26b03-6462-4b5e-9ba9-c14fa9310e9f"
+								"264aff77-2b3b-fe4c-e063-103ca8c0eb90"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE dentists",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/dentists/264aff77-2b3c-fe4c-e063-103ca8c0eb90",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"dentists",
+								"264aff77-2b3c-fe4c-e063-103ca8c0eb90"
 							]
 						}
 					},
@@ -127,7 +155,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/patients/6feda0b3-545e-413d-a207-d5bbc2be65fc",
+							"raw": "localhost:8080/api/patients/264a1fa6-7d62-e857-e063-103ca8c008ab",
 							"host": [
 								"localhost"
 							],
@@ -135,7 +163,7 @@
 							"path": [
 								"api",
 								"patients",
-								"6feda0b3-545e-413d-a207-d5bbc2be65fc"
+								"264a1fa6-7d62-e857-e063-103ca8c008ab"
 							]
 						}
 					},
@@ -170,12 +198,21 @@
 					"response": []
 				},
 				{
-					"name": "DELETE patients",
+					"name": "PUT patients",
 					"request": {
-						"method": "DELETE",
+						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Natan\",\r\n  \"birthday\": \"1990-05-15\",\r\n  \"gender\": \"F\",\r\n  \"riskStatus\": \"BAIXO\",\r\n  \"consultationFrequency\": 3,\r\n  \"associatedClaims\": \"Reclamação de dor de dente\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "localhost:8080/api/patients/6feda0b3-545e-413d-a207-d5bbc2be65fc",
+							"raw": "localhost:8080/api/patients/264a1fa6-7d62-e857-e063-103ca8c008ab",
 							"host": [
 								"localhost"
 							],
@@ -183,7 +220,27 @@
 							"path": [
 								"api",
 								"patients",
-								"6feda0b3-545e-413d-a207-d5bbc2be65fc"
+								"264a1fa6-7d62-e857-e063-103ca8c008ab"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE patients",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/patients/264a1fa6-7d62-e857-e063-103ca8c008ab",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"patients",
+								"264a1fa6-7d62-e857-e063-103ca8c008ab"
 							]
 						}
 					},
@@ -196,21 +253,9 @@
 			"item": [
 				{
 					"name": "GET claims",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
 							"raw": "localhost:8080/api/claims",
 							"host": [
@@ -231,7 +276,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/claims/0e9cde01-fe06-496b-a05a-16de5b80e330",
+							"raw": "localhost:8080/api/claims/6722fa7d-6889-410a-ad85-fb7830ff5a20",
 							"host": [
 								"localhost"
 							],
@@ -239,7 +284,7 @@
 							"path": [
 								"api",
 								"claims",
-								"0e9cde01-fe06-496b-a05a-16de5b80e330"
+								"6722fa7d-6889-410a-ad85-fb7830ff5a20"
 							]
 						}
 					},
@@ -252,7 +297,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"occurrenceDate\": \"2024-09-30\",\r\n    \"value\": 150.75,\r\n    \"claimType\": \"TRATAMENTO_DESNECESSÁRIO\",  \r\n    \"suggestedPreventiveAction\": \"Increase regular check-ups\",\r\n    \"consultationId\": \"d163ce56-f411-4761-b315-83ef569ac9b1\"  \r\n}\r\n",
+							"raw": "{\r\n    \"occurrenceDate\": \"2024-09-30\",\r\n    \"value\": 150.75,\r\n    \"claimType\": \"TRATAMENTO_DESNECESSÁRIO\",  \r\n    \"suggestedPreventiveAction\": \"Increase regular check-ups\",\r\n    \"consultationId\": \"8898692b-ef60-4e79-a82e-097affa01000\"  \r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -274,12 +319,21 @@
 					"response": []
 				},
 				{
-					"name": "DELETE claims",
+					"name": "PUT claims",
 					"request": {
-						"method": "DELETE",
+						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"occurrenceDate\": \"2024-09-30\",\r\n    \"value\": 150.75,\r\n    \"claimType\": \"TRATAMENTO_DESNECESSÁRIO\",  \r\n    \"suggestedPreventiveAction\": \"seila regular check-ups\",\r\n    \"consultationId\": \"d163ce56-f411-4761-b315-83ef569ac9b1\"  \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "localhost:8080/api/claims/2a32281f-9e96-4db2-9009-39c2aa1726fb",
+							"raw": "localhost:8080/api/claims/6722fa7d-6889-410a-ad85-fb7830ff5a20",
 							"host": [
 								"localhost"
 							],
@@ -287,7 +341,27 @@
 							"path": [
 								"api",
 								"claims",
-								"2a32281f-9e96-4db2-9009-39c2aa1726fb"
+								"6722fa7d-6889-410a-ad85-fb7830ff5a20"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE claims",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/claims/6722fa7d-6889-410a-ad85-fb7830ff5a20",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"claims",
+								"6722fa7d-6889-410a-ad85-fb7830ff5a20"
 							]
 						}
 					},
@@ -323,7 +397,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/consultations/d163ce56-f411-4761-b315-83ef569ac9b1",
+							"raw": "localhost:8080/api/consultations/",
 							"host": [
 								"localhost"
 							],
@@ -331,7 +405,7 @@
 							"path": [
 								"api",
 								"consultations",
-								"d163ce56-f411-4761-b315-83ef569ac9b1"
+								""
 							]
 						}
 					},
@@ -344,7 +418,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"consultationDate\": \"2024-10-15\",\r\n  \"consultationValue\": 150.0,\r\n  \"riskStatus\": \"BAIXO\",\r\n  \"patientId\": \"20a26bcc-322a-4a65-a5df-9eb215f28bb5\",\r\n  \"dentistIds\": [\r\n    \"13b115db-332f-43c4-99d9-284e9e3bedd4\"\r\n  ],\r\n  \"description\": \"Consultation for a routine check-up.\"\r\n}\r\n",
+							"raw": "{\r\n  \"consultationDate\": \"2024-11-06\",\r\n  \"consultationValue\": 150.0,\r\n  \"riskStatus\": \"BAIXO\",\r\n  \"description\": \"Consulta de rotina para avaliação de saúde bucal.\",\r\n  \"patientId\": \"350f4161-0ef6-4063-80e2-1cce4fc08436\",\r\n  \"dentistIds\": [\r\n    \"bba85986-7ad1-4595-a514-57d12f0ba47c\",\r\n    \"13b115db-332f-43c4-99d9-284e9e3bedd4\"\r\n    ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -366,12 +440,21 @@
 					"response": []
 				},
 				{
-					"name": "DELETE consultations",
+					"name": "PUT consultations",
 					"request": {
-						"method": "DELETE",
+						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"consultationDate\": \"2024-11-06\",\r\n  \"consultationValue\": 250.0,\r\n  \"riskStatus\": \"BAIXO\",\r\n  \"description\": \"Consulta de rotina para avaliação de saúde bucal.\",\r\n  \"patientId\": \"350f4161-0ef6-4063-80e2-1cce4fc08436\",\r\n  \"dentistIds\": [\r\n    \"e71fae49-8318-4529-b964-ad7251cd88ce\",\r\n    \"13b115db-332f-43c4-99d9-284e9e3bedd4\"\r\n    ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "localhost:8080/api/consultations/0e9cde01-fe06-496b-a05a-16de5b80e330",
+							"raw": "localhost:8080/api/consultations/0bc8a654-a30b-44e1-96dd-20831b002b3a",
 							"host": [
 								"localhost"
 							],
@@ -379,7 +462,61 @@
 							"path": [
 								"api",
 								"consultations",
-								"0e9cde01-fe06-496b-a05a-16de5b80e330"
+								"0bc8a654-a30b-44e1-96dd-20831b002b3a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE consultations",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/consultations/0bc8a654-a30b-44e1-96dd-20831b002b3a",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"consultations",
+								"0bc8a654-a30b-44e1-96dd-20831b002b3a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "POST Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"registrationNumber\": \"123321321\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/auth/signIn",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"signIn"
 							]
 						}
 					},
