@@ -66,11 +66,16 @@ public class DentistController {
     public ResponseEntity<EntityModel<DentistResponseDTO>> updateDentist(
             @PathVariable UUID id,
             @Valid @RequestBody DentistRequestDTO request) {
-        Optional<DentistResponseDTO> updatedDentist = dentistService.updateDentist(id, request);
-        return updatedDentist
-                .map(this::toEntityModel)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+
+        try{
+            Optional<DentistResponseDTO> updatedDentist = dentistService.updateDentist(id, request);
+            return updatedDentist
+                    .map(this::toEntityModel)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")

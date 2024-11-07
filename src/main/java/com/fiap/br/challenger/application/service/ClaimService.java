@@ -42,7 +42,7 @@ public class ClaimService {
     @Transactional
     public ClaimResponseDTO createClaim(ClaimRequestDTO claimRequestDTO) {
         Consultation consultation = consultationRepository.findById(claimRequestDTO.consultationId())
-                .orElseThrow(() -> new EntityNotFoundException("Consulta não encontrada: " + claimRequestDTO.consultationId()));
+                .orElseThrow(() -> new EntityNotFoundException("Consultation not found: " + claimRequestDTO.consultationId()));
 
         Claim claim = claimMapper.toEntity(claimRequestDTO);
         claim.setConsultation(consultation);
@@ -54,13 +54,13 @@ public class ClaimService {
     @Transactional
     public Optional<ClaimResponseDTO> updateClaim(UUID id, ClaimRequestDTO claimRequestDTO) {
         Claim claimToUpdate = claimRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Sinistro não encontrado: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Claim not found: " + id));
 
         claimMapper.updateEntityFromDto(claimToUpdate, claimRequestDTO);
 
         if (claimRequestDTO.consultationId() != null) {
             Consultation consultation = consultationRepository.findById(claimRequestDTO.consultationId())
-                    .orElseThrow(() -> new EntityNotFoundException("Consulta não encontrada: " + claimRequestDTO.consultationId()));
+                    .orElseThrow(() -> new EntityNotFoundException("Consultation not found: " + claimRequestDTO.consultationId()));
             claimToUpdate.setConsultation(consultation);
         }
 
@@ -71,7 +71,7 @@ public class ClaimService {
     @Transactional
     public void deleteClaim(UUID id) {
         if (!claimRepository.existsById(id)) {
-            throw new EntityNotFoundException("O sinistro não existe: " + id);
+            throw new EntityNotFoundException("Claim does not exist: " + id);
         }
         claimRepository.deleteById(id);
     }

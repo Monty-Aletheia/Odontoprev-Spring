@@ -3,6 +3,7 @@ package com.fiap.br.challenger.application.controller;
 import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
 import com.fiap.br.challenger.application.service.PatientService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -59,10 +60,14 @@ public class PatientController {
             @PathVariable UUID id,
             @RequestBody PatientRequestDTO patientRequestDTO) {
 
-        return patientService.updatePatient(id, patientRequestDTO)
-                .map(this::toEntityModel)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            return patientService.updatePatient(id, patientRequestDTO)
+                    .map(this::toEntityModel)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")

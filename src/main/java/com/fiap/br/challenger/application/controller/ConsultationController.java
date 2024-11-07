@@ -63,12 +63,17 @@ public class ConsultationController {
     public ResponseEntity<EntityModel<ConsultationResponseDTO>> updateConsultation(
             @PathVariable UUID id,
             @RequestBody @Valid ConsultationRequestDTO consultationRequestDTO) {
-        Optional<ConsultationResponseDTO> updatedConsultation = consultationService.updateConsultation(id, consultationRequestDTO);
 
-        return updatedConsultation
-                .map(this::toEntityModel)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            Optional<ConsultationResponseDTO> updatedConsultation = consultationService.updateConsultation(id, consultationRequestDTO);
+
+            return updatedConsultation
+                    .map(this::toEntityModel)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")

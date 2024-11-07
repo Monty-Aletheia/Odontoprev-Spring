@@ -62,12 +62,17 @@ public class ClaimController {
     public ResponseEntity<EntityModel<ClaimResponseDTO>> updateClaim(
             @PathVariable UUID id,
             @RequestBody @Valid ClaimRequestDTO claimRequestDTO) {
-        Optional<ClaimResponseDTO> updatedClaim = claimService.updateClaim(id, claimRequestDTO);
 
-        return updatedClaim
-                .map(this::toEntityModel)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            Optional<ClaimResponseDTO> updatedClaim = claimService.updateClaim(id, claimRequestDTO);
+
+            return updatedClaim
+                    .map(this::toEntityModel)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")

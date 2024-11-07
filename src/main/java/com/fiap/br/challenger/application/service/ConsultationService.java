@@ -49,19 +49,18 @@ public class ConsultationService {
         Optional<Patient> patient = patientRepository.findById(patientId);
 
         if (patient.isEmpty()) {
-            throw new EntityNotFoundException("Paciente de id:" + patientId + " não existe");
+            throw new EntityNotFoundException("Patient id:" + patientId + " does not exist");
         }
 
         List<Dentist> dentists = dentistRepository.findAllById(dentistIds);
 
         if(dentists.isEmpty()){
-            throw new EntityNotFoundException("Dentista de id:" + patientId + " não existe");
+            throw new EntityNotFoundException("Dentists with ids: " + dentistIds + " does not exist");
         }
-
 
         consultation.setPatient(patient.get());
         consultation.setDentists(dentists);
-        Consultation savedConsultation = consultationRepository.insertConsultation(consultation);
+        Consultation savedConsultation = consultationRepository.save(consultation);
 
         return consultationMapper.toDto(savedConsultation);
     }
@@ -69,29 +68,32 @@ public class ConsultationService {
     @Transactional
     public Optional<ConsultationResponseDTO> updateConsultation(UUID id, ConsultationRequestDTO consultationRequestDTO) {
         Consultation existingConsultation = consultationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Consulta não encontrada: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Consultation not found: " + id));
 
         UUID patientId = consultationRequestDTO.patientId();
         Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new EntityNotFoundException("Paciente de id: " + patientId + " não existe"));
+                .orElseThrow(() -> new EntityNotFoundException("Patient id:" + patientId + " does not exist"));
 
         List<UUID> dentistIds = consultationRequestDTO.dentistIds();
         List<Dentist> dentists = dentistRepository.findAllById(dentistIds);
         if (dentists.size() != dentistIds.size()) {
-            throw new EntityNotFoundException("Um ou mais dentistas não foram encontrados com os IDs fornecidos");
+            throw new EntityNotFoundException("One or more dentists were not found with the provided IDs");
         }
 
         consultationMapper.updateEntityFromDto(existingConsultation,consultationRequestDTO);
         existingConsultation.setPatient(patient);
         existingConsultation.setDentists(dentists);
 
-        Consultation updatedConsultation = consultationRepository.updateConsultation(id,existingConsultation);
+        Consultation updatedConsultation = consultationRepository.save(existingConsultation);
 
         return Optional.ofNullable(consultationMapper.toDto(updatedConsultation));
     }
 
     @Transactional
     public void deleteConsultation(UUID id) {
-        consultationRepository.deleteConsultationWithErrorsHandled(id);
+        if (!consultationRepository.existsById(id)) {
+            throw new EntityNotFoundException("Consultation not found: " + id);
+        }
+        consultationRepository.deleteById(id);
     }
 }
