@@ -39,27 +39,24 @@ public class PatientService {
     @Transactional
     public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
         Patient patient = patientMapper.toEntity(patientRequestDTO);
-        Patient savedPatient = patientRepository.save(patient);
+        Patient savedPatient = patientRepository.insertPatient(patient);
         return patientMapper.toDto(savedPatient);
     }
 
     @Transactional
     public Optional<PatientResponseDTO> updatePatient(UUID id, PatientRequestDTO patientRequestDTO) {
         Patient existingPatient = patientRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Patient não existe"));
+                .orElseThrow(() -> new EntityNotFoundException("Patient not exist"));
 
         patientMapper.updateEntityFromDto(existingPatient, patientRequestDTO);
 
-        Patient updatedPatient = patientRepository.save(existingPatient);
+        Patient updatedPatient = patientRepository.updatePatient(id, existingPatient);
 
         return Optional.of(patientMapper.toDto(updatedPatient));
     }
 
     @Transactional
     public void deletePatient(UUID id) {
-        if (!patientRepository.existsById(id)) {
-            throw new EntityNotFoundException("Patient não existe");
-        }
-        patientRepository.deleteById(id);
+        patientRepository.deletePatientWithErrorsHandled(id);
     }
 }

@@ -61,9 +61,7 @@ public class ConsultationService {
 
         consultation.setPatient(patient.get());
         consultation.setDentists(dentists);
-        Consultation savedConsultation = consultationRepository.save(consultation);
-
-
+        Consultation savedConsultation = consultationRepository.insertConsultation(consultation);
 
         return consultationMapper.toDto(savedConsultation);
     }
@@ -87,16 +85,13 @@ public class ConsultationService {
         existingConsultation.setPatient(patient);
         existingConsultation.setDentists(dentists);
 
-        Consultation updatedConsultation = consultationRepository.save(existingConsultation);
+        Consultation updatedConsultation = consultationRepository.updateConsultation(id,existingConsultation);
 
         return Optional.ofNullable(consultationMapper.toDto(updatedConsultation));
     }
 
     @Transactional
     public void deleteConsultation(UUID id) {
-        if (!consultationRepository.existsById(id)) {
-            throw new EntityNotFoundException("Consulta não encontrada: " + id);
-        }
-        consultationRepository.deleteById(id);
+        consultationRepository.deleteConsultationWithErrorsHandled(id);
     }
 }
