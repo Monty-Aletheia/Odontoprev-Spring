@@ -11,6 +11,12 @@ spring:
     username: rm553912 #rm553912 #rm552626
     password: 141204 #141204 #080305
     driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 20000
   jpa:
     show-sql: true
     properties:
