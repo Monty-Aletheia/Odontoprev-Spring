@@ -39,7 +39,7 @@ public class PatientService {
     @Transactional
     public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
         Patient patient = patientMapper.toEntity(patientRequestDTO);
-        Patient savedPatient = patientRepository.insertPatient(patient);
+        Patient savedPatient = patientRepository.save(patient);
         return patientMapper.toDto(savedPatient);
     }
 
@@ -50,13 +50,15 @@ public class PatientService {
 
         patientMapper.updateEntityFromDto(existingPatient, patientRequestDTO);
 
-        Patient updatedPatient = patientRepository.updatePatient(id, existingPatient);
+        Patient updatedPatient = patientRepository.save(existingPatient);
 
         return Optional.of(patientMapper.toDto(updatedPatient));
     }
 
     @Transactional
     public void deletePatient(UUID id) {
-        patientRepository.deletePatientWithErrorsHandled(id);
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Patient of id: %s not found", id)));
+        patientRepository.delete(patient);
     }
 }
