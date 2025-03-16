@@ -4,6 +4,7 @@ import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
 import com.fiap.br.challenger.application.service.mapper.PatientMapper;
 import com.fiap.br.challenger.domain.model.Patient;
+import com.fiap.br.challenger.domain.model.enums.RiskStatus;
 import com.fiap.br.challenger.infra.repository.PatientRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -38,7 +39,12 @@ public class PatientService {
 
     @Transactional
     public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
+
         Patient patient = patientMapper.toEntity(patientRequestDTO);
+        patient.setAssociatedClaims("");
+        patient.setConsultationFrequency(0);
+        patient.setRiskStatus(RiskStatus.NENHUM);
+
         Patient savedPatient = patientRepository.save(patient);
         return patientMapper.toDto(savedPatient);
     }

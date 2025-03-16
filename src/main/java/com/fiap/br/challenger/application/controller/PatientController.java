@@ -1,73 +1,54 @@
 package com.fiap.br.challenger.application.controller;
 
 import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
-import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
 import com.fiap.br.challenger.application.service.PatientService;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
-import org.springframework.http.HttpStatus;
+import com.fiap.br.challenger.domain.model.Patient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-@RestController
+@Controller
 @RequestMapping("/patients")
 public class PatientController {
 
     private final PatientService patientService;
 
-    @Autowired
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
     }
 
     @GetMapping
-    public ResponseEntity<CollectionModel<EntityModel<PatientResponseDTO>>> getAllPatients() {
-        List<EntityModel<PatientResponseDTO>> patientModels = patientService.getAllPatients()
-                .stream()
-                .map(this::toEntityModel)
-                .toList();
+    public String getAllPatients(Model model) {
 
-        Link selfLink = linkTo(methodOn(PatientController.class).getAllPatients()).withSelfRel();
-        return ResponseEntity.ok(CollectionModel.of(patientModels, selfLink));
+        model.addAttribute("patients" ,patientService.getAllPatients());
+        return "patients/list";
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<PatientResponseDTO>> getPatientByUUID(@PathVariable UUID id) {
-        return patientService.getPatientByUUID(id)
-                .map(this::toEntityModel)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public String getPatientByUUID(@PathVariable UUID id) {
+        patientService.getPatientByUUID(id);
+        return "patients/list";
     }
 
-    @PostMapping
-    public ResponseEntity<EntityModel<PatientResponseDTO>> createPatient(@RequestBody PatientRequestDTO patientRequestDTO) {
-        PatientResponseDTO responseDTO = patientService.createPatient(patientRequestDTO);
-        EntityModel<PatientResponseDTO> model = toEntityModel(responseDTO);
-        return new ResponseEntity<>(model, HttpStatus.CREATED);
+
+    @GetMapping("/new")
+    public String showForm(Model model) {
+        model.addAttribute("patient", new Patient());
+        return "/patients/form";
+    }
+
+    @PostMapping("/add")
+    public String createPatient(@ModelAttribute("patient") PatientRequestDTO patientRequestDTO) {
+        patientService.createPatient(patientRequestDTO);
+        return "/patients/list";
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EntityModel<PatientResponseDTO>> updatePatient(
-            @PathVariable UUID id,
-            @RequestBody PatientRequestDTO patientRequestDTO) {
-
-        try {
-            return patientService.updatePatient(id, patientRequestDTO)
-                    .map(this::toEntityModel)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public String updatePatient(@PathVariable UUID id, @RequestBody PatientRequestDTO patientRequestDTO) {
+        return "/patients/list";
     }
 
     @DeleteMapping("/{id}")
@@ -76,25 +57,4 @@ public class PatientController {
         return ResponseEntity.noContent().build();
     }
 
-    // Helper methods
-
-    private EntityModel<PatientResponseDTO> toEntityModel(PatientResponseDTO patient) {
-        UUID id = patient.getId();
-        return EntityModel.of(patient,
-                selfLink(id),
-                allPatientsLink(),
-                deletePatientLink(id));
-    }
-
-    private Link selfLink(UUID id) {
-        return linkTo(methodOn(PatientController.class).getPatientByUUID(id)).withSelfRel();
-    }
-
-    private Link allPatientsLink() {
-        return linkTo(methodOn(PatientController.class).getAllPatients()).withRel("allPatients");
-    }
-
-    private Link deletePatientLink(UUID id) {
-        return linkTo(methodOn(PatientController.class).deletePatient(id)).withRel("deletePatient");
-    }
 }
