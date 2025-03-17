@@ -3,28 +3,20 @@ package com.fiap.br.challenger.application.controller;
 import com.fiap.br.challenger.application.dto.dentist.DentistRequestDTO;
 import com.fiap.br.challenger.application.dto.dentist.DentistResponseDTO;
 import com.fiap.br.challenger.application.service.DentistService;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
+import com.fiap.br.challenger.domain.model.Dentist;
+import com.fiap.br.challenger.domain.model.Patient;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-@RestController
+@Controller
 @RequestMapping("/dentists")
-public class DentistController {
+public class  DentistController {
 
     private final DentistService dentistService;
 
@@ -33,84 +25,42 @@ public class DentistController {
         this.dentistService = dentistService;
     }
 
-    @GetMapping
-    public ResponseEntity<CollectionModel<EntityModel<DentistResponseDTO>>> getAllDentists() {
-        List<EntityModel<DentistResponseDTO>> dentistModels = dentistService.getAllDentists().stream()
-                .map(this::toEntityModel)
-                .collect(Collectors.toList());
-
-        Link selfLink = linkTo(methodOn(DentistController.class).getAllDentists()).withSelfRel();
-        return ResponseEntity.ok(CollectionModel.of(dentistModels, selfLink));
+    @GetMapping("/list")
+    public String getAllDentists(Model model) {
+        List<DentistResponseDTO> dentists = dentistService.getAllDentists();
+        model.addAttribute("dentists", dentists);
+        return "/dentists/list";
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<DentistResponseDTO>> getDentistById(@PathVariable UUID id) {
-        return dentistService.getDentistsByUUID(id)
-                .map(this::toDetailedEntityModel)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public String getDentistById(@PathVariable UUID id) {
+        return "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH";
     }
 
+
+    @GetMapping("/new")
+    public String showForm(Model model) {
+        model.addAttribute("dentist", new Dentist());
+        return "/dentists/form";
+    }
+
+
     @PostMapping
-    public ResponseEntity<EntityModel<DentistResponseDTO>> createDentist(@Valid @RequestBody DentistRequestDTO request) {
-        try {
-            DentistResponseDTO createdDentist = dentistService.createDentist(request);
-            EntityModel<DentistResponseDTO> model = toEntityModel(createdDentist);
-            return ResponseEntity.status(HttpStatus.CREATED).body(model);
-        } catch (EntityExistsException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    public String createDentist(@Valid @ModelAttribute DentistRequestDTO dentistRequestDTO) {
+        dentistService.createDentist(dentistRequestDTO);
+        return "redirect:/list";
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EntityModel<DentistResponseDTO>> updateDentist(
+    public String updateDentist(
             @PathVariable UUID id,
-            @Valid @RequestBody DentistRequestDTO request) {
-
-        try{
-            Optional<DentistResponseDTO> updatedDentist = dentistService.updateDentist(id, request);
-            return updatedDentist
-                    .map(this::toEntityModel)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+            @Valid @ModelAttribute DentistRequestDTO request) {
+        return "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH";
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDentist(@PathVariable UUID id) {
-        try {
-            dentistService.deleteDentist(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    public String deleteDentist(@PathVariable UUID id) {
+        return "AAAAAAAAAAAAAAAAAAH";
     }
 
-    // Helper methods
-
-    private EntityModel<DentistResponseDTO> toEntityModel(DentistResponseDTO dentist) {
-        EntityModel<DentistResponseDTO> model = EntityModel.of(dentist);
-        model.add(selfLink(dentist.getId()), allDentistsLink());
-        return model;
-    }
-
-    private EntityModel<DentistResponseDTO> toDetailedEntityModel(DentistResponseDTO dentist) {
-        EntityModel<DentistResponseDTO> model = toEntityModel(dentist);
-        model.add(deleteLink(dentist.getId()));
-        return model;
-    }
-
-    private Link selfLink(UUID id) {
-        return linkTo(methodOn(DentistController.class).getDentistById(id)).withSelfRel();
-    }
-
-    private Link allDentistsLink() {
-        return linkTo(methodOn(DentistController.class).getAllDentists()).withRel("allDentists");
-    }
-
-    private Link deleteLink(UUID id) {
-        return linkTo(methodOn(DentistController.class).deleteDentist(id)).withRel("deleteDentist");
-    }
 }

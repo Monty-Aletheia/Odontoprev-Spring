@@ -71,7 +71,7 @@
       <i class="bi bi-person fs-3" th:text="#{project.patientListingLabel}"></i>
     </h1>
     <a th:href="@{/patients/new}" class="btn btn-add">
-      <i class="bi bi-plus-lg" th:text="#{project.add}"></i>
+      <i class="bi bi-plus-lg" th:text="#{project.addButton}"></i>
     </a>
   </div>
 
@@ -86,7 +86,7 @@
           <th th:text="#{patient.riskStatus}">Status de Risco</th>
           <th th:text="#{patient.consultationFrequency}">Frequência de Consultas</th>
           <th th:text="#{patient.associatedClaims}">Reclamações Associadas</th>
-          <th class="text-center" th:text="#{patient.actions}">Ações</th>
+          <th class="text-center" th:text="#{table.actions}">Ações</th>
         </tr>
         </thead>
         <tbody>

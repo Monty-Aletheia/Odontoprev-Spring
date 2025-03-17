@@ -36,11 +36,11 @@ public class PatientController {
     }
 
 
-    @GetMapping("/new")
-    public String showForm(Model model) {
-        model.addAttribute("patient", new Patient());
-        return "/patients/form";
-    }
+        @GetMapping("/new")
+        public String showForm(Model model) {
+            model.addAttribute("patient", new Patient());
+            return "/patients/form";
+        }
 
     @PostMapping("/add")
     public String createPatient(@ModelAttribute("patient") PatientRequestDTO patientRequestDTO) {
