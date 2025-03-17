@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<div th:fragment="list(title, items, entityName, entityBaseUrl)">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-primary">
+            <i class="bi bi-list"></i> <span th:text="${title}"></span>
+        </h1>
+        <a th:href="@{${entityBaseUrl} + '/new'}" class="btn btn-add">
+            <i class="bi bi-plus-lg"></i>
+        </a>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(rows)}">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover shadow">
+                <thead class="table-dark">
+                <tr>
+                    <th th:each="column : ${columns}" th:text="${column}"></th>
+                    <th class="text-center">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="even pointer" th:each="row: ${rows}" id="tablerow">
+                    <td th:if="${field.key != 'id'}" th:each="field: ${row}" th:text="${field.value}" />
+                    <td class="text-center">
+                        <a th:href="@{${entityBaseUrl} + '/form/' + ${row.id}}" class="btn btn-warning btn-sm">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a th:href="@{${entityBaseUrl} + '/delete/' + ${row.id}}" class="btn btn-danger btn-sm"
+                           onclick="return confirm('Tem certeza que deseja excluir este item?');">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(rows)}" class="empty-message mt-4">
+        <p class="fs-5">Nenhum item cadastrado no momento.</p>
+    </div>
+</div>
+
+</body>
+</html>

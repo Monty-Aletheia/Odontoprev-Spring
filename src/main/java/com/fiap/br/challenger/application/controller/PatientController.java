@@ -1,14 +1,17 @@
 package com.fiap.br.challenger.application.controller;
 
 import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
+import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
 import com.fiap.br.challenger.application.service.PatientService;
 import com.fiap.br.challenger.domain.model.Patient;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.lang.reflect.Field;
+import java.util.*;
 
 @Controller
 @RequestMapping("/patients")
@@ -20,10 +23,9 @@ public class PatientController {
         this.patientService = patientService;
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public String getAllPatients(Model model) {
-
-        model.addAttribute("patients" ,patientService.getAllPatients());
+        model.addAttribute("patients", patientService.getAllPatients());
         return "patients/list";
     }
 
@@ -43,18 +45,28 @@ public class PatientController {
     @PostMapping("/add")
     public String createPatient(@ModelAttribute("patient") PatientRequestDTO patientRequestDTO) {
         patientService.createPatient(patientRequestDTO);
-        return "/patients/list";
+        return "redirect:list";
     }
 
-    @PutMapping("/{id}")
-    public String updatePatient(@PathVariable UUID id, @RequestBody PatientRequestDTO patientRequestDTO) {
-        return "/patients/list";
+    @GetMapping("/form/{uuid}")
+    public String showUpdateForm(@PathVariable UUID uuid, Model model) {
+        PatientResponseDTO patient = patientService.getPatientByUUID(uuid);
+        model.addAttribute("patient", patient);
+        model.addAttribute("uuid", uuid);
+        return "patients/update";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePatient(@PathVariable UUID id) {
+
+    @PostMapping("/update/{uuid}")
+    public String updatePatient(@PathVariable UUID uuid, @ModelAttribute PatientRequestDTO patientRequestDTO) {
+        patientService.updatePatient(uuid, patientRequestDTO);
+        return "redirect:/patients/list";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deletePatient(@PathVariable UUID id) {
         patientService.deletePatient(id);
-        return ResponseEntity.noContent().build();
+        return "redirect:/patients/list";
     }
 
 }

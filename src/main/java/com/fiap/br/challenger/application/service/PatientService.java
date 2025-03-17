@@ -32,9 +32,12 @@ public class PatientService {
                 .toList();
     }
 
-    public Optional<PatientResponseDTO> getPatientByUUID(UUID id) {
-        return patientRepository.findById(id)
-                .map(patientMapper::toDto);
+    public PatientResponseDTO getPatientByUUID(UUID id) {
+        Optional<Patient> optionalPatient = patientRepository.findById(id);
+        if (optionalPatient.isEmpty()) {
+            throw new EntityNotFoundException("Patient not found with id " + id);
+        }
+        return patientMapper.toDto(optionalPatient.get());
     }
 
     @Transactional
@@ -53,6 +56,9 @@ public class PatientService {
     public Optional<PatientResponseDTO> updatePatient(UUID id, PatientRequestDTO patientRequestDTO) {
         Patient existingPatient = patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Patient not exist"));
+        existingPatient.setAssociatedClaims("");
+        existingPatient.setConsultationFrequency(0);
+        existingPatient.setRiskStatus(RiskStatus.NENHUM);
 
         patientMapper.updateEntityFromDto(existingPatient, patientRequestDTO);
 
