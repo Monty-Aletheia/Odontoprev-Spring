@@ -8,6 +8,19 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    aletheia: "#6B91A9"
+                }
+            }
+        }
+    };
+  </script>
+
   <style>
     body {
       background-color: #f8f9fa;
@@ -43,14 +56,19 @@
       margin-bottom: 10px;
       color: #6c757d;
     }
+
   </style>
 </head>
 <body>
 
+<div th:insert="~{fragments/header :: header}">
+  HEADER
+</div>
+
 <div class="container mt-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="text-primary">
-      <i class="bi bi-person" th:text="#{project.patientListingLabel}"></i>
+    <h1 class="text-aletheia">
+      <i class="bi bi-person fs-3" th:text="#{project.patientListingLabel}"></i>
     </h1>
     <a th:href="@{/patients/new}" class="btn btn-add">
       <i class="bi bi-plus-lg" th:text="#{project.add}"></i>

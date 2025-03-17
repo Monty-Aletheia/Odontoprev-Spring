@@ -10,7 +10,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#6B91A9"
+                        aletheia: "#6B91A9"
                     }
                 }
             }
@@ -19,24 +19,16 @@
 </head>
 <body class="bg-gray-100">
 
-<nav class="bg-primary p-4 text-white">
-    <div class="container mx-auto flex justify-between items-center">
-        <a href="#" class="text-2xl font-bold">Aletheia</a>
-        <ul class="flex space-x-4">
-            <li><a th:href="@{/pacientes}" class="hover:underline">Pacientes</a></li>
-            <li><a th:href="@{/consultas}" class="hover:underline">Consultas</a></li>
-            <li><a th:href="@{/medicos}" class="hover:underline">Médicos</a></li>
-            <li><a th:href="@{/logout}" class="hover:underline">Sair</a></li>
-        </ul>
-    </div>
-</nav>
+<div th:insert="~{fragments/header :: header}">
+    HEADER
+</div>
 
 <div class="container mx-auto text-center mt-20">
     <h1 class="text-4xl font-bold text-gray-800">Bem-vindo ao Aletheia!</h1>
     <p class="text-lg text-gray-600 mt-2">Gerencie suas consultas e pacientes de forma simples e eficiente.</p>
     <div class="mt-6 space-x-4">
-        <a th:href="@{/patients}" class="px-6 py-3 bg-primary text-white rounded-lg shadow-md hover:bg-opacity-80">Gerenciar Pacientes</a>
-        <a th:href="@{/consultas}" class="px-6 py-3 bg-primary text-white rounded-lg shadow-md hover:bg-opacity-80">Agendar Consulta</a>
+        <a th:href="@{/patients}" class="px-6 py-3 bg-aletheia text-white rounded-lg shadow-md hover:bg-opacity-80">Gerenciar Pacientes</a>
+        <a th:href="@{/consultas}" class="px-6 py-3 bg-aletheia text-white rounded-lg shadow-md hover:bg-opacity-80">Agendar Consulta</a>
     </div>
 </div>
 
