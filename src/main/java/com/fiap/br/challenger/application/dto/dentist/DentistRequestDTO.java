@@ -20,12 +20,5 @@ public record DentistRequestDTO(
         String registrationNumber,
 
         @NotBlank(message = "Password is required.")
-        String password,
-
-        @NotNull(message = "Claims rate is required.")
-        @DecimalMin(value = "0.0", inclusive = false, message = "Claims rate must be greater than 0.")
-        Double claimsRate,
-
-        @NotNull(message = "Risk status is required.")
-        RiskStatus riskStatus
+        String password
 ) {}

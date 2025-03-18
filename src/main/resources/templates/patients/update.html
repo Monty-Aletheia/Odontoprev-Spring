@@ -64,7 +64,7 @@
     <i class="bi bi-pencil-square"></i> Editar Paciente
 </h2>
 
-<form th:action="@{/patients/update/{uuid}(uuid=${uuid})}" th:object="${patient}" method="post" class="needs-validation" novalidate>
+<form th:action="@{/patients/update/{uuid}(uuid=${uuid})}" th:object="${patient}" method="put" class="needs-validation" novalidate>
     <div class="form-group">
         <label for="name" class="form-label" th:text="#{patient.name}">Nome:</label>
         <input type="text" id="name" th:field="*{name}" class="form-control" required />
@@ -90,11 +90,11 @@
 </form>
 <footer style="color: #6c757d; position: fixed; bottom: 0; left: 0; width: 100%; background-color: #f8f9fa;">
     <div class="d-flex justify-content-center mt-3 mb-3">
-        <a href="/books/list?lang=pt" class="btn btn-light btn-sm mx-2 d-flex align-items-center" style="border-radius: 20px;">
+        <a href="/patients/list?lang=pt" class="btn btn-light btn-sm mx-2 d-flex align-items-center" style="border-radius: 20px;">
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" alt="Português" class="me-2" style="width: 20px; height: 14px;">
             Português
         </a>
-        <a href="/books/list?lang=en" class="btn btn-light btn-sm mx-2 d-flex align-items-center" style="border-radius: 20px;">
+        <a href="/dentists/list?lang=en" class="btn btn-light btn-sm mx-2 d-flex align-items-center" style="border-radius: 20px;">
             <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" alt="English" class="me-2" style="width: 20px; height: 14px;">
             English
         </a>

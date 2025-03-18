@@ -36,11 +36,11 @@ public class PatientController {
     }
 
 
-        @GetMapping("/new")
-        public String showForm(Model model) {
-            model.addAttribute("patient", new Patient());
-            return "/patients/form";
-        }
+    @GetMapping("/new")
+    public String showForm(Model model) {
+        model.addAttribute("patient", new Patient());
+        return "/patients/form";
+    }
 
     @PostMapping("/add")
     public String createPatient(@ModelAttribute("patient") PatientRequestDTO patientRequestDTO) {
@@ -57,7 +57,7 @@ public class PatientController {
     }
 
 
-    @PostMapping("/update/{uuid}")
+    @PutMapping("/update/{uuid}")
     public String updatePatient(@PathVariable UUID uuid, @ModelAttribute PatientRequestDTO patientRequestDTO) {
         patientService.updatePatient(uuid, patientRequestDTO);
         return "redirect:/patients/list";
