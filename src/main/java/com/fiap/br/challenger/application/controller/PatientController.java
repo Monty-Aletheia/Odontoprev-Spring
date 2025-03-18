@@ -57,7 +57,7 @@ public class PatientController {
     }
 
 
-    @PutMapping("/update/{uuid}")
+    @PostMapping("/update/{uuid}")
     public String updatePatient(@PathVariable UUID uuid, @ModelAttribute PatientRequestDTO patientRequestDTO) {
         patientService.updatePatient(uuid, patientRequestDTO);
         return "redirect:/patients/list";

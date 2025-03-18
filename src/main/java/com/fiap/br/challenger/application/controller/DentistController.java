@@ -2,6 +2,7 @@ package com.fiap.br.challenger.application.controller;
 
 import com.fiap.br.challenger.application.dto.dentist.DentistRequestDTO;
 import com.fiap.br.challenger.application.dto.dentist.DentistResponseDTO;
+import com.fiap.br.challenger.application.dto.dentist.DentistUpdateDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
 import com.fiap.br.challenger.application.service.DentistService;
 import com.fiap.br.challenger.domain.model.Dentist;
@@ -47,7 +48,7 @@ public class  DentistController {
 
 
     @PostMapping("/add")
-    public String createDentist(@Valid @ModelAttribute DentistRequestDTO dentistRequestDTO) {
+    public String createDentist(@Valid @ModelAttribute("dentist") DentistRequestDTO dentistRequestDTO) {
         dentistService.createDentist(dentistRequestDTO);
         return "redirect:list";
     }
@@ -58,16 +59,16 @@ public class  DentistController {
         DentistResponseDTO dentist = dentistService.getDentistsByUUID(uuid);
         model.addAttribute("dentist", dentist);
         model.addAttribute("uuid", uuid);
-        return "/dentists/update";
+        return "dentists/update";
     }
 
 
-    @PutMapping("/update/{uuid}")
+    @PostMapping("/update/{uuid}")
     public String updateDentist(
             @PathVariable UUID uuid,
-            @Valid @ModelAttribute DentistRequestDTO dentistRequestDTO) {
-        dentistService.updateDentist(uuid, dentistRequestDTO);
-        return "redirect:/update/list";
+            @Valid @ModelAttribute("dentist") DentistUpdateDTO dentistUpdateDTO) {
+        dentistService.updateDentist(uuid, dentistUpdateDTO);
+        return "redirect:/dentists/list";
     }
 
     @GetMapping("/delete/{uuid}")

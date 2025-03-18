@@ -64,7 +64,7 @@
     <i class="bi bi-pencil-square"></i> Editar Paciente
 </h2>
 
-<form th:action="@{/patients/update/{uuid}(uuid=${uuid})}" th:object="${patient}" method="put" class="needs-validation" novalidate>
+<form th:action="@{/patients/update/{uuid}(uuid=${uuid})}" th:object="${patient}" method="post" class="needs-validation" novalidate>
     <div class="form-group">
         <label for="name" class="form-label" th:text="#{patient.name}">Nome:</label>
         <input type="text" id="name" th:field="*{name}" class="form-control" required />

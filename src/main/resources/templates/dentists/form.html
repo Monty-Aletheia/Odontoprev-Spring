@@ -71,22 +71,22 @@
 <form th:action="@{/dentists/add}" th:object="${dentist}" method="post" class="needs-validation">
     <div class="form-group">
         <label for="name" class="form-label" th:text="#{dentist.name}">Nome:</label>
-        <input type="text" id="name" th:field="*{name}" class="form-control" required />
+        <input type="text" id="name" th:field="*{name}" class="form-control"  />
         <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
     </div>
     <div class="form-group">
         <label for="password" class="form-label" th:text="#{dentist.password}">Senha:</label>
-        <input type="password" id="password" th:field="*{password}" class="form-control" required />
+        <input type="password" id="password" th:field="*{password}" class="form-control"  />
         <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
     </div>
     <div class="form-group">
         <label for="specialty" class="form-label" th:text="#{dentist.specialty}">Especialidade:</label>
-        <input type="text" id="specialty" th:field="*{specialty}" class="form-control" required />
+        <input type="text" id="specialty" th:field="*{specialty}" class="form-control"  />
         <div class="text-danger" th:if="${#fields.hasErrors('specialty')}" th:errors="*{specialty}"></div>
     </div>
     <div class="form-group">
         <label for="registrationNumber" class="form-label" th:text="#{dentist.registrationNumber}">Número de registro:</label>
-        <input type="text" id="registrationNumber" th:field="*{registrationNumber}" class="form-control" required />
+        <input type="text" id="registrationNumber" th:field="*{registrationNumber}" class="form-control"  />
         <div class="text-danger" th:if="${#fields.hasErrors('registrationNumber')}" th:errors="*{registrationNumber}"></div>
     </div>
 

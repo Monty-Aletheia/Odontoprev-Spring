@@ -2,6 +2,7 @@ package com.fiap.br.challenger.application.service.mapper;
 
 import com.fiap.br.challenger.application.dto.dentist.DentistResponseDTO;
 import com.fiap.br.challenger.application.dto.dentist.DentistRequestDTO;
+import com.fiap.br.challenger.application.dto.dentist.DentistUpdateDTO;
 import com.fiap.br.challenger.domain.model.Dentist;
 import com.fiap.br.challenger.domain.model.enums.RiskStatus;
 import org.mapstruct.Mapper;
@@ -15,7 +16,7 @@ public interface DentistMapper {
     @Mapping(target = "id", ignore = true)
     Dentist toEntity(DentistRequestDTO dto);
 
-    default void updateEntityFromDto(Dentist entity, DentistRequestDTO dto) {
+    default void updateEntityFromDto(Dentist entity, DentistUpdateDTO dto) {
         entity.setName(dto.name());
         entity.setSpecialty(dto.specialty());
         entity.setClaimsRate(0.0);

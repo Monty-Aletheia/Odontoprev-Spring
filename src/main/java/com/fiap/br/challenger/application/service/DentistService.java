@@ -2,6 +2,7 @@ package com.fiap.br.challenger.application.service;
 
 import com.fiap.br.challenger.application.dto.dentist.DentistRequestDTO;
 import com.fiap.br.challenger.application.dto.dentist.DentistResponseDTO;
+import com.fiap.br.challenger.application.dto.dentist.DentistUpdateDTO;
 import com.fiap.br.challenger.application.service.mapper.DentistMapper;
 import com.fiap.br.challenger.domain.model.Dentist;
 import com.fiap.br.challenger.domain.model.Patient;
@@ -44,11 +45,11 @@ public class DentistService {
     }
 
     @Transactional
-    public Optional<DentistResponseDTO> updateDentist(UUID id, DentistRequestDTO dentistRequestDTO) {
+    public Optional<DentistResponseDTO> updateDentist(UUID id, DentistUpdateDTO dentistUpdateDTO) {
         Dentist existingDentist = dentistRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Dentist not found: " + id));
 
-        dentistMapper.updateEntityFromDto(existingDentist, dentistRequestDTO);
+        dentistMapper.updateEntityFromDto(existingDentist, dentistUpdateDTO);
 
         Dentist updatedDentist = dentistRepository.save(existingDentist);
 
