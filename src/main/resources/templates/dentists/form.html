@@ -14,7 +14,8 @@
         }
 
         .container {
-            min-width: 100%;
+            max-width: 900px;
+            padding: 0;
         }
 
         .btn-save {
@@ -32,6 +33,11 @@
             color: #007BFF;
         }
 
+        .form-group {
+            margin-left: 14px;
+        }
+
+
         .form-group label {
             font-weight: bold;
         }
@@ -45,6 +51,7 @@
             max-width: 500px;
             margin-bottom: 15px;
         }
+
     </style>
     <script>
         tailwind.config = {
@@ -64,11 +71,11 @@
     HEADER
 </div>
 
-<h2 class="mb-4 form-title">
-    <i class="bi bi-pencil-square" th:text="#{project.dentistRegistrationLabel}"></i>
+<h2 class="mb-4 form-title mt-4">
+    <i class="bi bi-pencil-square ml-4 fs-3 text-aletheia" th:text="#{project.dentistRegistrationLabel}"></i>
 </h2>
 
-<form th:action="@{/dentists/add}" th:object="${dentist}" method="post" class="needs-validation">
+<form  th:action="@{/dentists/add}" th:object="${dentist}" method="post" class="needs-validation">
     <div class="form-group">
         <label for="name" class="form-label" th:text="#{dentist.name}">Nome:</label>
         <input type="text" id="name" th:field="*{name}" class="form-control" required />
@@ -91,7 +98,7 @@
     </div>
 
 
-    <button type="submit" class="btn btn-save" th:text="#{dentist.save}">Salvar</button>
+    <button type="submit" class="btn btn-save ml-4" th:text="#{dentist.save}">Salvar</button>
 </form>
 
 <footer style="color: #6c757d; position: fixed; bottom: 0; left: 0; width: 100%; background-color: #f8f9fa;">
