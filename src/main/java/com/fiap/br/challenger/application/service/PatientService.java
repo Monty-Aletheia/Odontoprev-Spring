@@ -4,7 +4,7 @@ import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientRiskAssessmentDTO;
 import com.fiap.br.challenger.application.service.mapper.PatientMapper;
-import com.fiap.br.challenger.domain.model.Patient;
+import com.fiap.br.challenger.domain.model.patient.Patient;
 import com.fiap.br.challenger.domain.model.enums.RiskStatus;
 import com.fiap.br.challenger.infra.repository.PatientRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -51,13 +51,11 @@ public class PatientService {
     }
 
     @Transactional
-    public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
-
+    public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO, PatientRiskAssessmentDTO patientRiskAssessmentDTO) {
         Patient patient = patientMapper.toEntity(patientRequestDTO);
         patient.setAssociatedClaims("");
         patient.setConsultationFrequency(0);
-        patient.setRiskStatus(RiskStatus.NENHUM);
-
+        patient.setRiskStatus(predictPatientRisk(patientRiskAssessmentDTO));
         Patient savedPatient = patientRepository.save(patient);
         return patientMapper.toDto(savedPatient);
     }
@@ -90,10 +88,10 @@ public class PatientService {
         JSONObject response = sendPatientDataToAletheIA(patientRiskAssessmentJSON);
 
         double riskProbability = response.getDouble("risk_probability");
-        if (riskProbability <= 10.0) {
+        if (riskProbability <= 0.10) {
             return RiskStatus.BAIXO;
         }
-        if (riskProbability >= 10.0 && riskProbability <= 32.0) {
+        if (riskProbability >= 0.10 && riskProbability <= 0.40) {
             return RiskStatus.MEDIO;
         }
         return RiskStatus.ALTO;
@@ -104,7 +102,7 @@ public class PatientService {
         patientRiskAssessmentJSON.put("idade", dto.age());
         patientRiskAssessmentJSON.put("genero", dto.gender());
         patientRiskAssessmentJSON.put("frequencia_consultas", dto.consultationFrequency());
-        patientRiskAssessmentJSON.put("aderencia_tratamento", dto.treatmentAdherence());
+        patientRiskAssessmentJSON.put("aderencia_tratamento", 0);
         patientRiskAssessmentJSON.put("historico_caries", dto.cavitiesHistory());
         patientRiskAssessmentJSON.put("doenca_periodontal", dto.periodontalDisease());
         patientRiskAssessmentJSON.put("numero_implantes", dto.numberOfImplants());
@@ -118,6 +116,7 @@ public class PatientService {
         patientRiskAssessmentJSON.put("valor_medio_sinistros", 0);
         patientRiskAssessmentJSON.put("tratamentos_complexos_previos", dto.previousComplexTreatments());
         patientRiskAssessmentJSON.put("tipo_plano", dto.planType());
+
         return patientRiskAssessmentJSON;
     }
 

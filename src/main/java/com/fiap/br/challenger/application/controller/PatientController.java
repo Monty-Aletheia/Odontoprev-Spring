@@ -4,15 +4,16 @@ import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientRiskAssessmentDTO;
 import com.fiap.br.challenger.application.service.PatientService;
-import com.fiap.br.challenger.domain.model.Patient;
-import jakarta.servlet.http.HttpServletRequest;
-import org.json.JSONObject;
-import org.springframework.http.ResponseEntity;
+import com.fiap.br.challenger.domain.model.patient.Patient;
+import com.fiap.br.challenger.domain.model.patient.PatientRiskAssessment;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.*;
 
 @Controller
@@ -37,24 +38,47 @@ public class PatientController {
         return "patients/list";
     }
 
-
     @GetMapping("/new")
     public String showForm(Model model) {
         model.addAttribute("patient", new Patient());
         return "/patients/form";
     }
 
-    @PostMapping("/add")
-    public String createPatient(@ModelAttribute("patient") PatientRequestDTO patientRequestDTO) {
-        patientService.createPatient(patientRequestDTO);
-        return "redirect:list";
+    @GetMapping("/risk-assessment")
+    public String showRiskFrom(Model model, @ModelAttribute("patient") PatientRequestDTO patientRequest, HttpSession session) {
+        if (patientRequest == null) {
+            return "redirect:/patients/new";
+        }
+        PatientRiskAssessment patientRiskAssessment = new PatientRiskAssessment();
+        patientRiskAssessment.setAge(Period.between(patientRequest.birthday(), LocalDate.now()).getYears());
+
+        patientRiskAssessment.setGender(patientRequest.gender().toString());
+        System.out.println(patientRiskAssessment.getAge());
+
+        session.setAttribute("patient", patientRequest);
+
+        model.addAttribute("patientRiskAssessment", patientRiskAssessment);
+
+
+        return "/patients/riskAssessment";
     }
 
-    //TODO: FAZER O FORMULARIO DE AVALIAÇÃO DE RISCO
-    @GetMapping("/risk")
-    public String collectPatientRiskCalculationData(@ModelAttribute("form")PatientRiskAssessmentDTO patientRiskAssessmentDTO){
+    @PostMapping("/save-temp")
+    public String savePatientTemp(@ModelAttribute("patient") PatientRequestDTO patientRequestDTO,
+                                  RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("patient", patientRequestDTO);
+        return "redirect:/patients/risk-assessment";
+    }
 
-        return "redirect:add";
+    @PostMapping("/add")
+    public String createPatient(
+            @ModelAttribute("patientRiskAssessment") PatientRiskAssessmentDTO patientRiskAssessmentDTO,
+            HttpSession session) {
+
+        PatientRequestDTO patientRequestDTO = (PatientRequestDTO) session.getAttribute("patient");
+        patientService.createPatient(patientRequestDTO, patientRiskAssessmentDTO);
+        session.removeAttribute("patient");
+        return "redirect:list";
     }
 
     @GetMapping("/form/{uuid}")

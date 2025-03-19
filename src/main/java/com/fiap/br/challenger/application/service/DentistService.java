@@ -5,7 +5,6 @@ import com.fiap.br.challenger.application.dto.dentist.DentistResponseDTO;
 import com.fiap.br.challenger.application.dto.dentist.DentistUpdateDTO;
 import com.fiap.br.challenger.application.service.mapper.DentistMapper;
 import com.fiap.br.challenger.domain.model.Dentist;
-import com.fiap.br.challenger.domain.model.Patient;
 import com.fiap.br.challenger.domain.model.enums.RiskStatus;
 import com.fiap.br.challenger.infra.repository.DentistRepository;
 import jakarta.persistence.EntityNotFoundException;

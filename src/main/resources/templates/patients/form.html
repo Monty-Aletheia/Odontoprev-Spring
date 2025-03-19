@@ -74,7 +74,7 @@
     <i class="bi bi-pencil-square fs-3" th:text="#{project.patientRegistrationLabel}"></i>
 </h2>
 
-<form th:action="@{/patients/add}" th:object="${patient}" method="post" class="needs-validation">
+<form th:action="@{/patients/save-temp}" th:object="${patient}" method="post" class="needs-validation">
     <div class="form-group">
         <label for="name" class="form-label" th:text="#{patient.name}">Nome:</label>
         <input type="text" id="name" th:field="*{name}" class="form-control" required />
