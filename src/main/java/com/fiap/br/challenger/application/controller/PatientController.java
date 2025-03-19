@@ -5,6 +5,7 @@ import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
 import com.fiap.br.challenger.application.service.PatientService;
 import com.fiap.br.challenger.domain.model.Patient;
 import jakarta.servlet.http.HttpServletRequest;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +47,13 @@ public class PatientController {
     public String createPatient(@ModelAttribute("patient") PatientRequestDTO patientRequestDTO) {
         patientService.createPatient(patientRequestDTO);
         return "redirect:list";
+    }
+
+    //TODO: FAZER O FORMULARIO DE AVALIAÇÃO DE RISCO
+    @GetMapping("/risk")
+    public String collectPatientRiskCalculationData(@ModelAttribute("form") Patient patient ){
+
+        return resposta;
     }
 
     @GetMapping("/form/{uuid}")

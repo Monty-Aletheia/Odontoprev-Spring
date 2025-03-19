@@ -2,6 +2,7 @@ package com.fiap.br.challenger.application.service;
 
 import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
+import com.fiap.br.challenger.application.dto.patient.PatientRiskAssessmentDTO;
 import com.fiap.br.challenger.application.service.mapper.PatientMapper;
 import com.fiap.br.challenger.domain.model.Patient;
 import com.fiap.br.challenger.domain.model.enums.RiskStatus;
@@ -10,8 +11,14 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +28,9 @@ import java.util.UUID;
 @Data
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PatientService {
+
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final String apiUrl = "https://aletheia-ai.azurewebsites.net/predict";
 
     private final PatientRepository patientRepository;
 
@@ -72,5 +82,56 @@ public class PatientService {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Patient of id: %s not found", id)));
         patientRepository.delete(patient);
+    }
+
+    public RiskStatus predictPatientRisk(PatientRiskAssessmentDTO dto) {
+        JSONObject patientRiskAssessmentJSON = mapPatientRiskAssessmentDTOtoJSONObject(dto);
+
+        JSONObject response = sendPatientDataToAletheIA(patientRiskAssessmentJSON);
+
+        double riskProbability = response.getDouble("risk_probability");
+        if (riskProbability <= 10.0) {
+            return RiskStatus.BAIXO;
+        }
+        if (riskProbability >= 10.0 && riskProbability <= 25.0) {
+            return RiskStatus.MEDIO;
+        }
+        return RiskStatus.ALTO;
+    }
+
+    public JSONObject mapPatientRiskAssessmentDTOtoJSONObject(PatientRiskAssessmentDTO dto) {
+        JSONObject patientRiskAssessmentJSON = new JSONObject();
+        patientRiskAssessmentJSON.put("idade", dto.age());
+        patientRiskAssessmentJSON.put("genero", dto.gender());
+        patientRiskAssessmentJSON.put("frequencia_consultas", dto.consultationFrequency());
+        patientRiskAssessmentJSON.put("aderencia_tratamento", dto.treatmentAdherence());
+        patientRiskAssessmentJSON.put("historico_caries", dto.cavitiesHistory());
+        patientRiskAssessmentJSON.put("doenca_periodontal", dto.periodontalDisease());
+        patientRiskAssessmentJSON.put("numero_implantes", dto.numberOfImplants());
+        patientRiskAssessmentJSON.put("fumante", dto.smoker());
+        patientRiskAssessmentJSON.put("alcoolismo", dto.alcoholism());
+        patientRiskAssessmentJSON.put("escovacao_diaria", dto.dailyBrushing());
+        patientRiskAssessmentJSON.put("uso_fio_dental", dto.flossing());
+        patientRiskAssessmentJSON.put("doencas_sistemicas", dto.systemicDiseases());
+        patientRiskAssessmentJSON.put("medicamentos_uso_continuo", dto.continuousMedicationUse());
+        patientRiskAssessmentJSON.put("numero_sinistros_previos", 0);
+        patientRiskAssessmentJSON.put("valor_medio_sinistros", 0);
+        patientRiskAssessmentJSON.put("tratamentos_complexos_previos", dto.previousComplexTreatments());
+        patientRiskAssessmentJSON.put("tipo_plano", dto.planType());
+        return patientRiskAssessmentJSON;
+    }
+
+    public JSONObject sendPatientDataToAletheIA(JSONObject patientRiskAssessmentJSON) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+
+        HttpEntity<String> request = new HttpEntity<>(patientRiskAssessmentJSON.toString(), headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                apiUrl, HttpMethod.POST, request, String.class
+        );
+        JSONObject jsonResponse = new JSONObject(response.getBody());
+
+        return jsonResponse;
     }
 }
