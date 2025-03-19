@@ -2,6 +2,7 @@ package com.fiap.br.challenger.application.controller;
 
 import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
+import com.fiap.br.challenger.application.dto.patient.PatientRiskAssessmentDTO;
 import com.fiap.br.challenger.application.service.PatientService;
 import com.fiap.br.challenger.domain.model.Patient;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,9 +52,9 @@ public class PatientController {
 
     //TODO: FAZER O FORMULARIO DE AVALIAÇÃO DE RISCO
     @GetMapping("/risk")
-    public String collectPatientRiskCalculationData(@ModelAttribute("form") Patient patient ){
+    public String collectPatientRiskCalculationData(@ModelAttribute("form")PatientRiskAssessmentDTO patientRiskAssessmentDTO){
 
-        return resposta;
+        return "redirect:add";
     }
 
     @GetMapping("/form/{uuid}")

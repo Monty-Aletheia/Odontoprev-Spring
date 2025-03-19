@@ -93,7 +93,7 @@ public class PatientService {
         if (riskProbability <= 10.0) {
             return RiskStatus.BAIXO;
         }
-        if (riskProbability >= 10.0 && riskProbability <= 25.0) {
+        if (riskProbability >= 10.0 && riskProbability <= 32.0) {
             return RiskStatus.MEDIO;
         }
         return RiskStatus.ALTO;
@@ -130,8 +130,7 @@ public class PatientService {
         ResponseEntity<String> response = restTemplate.exchange(
                 apiUrl, HttpMethod.POST, request, String.class
         );
-        JSONObject jsonResponse = new JSONObject(response.getBody());
 
-        return jsonResponse;
+        return new JSONObject(response.getBody());
     }
 }
