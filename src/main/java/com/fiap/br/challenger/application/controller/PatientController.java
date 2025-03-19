@@ -53,12 +53,10 @@ public class PatientController {
         patientRiskAssessment.setAge(Period.between(patientRequest.birthday(), LocalDate.now()).getYears());
 
         patientRiskAssessment.setGender(patientRequest.gender().toString());
-        System.out.println(patientRiskAssessment.getAge());
 
         session.setAttribute("patient", patientRequest);
 
         model.addAttribute("patientRiskAssessment", patientRiskAssessment);
-
 
         return "/patients/riskAssessment";
     }
@@ -74,7 +72,6 @@ public class PatientController {
     public String createPatient(
             @ModelAttribute("patientRiskAssessment") PatientRiskAssessmentDTO patientRiskAssessmentDTO,
             HttpSession session) {
-
         PatientRequestDTO patientRequestDTO = (PatientRequestDTO) session.getAttribute("patient");
         patientService.createPatient(patientRequestDTO, patientRiskAssessmentDTO);
         session.removeAttribute("patient");

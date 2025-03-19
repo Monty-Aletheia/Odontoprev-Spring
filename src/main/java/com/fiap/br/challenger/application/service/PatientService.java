@@ -88,6 +88,7 @@ public class PatientService {
         JSONObject response = sendPatientDataToAletheIA(patientRiskAssessmentJSON);
 
         double riskProbability = response.getDouble("risk_probability");
+
         if (riskProbability <= 0.10) {
             return RiskStatus.BAIXO;
         }
@@ -110,12 +111,12 @@ public class PatientService {
         patientRiskAssessmentJSON.put("alcoolismo", dto.alcoholism());
         patientRiskAssessmentJSON.put("escovacao_diaria", dto.dailyBrushing());
         patientRiskAssessmentJSON.put("uso_fio_dental", dto.flossing());
-        patientRiskAssessmentJSON.put("doencas_sistemicas", dto.systemicDiseases());
+        patientRiskAssessmentJSON.put("doencas_sistemicas", dto.systemicDiseases().getDescricao());
         patientRiskAssessmentJSON.put("medicamentos_uso_continuo", dto.continuousMedicationUse());
         patientRiskAssessmentJSON.put("numero_sinistros_previos", 0);
         patientRiskAssessmentJSON.put("valor_medio_sinistros", 0);
         patientRiskAssessmentJSON.put("tratamentos_complexos_previos", dto.previousComplexTreatments());
-        patientRiskAssessmentJSON.put("tipo_plano", dto.planType());
+        patientRiskAssessmentJSON.put("tipo_plano", dto.planType().getDescricao());
 
         return patientRiskAssessmentJSON;
     }

@@ -1,4 +1,6 @@
 package com.fiap.br.challenger.domain.model.patient;
+import com.fiap.br.challenger.domain.model.enums.PlanType;
+import com.fiap.br.challenger.domain.model.enums.SystemicDiseases;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,11 +14,11 @@ public class PatientRiskAssessment{
     int periodontalDisease;
     int numberOfImplants;
     int previousComplexTreatments;
-    int smoker;
-    int alcoholism;
+    boolean smoker;
+    boolean alcoholism;
     int dailyBrushing;
-    int flossing;
-    String systemicDiseases;
-    int continuousMedicationUse;
-    String planType;
+    boolean flossing;
+    SystemicDiseases systemicDiseases;
+    boolean continuousMedicationUse;
+    PlanType planType;
 }

@@ -57,6 +57,28 @@
             max-width: 500px;
             margin-bottom: 15px;
         }
+
+        .form-check-label {
+            font-weight: normal;
+        }
+
+        .radio-btn-group input[type="radio"] {
+            display: none;
+        }
+
+        .radio-btn-group label {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 5px;
+            background-color: #e2e6ea;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        .radio-btn-group input[type="radio"]:checked + label {
+            background-color: #007BFF;
+            color: white;
+        }
     </style>
 </head>
 <body class="container">
@@ -73,12 +95,12 @@
 
     <div class="form-group">
         <label for="idade" class="form-label">Idade:</label>
-        <input type="number" id="idade" th:field="*{age}" th:value="*{age}" class="form-control" required />
+        <input type="number" id="idade" th:field="*{age}" class="form-control" required />
     </div>
 
     <div class="form-group">
         <label for="genero" class="form-label">Gênero:</label>
-        <input type="text" id="genero" th:field="*{gender}" th:value="*{gender}" class="form-control" required />
+        <input type="text" id="genero" th:field="*{gender}" class="form-control" required />
     </div>
 
     <div class="form-group">
@@ -87,43 +109,83 @@
     </div>
 
     <div class="form-group">
-        <label for="historico_caries" class="form-label">Histórico de Cáries:</label>
-        <input type="number" id="historico_caries" th:field="*{cavitiesHistory}" class="form-control" required />
+        <label for="historico_caries" class="form-label">Paciente tem histórico de Cáries?</label>
+        <div class="radio-btn-group">
+            <input type="radio" id="historico_caries_sim" th:field="*{cavitiesHistory}" value="1" />
+            <label for="historico_caries_sim">Sim</label>
+            <input type="radio" id="historico_caries_nao" th:field="*{cavitiesHistory}" value="0" />
+            <label for="historico_caries_nao">Não</label>
+        </div>
     </div>
 
     <div class="form-group">
-        <label for="doenca_periodontal" class="form-label">Doença Periodontal:</label>
-        <input type="number" id="doenca_periodontal" th:field="*{periodontalDisease}" class="form-control" required />
+        <label for="doenca_periodontal" class="form-label">Paciente tem alguma Doença periodontal?:</label>
+        <div class="radio-btn-group">
+            <input type="radio" id="doenca_periodontal_sim" th:field="*{periodontalDisease}" value="1" />
+            <label for="doenca_periodontal_sim">Sim</label>
+            <input type="radio" id="doenca_periodontal_nao" th:field="*{periodontalDisease}" value="0" />
+            <label for="doenca_periodontal_nao">Não</label>
+        </div>
     </div>
 
     <div class="form-group">
-        <label for="doencas_sistemicas" class="form-label">Doenças Sistêmicas:</label>
-        <input type="text" id="doencas_sistemicas" th:field="*{systemicDiseases}" class="form-control" required />
+        <label for="doencas_sistemicas" class="form-label">Tem alguma doença sistêmica? Clique para selecionar: </label>
+        <select id="doencas_sistemicas" th:field="*{systemicDiseases}" class="form-control">
+            <option value="" disabled selected>Selecione</option>
+            <option th:each="sd : ${T(com.fiap.br.challenger.domain.model.enums.SystemicDiseases).values()}"
+                    th:value="${sd}" th:text="${sd}"></option>
+        </select>
+        <div class="text-danger" th:if="${#fields.hasErrors('systemicDiseases')}" th:errors="*{systemicDiseases}"></div>
     </div>
 
     <div class="form-group">
-        <label for="tipo_plano" class="form-label">Tipo de Plano:</label>
-        <input type="text" id="tipo_plano" th:field="*{planType}" class="form-control" required />
+        <label for="tipo_plano" class="form-label">Tipo de Plano. Clique para selecionar: </label>
+        <select id="tipo_plano" th:field="*{planType}" class="form-control">
+            <option value="" disabled selected>Selecione</option>
+            <option th:each="pt : ${T(com.fiap.br.challenger.domain.model.enums.PlanType).values()}"
+                    th:value="${pt}" th:text="${pt}"></option>
+        </select>
+        <div class="text-danger" th:if="${#fields.hasErrors('planType')}" th:errors="*{planType}"></div>
     </div>
 
     <div class="form-group">
-        <label for="medicamentos_uso_continuo" class="form-label">Paciente faz tratamento com algum remédio? </label>
-        <input type="text" id="medicamentos_uso_continuo" th:field="*{continuousMedicationUse}" class="form-control" required />
+        <label for="medicamentos_uso_continuo" class="form-label">Paciente faz tratamento com algum remédio?</label>
+        <div class="radio-btn-group">
+            <input type="radio" id="medicamentos_uso_continuo_sim" th:field="*{continuousMedicationUse}" value="1" />
+            <label for="medicamentos_uso_continuo_sim">Sim</label>
+            <input type="radio" id="medicamentos_uso_continuo_nao" th:field="*{continuousMedicationUse}" value="0" />
+            <label for="medicamentos_uso_continuo_nao">Não</label>
+        </div>
     </div>
 
     <div class="form-group">
-        <label for="tratamentos_complexos_previos" class="form-label">Tratamentos Complexos Previos: </label>
-        <input type="text" id="tratamentos_complexos_previos" th:field="*{previousComplexTreatments}" class="form-control" required />
+        <label for="tratamentos_complexos_previos" class="form-label">Paciente já realizou algum tratamento complexo prévio?</label>
+        <div class="radio-btn-group">
+            <input type="radio" id="tratamentos_complexos_previos_sim" th:field="*{previousComplexTreatments}" value="1" />
+            <label for="tratamentos_complexos_previos_sim">Sim</label>
+            <input type="radio" id="tratamentos_complexos_previos_nao" th:field="*{previousComplexTreatments}" value="0" />
+            <label for="tratamentos_complexos_previos_nao">Não</label>
+        </div>
     </div>
 
     <div class="form-group">
-        <label for="fumante" class="form-label">Paciente fuma? </label>
-        <input type="text" id="fumante" th:field="*{smoker}" class="form-control" required />
+        <label for="fumante" class="form-label">Paciente fuma?</label>
+        <div class="radio-btn-group">
+            <input type="radio" id="fumante_sim" th:field="*{smoker}" value="1" />
+            <label for="fumante_sim">Sim</label>
+            <input type="radio" id="fumante_nao" th:field="*{smoker}" value="0" />
+            <label for="fumante_nao">Não</label>
+        </div>
     </div>
 
     <div class="form-group">
-        <label for="alcoolismo" class="form-label">Paciente ingere bebidas alcoólicas? </label>
-        <input type="text" id="alcoolismo" th:field="*{alcoholism}" class="form-control" required />
+        <label for="alcoolismo" class="form-label">Paciente ingere bebidas alcoólicas?</label>
+        <div class="radio-btn-group">
+            <input type="radio" id="alcoolismo_sim" th:field="*{alcoholism}" value="1" />
+            <label for="alcoolismo_sim">Sim</label>
+            <input type="radio" id="alcoolismo_nao" th:field="*{alcoholism}" value="0" />
+            <label for="alcoolismo_nao">Não</label>
+        </div>
     </div>
 
     <div class="form-group">
@@ -132,27 +194,19 @@
     </div>
 
     <div class="form-group">
-        <label for="uso_fio_dental" class="form-label">Paciente usa fio dental? </label>
-        <input type="text" id="uso_fio_dental" th:field="*{flossing}" class="form-control" required />
+        <label for="uso_fio_dental" class="form-label">Paciente usa fio dental?</label>
+        <div class="radio-btn-group">
+            <input type="radio" id="uso_fio_dental_sim" th:field="*{flossing}" value="1" />
+            <label for="uso_fio_dental_sim">Sim</label>
+            <input type="radio" id="uso_fio_dental_nao" th:field="*{flossing}" value="0" />
+            <label for="uso_fio_dental_nao">Não</label>
+        </div>
     </div>
-
-
 
     <div class="form-group">
         <label for="numero_implantes" class="form-label">Numero implantes: </label>
         <input type="text" id="numero_implantes" th:field="*{numberOfImplants}" class="form-control" required />
     </div>
-
-
-    <div class="form-group">
-        <label for="numero_sinistros_previos" class="form-label">Paciente já acionou o plano antes? </label>
-        <input type="text" id="numero_sinistros_previos" th:field="*{continuousMedicationUse}" class="form-control" required />
-    </div>
-
-
-
-
-
 
     <button type="submit" class="btn btn-save" th:text="#{patient.save}">Salvar</button>
 </form>
