@@ -114,3 +114,6 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
 ## Link para o vídeo pitch do projeto
 
 [Acesse clicando aqui](https://youtu.be/MHIPHuJgK2s)
+
+## Link para o vídeo explicando o código (Sprint 3)
+[Acesse clicando aqui1](https://youtu.be/47jb46tyb6w)
