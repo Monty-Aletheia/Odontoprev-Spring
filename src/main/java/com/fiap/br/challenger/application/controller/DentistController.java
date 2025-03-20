@@ -29,7 +29,7 @@ public class  DentistController {
     public String getAllDentists(Model model) {
         List<DentistResponseDTO> dentists = dentistService.getAllDentists();
         model.addAttribute("dentists", dentists);
-        return "/dentists/list";
+        return "dentists/list";
     }
 
     @GetMapping("/{id}")
@@ -41,7 +41,7 @@ public class  DentistController {
     @GetMapping("/new")
     public String showForm(Model model) {
         model.addAttribute("dentist", new Dentist());
-        return "/dentists/form";
+        return "dentists/form";
     }
 
 

@@ -41,7 +41,7 @@ public class PatientController {
     @GetMapping("/new")
     public String showForm(Model model) {
         model.addAttribute("patient", new Patient());
-        return "/patients/form";
+        return "patients/form";
     }
 
     @GetMapping("/risk-assessment")
@@ -58,7 +58,7 @@ public class PatientController {
 
         model.addAttribute("patientRiskAssessment", patientRiskAssessment);
 
-        return "/patients/riskAssessment";
+        return "patients/riskAssessment";
     }
 
     @PostMapping("/save-temp")
