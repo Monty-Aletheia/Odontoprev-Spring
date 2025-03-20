@@ -2,99 +2,101 @@ package com.fiap.br.challenger.application.controller;
 
 import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
+import com.fiap.br.challenger.application.dto.patient.PatientRiskAssessmentDTO;
 import com.fiap.br.challenger.application.service.PatientService;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.fiap.br.challenger.domain.model.patient.Patient;
+import com.fiap.br.challenger.domain.model.patient.PatientRiskAssessment;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.*;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-@RestController
+@Controller
 @RequestMapping("/patients")
 public class PatientController {
 
     private final PatientService patientService;
 
-    @Autowired
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
     }
 
-    @GetMapping
-    public ResponseEntity<CollectionModel<EntityModel<PatientResponseDTO>>> getAllPatients() {
-        List<EntityModel<PatientResponseDTO>> patientModels = patientService.getAllPatients()
-                .stream()
-                .map(this::toEntityModel)
-                .toList();
-
-        Link selfLink = linkTo(methodOn(PatientController.class).getAllPatients()).withSelfRel();
-        return ResponseEntity.ok(CollectionModel.of(patientModels, selfLink));
+    @GetMapping("/list")
+    public String getAllPatients(Model model) {
+        model.addAttribute("patients", patientService.getAllPatients());
+        return "patients/list";
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<PatientResponseDTO>> getPatientByUUID(@PathVariable UUID id) {
-        return patientService.getPatientByUUID(id)
-                .map(this::toEntityModel)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public String getPatientByUUID(@PathVariable UUID id) {
+        patientService.getPatientByUUID(id);
+        return "patients/list";
     }
 
-    @PostMapping
-    public ResponseEntity<EntityModel<PatientResponseDTO>> createPatient(@RequestBody PatientRequestDTO patientRequestDTO) {
-        PatientResponseDTO responseDTO = patientService.createPatient(patientRequestDTO);
-        EntityModel<PatientResponseDTO> model = toEntityModel(responseDTO);
-        return new ResponseEntity<>(model, HttpStatus.CREATED);
+    @GetMapping("/new")
+    public String showForm(Model model) {
+        model.addAttribute("patient", new Patient());
+        return "/patients/form";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<EntityModel<PatientResponseDTO>> updatePatient(
-            @PathVariable UUID id,
-            @RequestBody PatientRequestDTO patientRequestDTO) {
-
-        try {
-            return patientService.updatePatient(id, patientRequestDTO)
-                    .map(this::toEntityModel)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
+    @GetMapping("/risk-assessment")
+    public String showRiskFrom(Model model, @ModelAttribute("patient") PatientRequestDTO patientRequest, HttpSession session) {
+        if (patientRequest == null) {
+            return "redirect:/patients/new";
         }
+        PatientRiskAssessment patientRiskAssessment = new PatientRiskAssessment();
+        patientRiskAssessment.setAge(Period.between(patientRequest.birthday(), LocalDate.now()).getYears());
+
+        patientRiskAssessment.setGender(patientRequest.gender().toString());
+
+        session.setAttribute("patient", patientRequest);
+
+        model.addAttribute("patientRiskAssessment", patientRiskAssessment);
+
+        return "/patients/riskAssessment";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePatient(@PathVariable UUID id) {
+    @PostMapping("/save-temp")
+    public String savePatientTemp(@ModelAttribute("patient") PatientRequestDTO patientRequestDTO,
+                                  RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("patient", patientRequestDTO);
+        return "redirect:/patients/risk-assessment";
+    }
+
+    @PostMapping("/add")
+    public String createPatient(
+            @ModelAttribute("patientRiskAssessment") PatientRiskAssessmentDTO patientRiskAssessmentDTO,
+            HttpSession session) {
+        PatientRequestDTO patientRequestDTO = (PatientRequestDTO) session.getAttribute("patient");
+        patientService.createPatient(patientRequestDTO, patientRiskAssessmentDTO);
+        session.removeAttribute("patient");
+        return "redirect:list";
+    }
+
+    @GetMapping("/form/{uuid}")
+    public String showUpdateForm(@PathVariable UUID uuid, Model model) {
+        PatientResponseDTO patient = patientService.getPatientByUUID(uuid);
+        model.addAttribute("patient", patient);
+        model.addAttribute("uuid", uuid);
+        return "patients/update";
+    }
+
+
+    @PostMapping("/update/{uuid}")
+    public String updatePatient(@PathVariable UUID uuid, @ModelAttribute PatientRequestDTO patientRequestDTO) {
+        patientService.updatePatient(uuid, patientRequestDTO);
+        return "redirect:/patients/list";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deletePatient(@PathVariable UUID id) {
         patientService.deletePatient(id);
-        return ResponseEntity.noContent().build();
+        return "redirect:/patients/list";
     }
 
-    // Helper methods
-
-    private EntityModel<PatientResponseDTO> toEntityModel(PatientResponseDTO patient) {
-        UUID id = patient.getId();
-        return EntityModel.of(patient,
-                selfLink(id),
-                allPatientsLink(),
-                deletePatientLink(id));
-    }
-
-    private Link selfLink(UUID id) {
-        return linkTo(methodOn(PatientController.class).getPatientByUUID(id)).withSelfRel();
-    }
-
-    private Link allPatientsLink() {
-        return linkTo(methodOn(PatientController.class).getAllPatients()).withRel("allPatients");
-    }
-
-    private Link deletePatientLink(UUID id) {
-        return linkTo(methodOn(PatientController.class).deletePatient(id)).withRel("deletePatient");
-    }
 }

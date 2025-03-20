@@ -5,7 +5,7 @@ import com.fiap.br.challenger.application.dto.consultation.ConsultationResponseD
 import com.fiap.br.challenger.application.service.mapper.ConsultationMapper;
 import com.fiap.br.challenger.domain.model.Consultation;
 import com.fiap.br.challenger.domain.model.Dentist;
-import com.fiap.br.challenger.domain.model.Patient;
+import com.fiap.br.challenger.domain.model.patient.Patient;
 import com.fiap.br.challenger.infra.repository.ConsultationRepository;
 import com.fiap.br.challenger.infra.repository.DentistRepository;
 import com.fiap.br.challenger.infra.repository.PatientRepository;

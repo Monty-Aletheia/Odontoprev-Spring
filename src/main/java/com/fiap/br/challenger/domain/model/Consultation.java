@@ -1,11 +1,11 @@
 package com.fiap.br.challenger.domain.model;
 
 import com.fiap.br.challenger.domain.model.enums.RiskStatus;
+import com.fiap.br.challenger.domain.model.patient.Patient;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
