@@ -1,10 +1,5 @@
 server:
   port: ${SERVER_PORT:8080}
-  servlet:
-    session:
-      tracking-modes: cookie
-      timeout: 0
-
 
 spring:
   application:
@@ -31,7 +26,7 @@ spring:
     restart:
       enabled: true
   flyway:
-    enabled: true
+    enabled: false
     locations: classpath:db/migration
     baseline-on-migrate: true
     connectRetries: 3
