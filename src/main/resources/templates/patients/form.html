@@ -20,19 +20,18 @@
     </script>
     <style>
 
-        * {
-
-        }
 
         body {
             background-color: #f8f9fa;
         }
 
-        .container {
-            max-width: 900px;
+        .container-fluid {
+            flex-direction: column;
+            align-items: center;
             padding: 0;
-            margin: 0;
+
         }
+
 
         .btn-save {
             background-color: #007BFF;
@@ -62,19 +61,24 @@
             max-width: 500px;
             margin-bottom: 15px;
         }
+
+
     </style>
 </head>
-<body class="container">
+<body class="container-fluid">
 
 <div th:insert="~{fragments/header :: header}">
     HEADER
 </div>
 
+
+<div class="container-fluid d-flex justify-content-center w-96 mt-4">
+
 <h2 class="mb-4 form-title text-aletheia">
     <i class="bi bi-pencil-square fs-3" th:text="#{project.patientRegistrationLabel}"></i>
 </h2>
 
-<form th:action="@{/patients/save-temp}" th:object="${patient}" method="post" class="needs-validation">
+<form th:action="@{/patients/save-temp}" th:object="${patient}" method="post" class="w-[100%] items-center needs-validation">
     <div class="form-group">
         <label for="name" class="form-label" th:text="#{patient.name}">Nome:</label>
         <input type="text" id="name" th:field="*{name}" class="form-control" required />
@@ -97,8 +101,14 @@
         <div class="text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
     </div>
 
-    <button type="submit" class="btn btn-save" th:text="#{patient.save}">Salvar</button>
+    <button type="submit" class="btn btn-save self-center mt-4 w-[100%]" th:text="#{patient.save}">Salvar</button>
+
+
 </form>
+
+
+
+</div>
 
 <footer style="color: #6c757d; position: fixed; bottom: 0; left: 0; width: 100%; background-color: #f8f9fa;">
     <div class="d-flex justify-content-center mt-3 mb-3">

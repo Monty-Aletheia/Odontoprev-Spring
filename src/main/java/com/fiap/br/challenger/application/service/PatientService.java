@@ -89,10 +89,10 @@ public class PatientService {
 
         double riskProbability = response.getDouble("risk_probability");
 
-        if (riskProbability <= 0.10) {
+        if (riskProbability <= 0.20) {
             return RiskStatus.BAIXO;
         }
-        if (riskProbability >= 0.10 && riskProbability <= 0.40) {
+        if (riskProbability >= 0.20 && riskProbability <= 0.40) {
             return RiskStatus.MEDIO;
         }
         return RiskStatus.ALTO;
