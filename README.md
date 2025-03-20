@@ -116,4 +116,4 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
 [Acesse clicando aqui](https://youtu.be/MHIPHuJgK2s)
 
 ## Link para o vídeo explicando o código (Sprint 3)
-[Acesse clicando aqui1](https://youtu.be/47jb46tyb6w)
+[Acesse clicando aqui](https://youtu.be/47jb46tyb6w)
