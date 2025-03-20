@@ -36,29 +36,6 @@ informações colhidas pelo frontend no banco de dados.
 ##
 ![img_1.png](docs/img_1.png)
 
-##
-
-## Tabela de endpoints
-##
-| Categoria       | Método | Endpoint                      | Descrição                        |
-|-----------------|--------|------------------------------|----------------------------------|
-| **Dentists**    | GET    | `/api/dentists`              | Retorna todos os dentistas      |
-|                 | GET    | `/api/dentists/{id}`         | Retorna um dentista específico  |
-|                 | POST   | `/api/dentists`              | Cria um novo dentista           |
-|                 | DELETE | `/api/dentists/{id}`         | Deleta um dentista específico   |
-| **Patients**    | GET    | `/api/patients`              | Retorna todos os pacientes      |
-|                 | GET    | `/api/patients/{id}`         | Retorna um paciente específico  |
-|                 | POST   | `/api/patients`              | Cria um novo paciente           |
-|                 | DELETE | `/api/patients/{id}`         | Deleta um paciente específico   |
-| **Claims**      | GET    | `/api/claims`                | Retorna todas as reclamações    |
-|                 | GET    | `/api/claims/{id}`           | Retorna uma reclamação específica|
-|                 | POST   | `/api/claims`                | Cria uma nova reclamação        |
-|                 | DELETE | `/api/claims/{id}`           | Deleta uma reclamação específica|
-| **Consultations**| GET    | `/api/consultations`        | Retorna todas as consultas      |
-|                 | GET    | `/api/consultations/{id}`    | Retorna uma consulta específica |
-|                 | POST   | `/api/consultations`         | Cria uma nova consulta          |
-|                 | DELETE | `/api/consultations/{id}`    | Deleta uma consulta específica  |
-
 # Como Rodar
 
 Siga os passos abaixo para configurar e rodar o projeto localmente:
@@ -79,7 +56,7 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
    Abra o terminal e execute o seguinte comando:
 
    ```bash
-   git clone https://github.com/seu-usuario/odontoprev-spring.git
+   git clone https://github.com/Monty-Aletheia/Odontoprev-Spring.git
    ```
 
 2. **Navegue até o Diretório do Projeto**
