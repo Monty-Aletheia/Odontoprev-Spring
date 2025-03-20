@@ -12,11 +12,12 @@ spring:
     hikari:
       minimum-idle: 1  
       maximum-pool-size: 10 
-      idle-timeout: 15000 
-      max-lifetime: 600000  
-      connection-timeout: 10000  
-      validation-timeout: 5000  
-      leak-detection-threshold: 5000 
+      idle-timeout: 300000 # 5 minutos
+      max-lifetime: 1800000 # 30 minutos
+      connection-timeout: 20000 # 10 segundos para obter uma conexão
+      validation-timeout: 5000 # Tempo de validação
+      leak-detection-threshold: 0 # Desativado para produção
+      keepalive-time: 30000 # Mantém a conexão ativa
   jpa:
     show-sql: true
     properties:
