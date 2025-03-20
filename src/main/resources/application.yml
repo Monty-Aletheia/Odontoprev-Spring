@@ -15,11 +15,13 @@ spring:
     password: 110804 #141204 #141204 #080305
     driver-class-name: oracle.jdbc.OracleDriver
     hikari:
-      maximum-pool-size: 5
-      minimum-idle: 2
-      idle-timeout: 30000
-      max-lifetime: 1800000
-      connection-timeout: 20000
+      minimum-idle: 1  
+      maximum-pool-size: 10 
+      idle-timeout: 15000 
+      max-lifetime: 600000  
+      connection-timeout: 10000  
+      validation-timeout: 5000  
+      leak-detection-threshold: 5000 
   jpa:
     show-sql: true
     properties:
