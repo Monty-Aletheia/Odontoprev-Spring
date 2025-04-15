@@ -1,5 +1,6 @@
-package com.fiap.br.challenger.domain.model;
+package com.fiap.br.challenger.domain.model.patient;
 
+import com.fiap.br.challenger.domain.model.Consultation;
 import com.fiap.br.challenger.domain.model.enums.Gender;
 import com.fiap.br.challenger.domain.model.enums.RiskStatus;
 import jakarta.persistence.*;

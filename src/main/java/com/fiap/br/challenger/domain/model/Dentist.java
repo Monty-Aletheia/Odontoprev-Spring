@@ -32,7 +32,7 @@ public class Dentist {
     private Double claimsRate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "risk_status", nullable = false)
+    @Column(name = "risk_status")
     private RiskStatus riskStatus;
 
     @ManyToMany(mappedBy = "dentists", cascade = CascadeType.ALL)

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home - Aletheia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        aletheia: "#6B91A9"
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+<body class="bg-gray-100">
+
+<div th:insert="~{fragments/header :: header}">
+    HEADER
+</div>
+
+<div class="container mx-auto text-center mt-20">
+    <h1 class="text-4xl font-bold text-gray-800">Bem-vindo ao Aletheia!</h1>
+    <p class="text-lg text-gray-600 mt-2">Gerencie pacientes e dentistas de forma simples e eficiente.</p>
+    <div class="mt-6 space-x-4">
+        <a th:href="@{/patients/list}" class="px-6 py-3 bg-aletheia text-white rounded-lg shadow-md hover:bg-opacity-80">Gerenciar Pacientes</a>
+        <a th:href="@{/dentists/list}" class="px-6 py-3 bg-aletheia text-white rounded-lg shadow-md hover:bg-opacity-80">Gerenciar Dentistas</a>
+    </div>
+</div>
+
+</body>
+</html>
