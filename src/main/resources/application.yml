@@ -23,6 +23,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  thymeleaf:
+    cache: false
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
   devtools:
     restart:
       enabled: true
@@ -35,12 +42,14 @@ spring:
 
 logging:
   level:
-    root: INFO
-    br: DEBUG
-    org:
-      hibernate:
-        SQL: DEBUG
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
+#    root: INFO
+#    br: DEBUG
+#    org:
+#      hibernate:
+#        SQL: DEBUG
+#        type:
+#          descriptor:
+#            sql:
+#              BasicBinder: TRACE
+      org.springframework.amqp.rabbit.core.RabbitTemplate: DEBUG
+
