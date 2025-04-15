@@ -6,8 +6,8 @@ spring:
     name: challenger
   datasource:
     url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl
-    username: rm553873 #rm553912 #rm553912 #rm552626
-    password: 110804 #141204 #141204 #080305
+    username: rm553873 #rm553912 #rm553873 #rm552626
+    password: 110804 #141204 #110804 #080305
     driver-class-name: oracle.jdbc.OracleDriver
     hikari:
       minimum-idle: 1  
