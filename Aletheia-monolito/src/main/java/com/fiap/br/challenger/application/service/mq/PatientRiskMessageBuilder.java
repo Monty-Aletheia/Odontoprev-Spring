@@ -11,7 +11,7 @@ public class PatientRiskMessageBuilder {
 
     public JSONObject build(UUID pacienteId, PatientRiskAssessmentDTO dto) {
         JSONObject json = new JSONObject();
-        json.put("paciente_id", pacienteId);
+        json.put("pacient_id", pacienteId);
 
         JSONObject risco = new JSONObject();
         json.put("idade", dto.age());
