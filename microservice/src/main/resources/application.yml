@@ -1,0 +1,47 @@
+server:
+  port: ${SERVER_PORT:8081}
+
+spring:
+  application:
+    name: microservice
+  datasource:
+    url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl
+    username: rm553873 #rm553912 #rm553873 #rm552626
+    password: 110804 #141204 #110804 #080305
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 10
+      idle-timeout: 300000 # 5 minutos
+      max-lifetime: 1800000 # 30 minutos
+      connection-timeout: 20000 # 10 segundos para obter uma conex�o
+      validation-timeout: 5000 # Tempo de valida��o
+      leak-detection-threshold: 0 # Desativado para produ��o
+      keepalive-time: 30000 # Mant�m a conex�o ativa
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+  devtools:
+    restart:
+      enabled: true
+
+logging:
+  level:
+    root: INFO
+    br: DEBUG
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+    org.springframework.amqp.rabbit.core.RabbitTemplate: DEBUG
+
