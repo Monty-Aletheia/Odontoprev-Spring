@@ -19,7 +19,7 @@ spring:
       leak-detection-threshold: 0 # Desativado para produção
       keepalive-time: 30000 # Mantém a conexão ativa
   jpa:
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
