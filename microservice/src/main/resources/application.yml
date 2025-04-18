@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${SERVER_PORT:8081}
 
 spring:
   application:
@@ -14,10 +14,10 @@ spring:
       maximum-pool-size: 10
       idle-timeout: 300000 # 5 minutos
       max-lifetime: 1800000 # 30 minutos
-      connection-timeout: 20000 # 10 segundos para obter uma conexão
-      validation-timeout: 5000 # Tempo de validação
-      leak-detection-threshold: 0 # Desativado para produção
-      keepalive-time: 30000 # Mantém a conexão ativa
+      connection-timeout: 20000 # 10 segundos para obter uma conexï¿½o
+      validation-timeout: 5000 # Tempo de validaï¿½ï¿½o
+      leak-detection-threshold: 0 # Desativado para produï¿½ï¿½o
+      keepalive-time: 30000 # Mantï¿½m a conexï¿½o ativa
   jpa:
     show-sql: true
     properties:
