@@ -31,7 +31,8 @@ jobs:
       with:
         push: true
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_83dc5df551bc4bc8a9ff62ed7cd986f2 }}/aletheia-springboot:${{ github.sha }}
-        file: ./Dockerfile
+        context: ./Aletheia-monolito
+        file: ./Aletheia-monolito/Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
