@@ -85,7 +85,7 @@
             cursor: pointer;
         }
 
-        .radio-btn-group{
+        .radio-btn-group {
             display: flex;
             flex-direction: row;
             justify-content: center;
@@ -113,7 +113,7 @@
             text-align: center;
         }
 
-        .form-box{
+        .form-box {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -161,40 +161,44 @@
 
 
             <div class="form-group">
-                <label for="idade" class="form-label">Idade:</label>
+                <label for="idade" class="form-label" th:text="#{assessment.age}">Idade:</label>
                 <input type="number" id="idade" th:field="*{age}" class="form-control" required/>
             </div>
 
 
             <div class="form-group">
-                <label for="genero" class="form-label">Gênero:</label>
+                <label for="genero" class="form-label" th:text="#{assessment.gender}">Gênero:</label>
                 <input type="text" id="genero" th:field="*{gender}" class="form-control" required/>
             </div>
 
 
             <div class="form-group">
-                <label for="frequencia_consultas" class="form-label">Frequência de Consultas:</label>
+                <label for="frequencia_consultas" class="form-label" th:text="#{assessment.consultationFrequency}">Frequência
+                    de Consultas:</label>
                 <input type="number" id="frequencia_consultas" th:field="*{consultationFrequency}"
                        class="form-control" required/>
             </div>
 
 
             <div class="form-group">
-                <label for="escovacao_diaria" class="form-label">Quantas vezes o paciente escova o dente por
+                <label for="escovacao_diaria" class="form-label" th:text="#{assessment.dailyBrushing}">Quantas vezes o
+                    paciente escova o dente por
                     dia? </label>
                 <input type="text" id="escovacao_diaria" th:field="*{dailyBrushing}" class="form-control" required/>
             </div>
 
 
             <div class="form-group">
-                <label for="numero_implantes" class="form-label">Numero implantes: </label>
+                <label for="numero_implantes" class="form-label" th:text="#{assessment.numberOfImplants}">Numero
+                    implantes: </label>
                 <input type="text" id="numero_implantes" th:field="*{numberOfImplants}" class="form-control"
                        required/>
             </div>
 
 
             <div class="form-group">
-                <label for="doencas_sistemicas" class="form-label">Tem alguma doença sistêmica? Clique para
+                <label for="doencas_sistemicas" class="form-label" th:text="#{assessment.systemicDiseases}">Tem alguma
+                    doença sistêmica? Clique para
                     selecionar: </label>
                 <select id="doencas_sistemicas" th:field="*{systemicDiseases}" class="form-control">
                     <option value="" disabled selected>Selecione</option>
@@ -207,7 +211,8 @@
 
 
             <div class="form-group">
-                <label for="tipo_plano" class="form-label">Tipo de Plano. Clique para selecionar: </label>
+                <label for="tipo_plano" class="form-label" th:text="#{assessment.planType}">Tipo de Plano. Clique para
+                    selecionar: </label>
                 <select id="tipo_plano" th:field="*{planType}" class="form-control">
                     <option value="" disabled selected>Selecione</option>
                     <option th:each="pt : ${T(com.fiap.br.challenger.domain.model.enums.PlanType).values()}"
@@ -218,88 +223,94 @@
 
 
             <div class="form-group-check">
-                <label for="tratamentos_complexos_previos" class="form-label pl-4">Paciente já realizou algum tratamento
+                <label for="tratamentos_complexos_previos" class="form-label pl-4" th:text="#{assessment.treatments}">Paciente
+                    já realizou algum tratamento
                     complexo prévio?</label>
                 <div class="radio-btn-group">
                     <input type="radio" id="tratamentos_complexos_previos_sim"
                            th:field="*{previousComplexTreatments}" value="1"/>
-                    <label for="tratamentos_complexos_previos_sim">Sim</label>
+                    <label for="tratamentos_complexos_previos_sim" th:text="#{assessment.yes}">Sim</label>
                     <input type="radio" id="tratamentos_complexos_previos_nao"
                            th:field="*{previousComplexTreatments}" value="0"/>
-                    <label for="tratamentos_complexos_previos_nao">Não</label>
+                    <label for="tratamentos_complexos_previos_nao" th:text="#{assessment.no}">Não</label>
                 </div>
             </div>
 
 
             <div class="form-group-check">
-                <label for="fumante" class="form-label pl-[25%]">Paciente fuma?</label>
+                <label for="fumante" class="form-label pl-[25%]" th:text="#{assessment.smoker}">Paciente fuma?</label>
                 <div class="radio-btn-group">
                     <input type="radio" id="fumante_sim" th:field="*{smoker}" value="1"/>
-                    <label for="fumante_sim">Sim</label>
+                    <label for="fumante_sim" th:text="#{assessment.yes}">Sim</label>
                     <input type="radio" id="fumante_nao" th:field="*{smoker}" value="0"/>
-                    <label for="fumante_nao">Não</label>
+                    <label for="fumante_nao" th:text="#{assessment.no}">Não</label>
                 </div>
             </div>
 
 
             <div class="form-group-check">
-                <label for="historico_caries" class="form-label pl-[10%]">Paciente tem histórico de Cáries?</label>
+                <label for="historico_caries" class="form-label pl-[10%]" th:text="#{assessment.cavities}">Paciente tem
+                    histórico de Cáries?</label>
                 <div class="radio-btn-group">
                     <input type="radio" id="historico_caries_sim" th:field="*{cavitiesHistory}" value="1"/>
-                    <label for="historico_caries_sim">Sim</label>
+                    <label for="historico_caries_sim" th:text="#{assessment.yes}">Sim</label>
                     <input type="radio" id="historico_caries_nao" th:field="*{cavitiesHistory}" value="0"/>
-                    <label for="historico_caries_nao">Não</label>
+                    <label for="historico_caries_nao" th:text="#{assessment.no}">Não</label>
                 </div>
             </div>
 
 
             <div class="form-group-check">
-                <label for="doenca_periodontal" class="form-label pl-4">Paciente tem alguma Doença periodontal?</label>
+                <label for="doenca_periodontal" class="form-label pl-4" th:text="#{assessment.periodontalDisease}">Paciente
+                    tem alguma Doença periodontal?</label>
                 <div class="radio-btn-group">
                     <input type="radio" id="doenca_periodontal_sim" th:field="*{periodontalDisease}" value="1"/>
-                    <label for="doenca_periodontal_sim">Sim</label>
+                    <label for="doenca_periodontal_sim" th:text="#{assessment.yes}">Sim</label>
                     <input type="radio" id="doenca_periodontal_nao" th:field="*{periodontalDisease}" value="0"/>
-                    <label for="doenca_periodontal_nao">Não</label>
+                    <label for="doenca_periodontal_nao" th:text="#{assessment.no}">Não</label>
                 </div>
             </div>
 
             <div class="form-group-check">
-                <label for="alcoolismo" class="form-label pl-[10%]">Paciente ingere bebidas alcoólicas?</label>
+                <label for="alcoolismo" class="form-label pl-[10%]" th:text="#{assessment.alcoholism}">Paciente ingere
+                    bebidas alcoólicas?</label>
                 <div class="radio-btn-group">
                     <input type="radio" id="alcoolismo_sim" th:field="*{alcoholism}" value="1"/>
-                    <label for="alcoolismo_sim">Sim</label>
+                    <label for="alcoolismo_sim" th:text="#{assessment.yes}">Sim</label>
                     <input type="radio" id="alcoolismo_nao" th:field="*{alcoholism}" value="0"/>
-                    <label for="alcoolismo_nao">Não</label>
+                    <label for="alcoolismo_nao" th:text="#{assessment.no}">Não</label>
                 </div>
             </div>
 
             <div class="form-group-check">
-                <label for="uso_fio_dental" class="form-label pl-[15%]">Paciente usa fio dental?</label>
+                <label for="uso_fio_dental" class="form-label pl-[15%]" th:text="#{assessment.flossing}">Paciente usa
+                    fio dental?</label>
                 <div class="radio-btn-group">
                     <input type="radio" id="uso_fio_dental_sim" th:field="*{flossing}" value="1"/>
-                    <label for="uso_fio_dental_sim">Sim</label>
+                    <label for="uso_fio_dental_sim" th:text="#{assessment.yes}">Sim</label>
                     <input type="radio" id="uso_fio_dental_nao" th:field="*{flossing}" value="0"/>
-                    <label for="uso_fio_dental_nao">Não</label>
+                    <label for="uso_fio_dental_nao" th:text="#{assessment.no}">Não</label>
                 </div>
             </div>
 
             <div class="form-group-check">
-                <label for="medicamentos_uso_continuo" class="form-label pl-4">Paciente faz tratamento com algum
+                <label for="medicamentos_uso_continuo" class="form-label pl-4"
+                       th:text="#{assessment.continuousMedicationUse}">Paciente faz tratamento com algum
                     remédio?</label>
                 <div class="radio-btn-group">
                     <input type="radio" id="medicamentos_uso_continuo_sim" th:field="*{continuousMedicationUse}"
                            value="1"/>
-                    <label for="medicamentos_uso_continuo_sim">Sim</label>
+                    <label for="medicamentos_uso_continuo_sim" th:text="#{assessment.yes}">Sim</label>
                     <input type="radio" id="medicamentos_uso_continuo_nao" th:field="*{continuousMedicationUse}"
                            value="0"/>
-                    <label for="medicamentos_uso_continuo_nao">Não</label>
+                    <label for="medicamentos_uso_continuo_nao" th:text="#{assessment.no}">Não</label>
                 </div>
             </div>
 
 
         </div>
 
-        <button type="submit" class="btn btn-save mt-20" th:text="#{patient.save}">Salvar</button>
+        <button type="submit" class="btn btn-save mt-20" th:text="#{assessment.save}">Salvar</button>
     </form>
 
 </div>
