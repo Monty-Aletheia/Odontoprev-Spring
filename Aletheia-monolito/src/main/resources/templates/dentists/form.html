@@ -90,6 +90,13 @@
         <input type="text" id="name" th:field="*{name}" class="form-control"  />
         <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
     </div>
+
+    <div class="form-group">
+        <label for="name" class="form-label">Email</label>
+        <input type="text" id="email" th:field="*{email}" class="form-control"  />
+        <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+    </div>
+
     <div class="form-group">
         <label for="password" class="form-label" th:text="#{dentist.password}">Senha:</label>
         <input type="password" id="password" th:field="*{password}" class="form-control"  />

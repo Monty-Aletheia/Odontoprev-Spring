@@ -26,7 +26,6 @@ public class SecurityConfig {
                         .permitAll())
                 .logout(logout -> logout.logoutSuccessUrl("/login?logout")
                         .permitAll())
-                .rememberMe(rememberMe -> rememberMe.key("rememberMe"))
                 .build();
     }
 
@@ -40,9 +39,9 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(user);
     }
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
 

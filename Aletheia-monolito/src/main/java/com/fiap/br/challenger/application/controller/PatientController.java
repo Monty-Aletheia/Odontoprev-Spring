@@ -40,7 +40,7 @@ public class PatientController {
 
     @GetMapping("/new")
     public String showForm(Model model) {
-        model.addAttribute("patient", new Patient());
+        model.addAttribute("patient", new PatientRequestDTO());
         return "patients/form";
     }
 
@@ -50,9 +50,9 @@ public class PatientController {
             return "redirect:/patients/new";
         }
         PatientRiskAssessment patientRiskAssessment = new PatientRiskAssessment();
-        patientRiskAssessment.setAge(Period.between(patientRequest.birthday(), LocalDate.now()).getYears());
+        patientRiskAssessment.setAge(Period.between(patientRequest.getBirthday(), LocalDate.now()).getYears());
 
-        patientRiskAssessment.setGender(patientRequest.gender().toString());
+        patientRiskAssessment.setGender(patientRequest.getGender().toString());
 
         session.setAttribute("patient", patientRequest);
 

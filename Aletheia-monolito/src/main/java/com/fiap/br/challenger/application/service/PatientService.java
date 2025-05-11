@@ -1,14 +1,18 @@
 package com.fiap.br.challenger.application.service;
 
+import com.fiap.br.challenger.application.dto.auth.UserRequestDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientRiskAssessmentDTO;
 import com.fiap.br.challenger.application.service.mapper.PatientMapper;
 import com.fiap.br.challenger.application.service.mq.MessageProducer;
 import com.fiap.br.challenger.application.service.mq.PatientRiskMessageBuilder;
+import com.fiap.br.challenger.domain.model.User;
 import com.fiap.br.challenger.domain.model.enums.RiskStatus;
+import com.fiap.br.challenger.domain.model.enums.Role;
 import com.fiap.br.challenger.domain.model.patient.Patient;
 import com.fiap.br.challenger.infra.repository.PatientRepository;
+import com.fiap.br.challenger.infra.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.Data;
@@ -36,6 +40,8 @@ public class PatientService {
     private final MessageProducer producer;
 
     private final RestTemplate restTemplate = new RestTemplate();
+    private final UserRepository userRepository;
+    private final UserService userService;
 //    private final String apiUrl = "https://aletheia-ai.azurewebsites.net/predict";
 
     public List<PatientResponseDTO> getAllPatients() {
@@ -58,6 +64,11 @@ public class PatientService {
         patient.setAssociatedClaims("");
         patient.setConsultationFrequency(0);
         patient.setRiskStatus(RiskStatus.NENHUM); // default
+
+        User user = new User(Role.PATIENT, patientRequestDTO.getPassword(), patientRequestDTO.getEmail(), patientRequestDTO.getName());
+        userService.createUser(user);
+        patient.setUser(user);
+
         Patient savedPatient = patientRepository.save(patient);
 
         this.processRisk(savedPatient.getId(), patientRiskAssessmentDTO);

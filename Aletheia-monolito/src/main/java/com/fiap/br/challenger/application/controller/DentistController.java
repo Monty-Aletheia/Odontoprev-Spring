@@ -32,15 +32,10 @@ public class  DentistController {
         return "dentists/list";
     }
 
-//    @GetMapping("/{id}")
-//    public String getDentistById(@PathVariable UUID id) {
-//        return "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH";
-//    }
-
 
     @GetMapping("/new")
     public String showForm(Model model) {
-        model.addAttribute("dentist", new Dentist());
+        model.addAttribute("dentist", new DentistRequestDTO());
         return "dentists/form";
     }
 

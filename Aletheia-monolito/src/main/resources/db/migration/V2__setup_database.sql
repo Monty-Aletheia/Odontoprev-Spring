@@ -35,7 +35,6 @@ CREATE TABLE tb_dentist
     registration_number VARCHAR2(50) UNIQUE NOT NULL,
     claims_rate         NUMBER(5, 2) DEFAULT 0.00,
     risk_status         VARCHAR2(50) NOT NULL,
-    password            VARCHAR2(255) NOT NULL,
     user_id             RAW(16), -- Adicionada a coluna user_id
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

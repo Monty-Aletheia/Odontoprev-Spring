@@ -15,8 +15,8 @@ public interface PatientMapper {
     Patient toEntity(PatientRequestDTO dto);
 
     default void updateEntityFromDto(Patient entity, PatientRequestDTO dto) {
-        entity.setName(dto.name());
-        entity.setBirthday(dto.birthday());
-        entity.setGender(dto.gender());
+        entity.setName(dto.getName());
+        entity.setBirthday(dto.getBirthday());
+        entity.setGender(dto.getGender());
     }
 }
