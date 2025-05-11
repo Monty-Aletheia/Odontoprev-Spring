@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{project.name}">Cadastro de Consultas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        aletheia: "#6B91A9"
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container-fluid {
+            flex-direction: column;
+            align-items: center;
+            padding: 0;
+        }
+
+        .btn-save {
+            background-color: #007BFF;
+            color: white;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .btn-save:hover {
+            background-color: #0056b3;
+        }
+
+        .form-title {
+            color: #007BFF;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .text-danger {
+            font-size: 0.875rem;
+            margin-top: 5px;
+        }
+
+        .form-control {
+            max-width: 500px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body class="container-fluid">
+
+<div th:insert="~{fragments/header :: header}">
+    HEADER
+</div>
+
+<div class="container-fluid d-flex justify-content-center w-96 mt-4">
+
+    <h2 class="mb-4 form-title text-aletheia">
+        <i class="bi bi-calendar-plus fs-3" th:text="#{project.consultationRegistrationLabel}">Cadastro de Consulta</i>
+    </h2>
+
+    <form th:action="@{/consultations/save}" th:object="${consultation}" method="post" class="w-[100%] items-center needs-validation">
+
+        <div class="form-group">
+            <label for="consultationDate" class="form-label" th:text="#{consultation.date}">Data da Consulta:</label>
+            <input type="date" id="consultationDate" th:field="*{date}" class="form-control" required />
+            <div class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="consultationValue" class="form-label" th:text="#{consultation.value}">Valor da Consulta:</label>
+            <input type="number" step="0.01" id="consultationValue" th:field="*{value}" class="form-control" required />
+            <div class="text-danger" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="patient" class="form-label" th:text="#{consultation.patient}">Paciente:</label>
+            <select id="patient" th:field="*{patient}" class="form-control" required>
+                <option value="" disabled selected>Selecione um paciente</option>
+                <option th:each="p : ${patients}" th:value="${p.id}" th:text="${p.name}"></option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('patient')}" th:errors="*{patient}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="dentist" class="form-label" th:text="#{consultation.dentist}">Dentistas:</label>
+            <select id="dentist" th:field="*{dentist}" class="form-control" required>
+                <option value="" disabled selected>Selecione um dentista:</option>
+                <option th:each="d : ${dentists}" th:value="${d.id}" th:text="${d.name}"></option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('dentist')}" th:errors="*{dentist}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-save self-center mt-4 w-[100%]" th:text="#{consultation.save}">Salvar</button>
+
+    </form>
+</div>
+
+<footer style="color: #6c757d; position: fixed; bottom: 0; left: 0; width: 100%; background-color: #f8f9fa;">
+    <div class="d-flex justify-content-center mt-3 mb-3">
+        <a href="/consultations/new?lang=pt" class="btn btn-light btn-sm mx-2 d-flex align-items-center" style="border-radius: 20px;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" alt="Português" class="me-2" style="width: 20px; height: 14px;">
+            Português
+        </a>
+        <a href="/consultations/new?lang=en" class="btn btn-light btn-sm mx-2 d-flex align-items-center" style="border-radius: 20px;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" alt="English" class="me-2" style="width: 20px; height: 14px;">
+            English
+        </a>
+    </div>
+</footer>
+
+</body>
+</html>

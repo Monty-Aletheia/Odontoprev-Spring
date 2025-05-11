@@ -21,5 +21,5 @@ public class ConsultationResponseDTO {
     private RiskStatus riskStatus;
     private String description;
     private PatientResponseDTO patient;
-    private List<DentistResponseDTO> dentists;
+    private DentistResponseDTO dentist;
 }

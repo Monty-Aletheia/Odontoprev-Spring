@@ -26,4 +26,6 @@ public record PatientRequestDTO(
 
         @NotBlank(message = "Associated claims are required.")
         String associatedClaims
+
+
 ) { }

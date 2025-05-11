@@ -35,6 +35,10 @@ public class Dentist {
     @Column(name = "risk_status")
     private RiskStatus riskStatus;
 
-    @ManyToMany(mappedBy = "dentists", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "dentist", cascade = CascadeType.ALL)
     private List<Consultation> consultations;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

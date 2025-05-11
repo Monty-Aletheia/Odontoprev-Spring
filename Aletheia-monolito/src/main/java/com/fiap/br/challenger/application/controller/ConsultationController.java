@@ -3,74 +3,64 @@ package com.fiap.br.challenger.application.controller;
 import com.fiap.br.challenger.application.dto.consultation.ConsultationRequestDTO;
 import com.fiap.br.challenger.application.dto.consultation.ConsultationResponseDTO;
 import com.fiap.br.challenger.application.service.ConsultationService;
+import com.fiap.br.challenger.application.service.DentistService;
+import com.fiap.br.challenger.application.service.PatientService;
+import com.fiap.br.challenger.domain.model.Consultation;
+import com.fiap.br.challenger.domain.model.Dentist;
+import com.fiap.br.challenger.domain.model.User;
+import com.fiap.br.challenger.domain.model.patient.Patient;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@RestController
+@Slf4j
+@Controller
 @RequestMapping("/consultations")
 public class ConsultationController {
 
     private final ConsultationService consultationService;
+    private final PatientService patientService;
+    private final DentistService dentistService;
 
-    @Autowired
-    public ConsultationController(ConsultationService consultationService) {
+
+    public ConsultationController(ConsultationService consultationService, PatientService patientService, DentistService dentistService) {
         this.consultationService = consultationService;
+        this.patientService = patientService;
+        this.dentistService = dentistService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<ConsultationResponseDTO>> getAllConsultations() {
-        List<ConsultationResponseDTO> consultations = consultationService.getAllConsultations();
-        return ResponseEntity.ok(consultations);
+    @GetMapping("/new")
+    public String showForm(Model model) {
+        model.addAttribute("patients", patientService.getAllPatients());
+        model.addAttribute("dentists", dentistService.getAllDentists());
+        model.addAttribute("consultation", new Consultation());
+        return "consultations/form";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ConsultationResponseDTO> getConsultationById(@PathVariable UUID id) {
-        return consultationService.getConsultationByUUID(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @PostMapping("/save")
+    public String saveConsultation(@ModelAttribute("consultation") ConsultationRequestDTO consultationRequestDTO) {
+        consultationService.createConsultation(consultationRequestDTO);
+        return "redirect:/consultations";
     }
 
-    @PostMapping
-    public ResponseEntity<ConsultationResponseDTO> createConsultation(@RequestBody @Valid ConsultationRequestDTO consultationRequestDTO) {
-        try {
-            ConsultationResponseDTO createdConsultation = consultationService.createConsultation(consultationRequestDTO);
-            return new ResponseEntity<>(createdConsultation, HttpStatus.CREATED);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    @GetMapping("")
+    public String listConsultations(Model model) {
+        User currentUser =  (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("consultations", consultationService.findByUserId(currentUser.getId()));
+        return "consultations/list";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ConsultationResponseDTO> updateConsultation(
-            @PathVariable UUID id,
-            @RequestBody @Valid ConsultationRequestDTO consultationRequestDTO) {
-
-        try {
-            Optional<ConsultationResponseDTO> updatedConsultation = consultationService.updateConsultation(id, consultationRequestDTO);
-
-            return updatedConsultation
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteConsultation(@PathVariable UUID id) {
-        try {
-            consultationService.deleteConsultation(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
 }

@@ -5,6 +5,7 @@ import com.fiap.br.challenger.domain.model.patient.Patient;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -21,10 +22,10 @@ public class Consultation {
 
     @Column(name = "consultation_date", nullable = false)
     @Temporal(TemporalType.DATE)
-    private LocalDate consultationDate;
+    private LocalDate date;
 
     @Column(name = "consultation_value", nullable = false)
-    private Double consultationValue;
+    private BigDecimal value;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "risk_status", nullable = false)
@@ -37,12 +38,21 @@ public class Consultation {
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-    @ManyToMany
-    @JoinTable(name = "consultation_dentist",
-            joinColumns = @JoinColumn(name = "consultation_id"),
-            inverseJoinColumns = @JoinColumn(name = "dentist_id"))
-    private List<Dentist> dentists;
+    @ManyToOne
+    @JoinColumn(name = "dentist_id", nullable = false)
+    private Dentist dentist;
 
     @OneToMany(mappedBy = "consultation", cascade = CascadeType.ALL)
     private Set<Claim> claims;
+
+    public Consultation() {}
+
+    public Consultation(LocalDate date, BigDecimal value, Patient patient, Dentist dentist, RiskStatus riskStatus, String description) {
+        this.date = date;
+        this.value = value;
+        this.patient = patient;
+        this.dentist = dentist;
+        this.riskStatus =  riskStatus;
+        this.description = description;
+    }
 }
