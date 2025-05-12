@@ -29,6 +29,7 @@ public class DentistService {
     private final DentistRepository dentistRepository;
     private final DentistMapper dentistMapper;
     private final UserRepository userRepository;
+    private final UserService userService;
 
     public List<DentistResponseDTO> getAllDentists() {
         return dentistRepository.findAll().stream().map(dentistMapper::toDto).toList();
@@ -44,7 +45,7 @@ public class DentistService {
         dentist.setClaimsRate(0.0);
         dentist.setRiskStatus(RiskStatus.NENHUM);
         User user = new User(Role.DENTIST, dentistRequestDTO.getPassword(), dentistRequestDTO.getEmail(), dentistRequestDTO.getName());
-        userRepository.save(user);
+        userService.createUser(user);
         dentist.setUser(user);
         Dentist savedDentist = dentistRepository.save(dentist);
         return dentistMapper.toDto(savedDentist);

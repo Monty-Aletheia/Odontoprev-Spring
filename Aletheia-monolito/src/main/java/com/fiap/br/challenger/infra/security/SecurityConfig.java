@@ -19,7 +19,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(req -> {
-                    req.requestMatchers("/login", "/login/**","/account", "/account/**", "/css/**", "/js/**", "/assets/**", "/actuator/**").permitAll();
+                    req.requestMatchers("/login", "/login/**","/register", "/register/**", "/patients","/patients/**","/css/**", "/js/**", "/assets/**", "/actuator/**").permitAll();
                     req.anyRequest().authenticated();
                 }).formLogin(form -> form.loginPage("/login")
                         .defaultSuccessUrl("/")
@@ -29,15 +29,19 @@ public class SecurityConfig {
                 .build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-                .username("admin@aletheia.com")
-                    .password("{noop}admin123")
-                .build();
-
-        return new InMemoryUserDetailsManager(user);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//        String encodedPassword = passwordEncoder.encode("admin123");
+//
+//        UserDetails user = User.builder()
+//                .username("admin@aletheia.com")
+//                .password(encodedPassword)  // Usa a senha criptografada
+//                .roles("ADMIN")  // Adiciona a role, se necessário
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user);
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

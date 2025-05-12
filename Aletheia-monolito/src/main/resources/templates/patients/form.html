@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title th:text="#{project.name}">Cadastro de Pacientes</title>
@@ -67,16 +68,19 @@
 </head>
 <body class="container-fluid">
 
-<div th:insert="~{fragments/header :: header}">
+<div sec:authorize="isAuthenticated()" th:insert="~{fragments/header :: header}">
     HEADER
 </div>
 
 
 <div class="container-fluid d-flex justify-content-center w-96 mt-4">
 
-<h2 class="mb-4 form-title text-aletheia">
-    <i class="bi bi-pencil-square fs-3" th:text="#{project.patientRegistrationLabel}"></i>
+<h2  class="mb-4 form-title text-aletheia">
+    <i sec:authorize="isAuthenticated()" class="bi bi-pencil-square fs-3" th:text="#{project.patientRegistrationLabel}"></i>
+    <i sec:authorize="isAnonymous()" class="bi bi-pencil-square fs-3" th:text="#{register.title}"></i>
 </h2>
+
+
 
 <form th:action="@{/patients/save-temp}" th:object="${patient}" method="post" class="w-[100%] items-center needs-validation">
     <div class="form-group">

@@ -70,6 +70,10 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public User() {
     }
 

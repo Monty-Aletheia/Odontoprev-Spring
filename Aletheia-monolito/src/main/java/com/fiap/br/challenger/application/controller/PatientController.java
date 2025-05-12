@@ -39,7 +39,8 @@ public class PatientController {
     }
 
     @GetMapping("/new")
-    public String showForm(Model model) {
+    public String showForm(HttpSession session, Model model) {
+
         model.addAttribute("patient", new PatientRequestDTO());
         return "patients/form";
     }
