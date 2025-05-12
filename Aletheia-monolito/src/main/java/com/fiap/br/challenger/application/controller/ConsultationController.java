@@ -8,6 +8,7 @@ import com.fiap.br.challenger.application.service.PatientService;
 import com.fiap.br.challenger.domain.model.Consultation;
 import com.fiap.br.challenger.domain.model.Dentist;
 import com.fiap.br.challenger.domain.model.User;
+import com.fiap.br.challenger.domain.model.enums.Role;
 import com.fiap.br.challenger.domain.model.patient.Patient;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -70,7 +71,8 @@ public class ConsultationController {
         }
 
         User currentUser =  (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        model.addAttribute("consultations", consultationService.findByUserId(currentUser.getId()));
+        Role userRole = currentUser.getRole();
+        model.addAttribute("consultations", consultationService.findByUserId(currentUser.getId(), userRole));
         return "consultations/list";
     }
 

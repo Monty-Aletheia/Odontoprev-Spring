@@ -17,4 +17,7 @@ public interface ConsultationRepository extends JpaRepository<Consultation, UUID
 
     @Query("SELECT c FROM Consultation c WHERE c.patient.user.id = :userId")
     List<Consultation> findByPatientUserId(@Param("userId") UUID userId);
+
+    @Query("SELECT c FROM Consultation c WHERE c.dentist.user.id = :userId")
+    List<Consultation> findByDentistUserId(@Param("userId") UUID userId);
 }

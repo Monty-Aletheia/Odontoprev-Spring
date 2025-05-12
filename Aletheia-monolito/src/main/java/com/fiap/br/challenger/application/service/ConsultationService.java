@@ -6,6 +6,7 @@ import com.fiap.br.challenger.application.service.mapper.ConsultationMapper;
 import com.fiap.br.challenger.domain.model.Consultation;
 import com.fiap.br.challenger.domain.model.Dentist;
 import com.fiap.br.challenger.domain.model.User;
+import com.fiap.br.challenger.domain.model.enums.Role;
 import com.fiap.br.challenger.domain.model.patient.Patient;
 import com.fiap.br.challenger.infra.repository.ConsultationRepository;
 import com.fiap.br.challenger.infra.repository.DentistRepository;
@@ -55,8 +56,12 @@ public class ConsultationService {
         consultationRepository.save(consultation);
     }
 
-    public List<ConsultationResponseDTO> findByUserId(UUID userId){
-        return consultationRepository.findByPatientUserId(userId).stream().map(consultationMapper::toDTO).collect(Collectors.toList());
+    public List<ConsultationResponseDTO> findByUserId(UUID userId, Role userRole){
+        if (userRole == Role.PATIENT){
+            return consultationRepository.findByPatientUserId(userId).stream().map(consultationMapper::toDTO).collect(Collectors.toList());
+        }
+        return consultationRepository.findByDentistUserId(userId).stream().map(consultationMapper::toDTO).collect(Collectors.toList());
+
     }
 
     public List<ConsultationResponseDTO> findAllConsultation(){
