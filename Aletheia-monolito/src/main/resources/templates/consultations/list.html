@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title th:text="#{project.consultationListingLabel}">Listagem de Consultas</title>
@@ -72,7 +72,7 @@
             <i class="bi bi-calendar-check fs-3" th:text="#{project.consultationListingLabel}">Listagem de Consultas</i>
         </h1>
         <a th:href="@{/consultations/new}" class="btn btn-add">
-            <i class="bi bi-plus-lg" th:text="#{consultation.addButton}">Nova Consulta</i>
+            <i class="bi bi-plus-lg" th:text="#{consultation.addButton}">Agendar Consulta</i>
         </a>
     </div>
 
@@ -96,7 +96,8 @@
                     <td th:text="${#numbers.formatCurrency(consultation.value)}"></td>
                     <td th:text="${consultation.patient.name}"></td>
                     <td th:text="${consultation.dentist.name}"></td>
-                    <td th:classappend="${consultation.riskStatus == T(com.fiap.br.challenger.domain.model.enums.RiskStatus).ALTO ? 'red-text' : ''}" th:text="${consultation.riskStatus}"></td>
+                    <td th:classappend="${consultation.riskStatus == 'ALTO' ? 'red-text' : ''}"
+                        th:text="${consultation.riskStatus}"></td>
                     <td th:text="${consultation.description}"></td>
                     <td class="text-center">
                         <a th:href="@{/consultations/form/{id}(id=${consultation.id})}" class="btn btn-warning btn-sm">

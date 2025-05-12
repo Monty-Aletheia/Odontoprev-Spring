@@ -58,4 +58,8 @@ public class ConsultationService {
     public List<ConsultationResponseDTO> findByUserId(UUID userId){
         return consultationRepository.findByPatientUserId(userId).stream().map(consultationMapper::toDTO).collect(Collectors.toList());
     }
+
+    public List<ConsultationResponseDTO> findAllConsultation(){
+        return consultationRepository.findAll().stream().map(consultationMapper::toDTO).collect(Collectors.toList());
+    }
 }

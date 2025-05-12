@@ -1,9 +1,10 @@
 package com.fiap.br.challenger.application.dto.consultation;
 
-import com.fiap.br.challenger.domain.model.enums.RiskStatus;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 public record ConsultationRequestDTO(

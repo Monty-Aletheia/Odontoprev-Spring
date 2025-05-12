@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,6 +59,16 @@ public class ConsultationController {
 
     @GetMapping("")
     public String listConsultations(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean hasRoleAdmin = authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+
+        if (hasRoleAdmin) {
+            model.addAttribute("consultations", consultationService.findAllConsultation());
+            return "consultations/list";
+        }
+
         User currentUser =  (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("consultations", consultationService.findByUserId(currentUser.getId()));
         return "consultations/list";
