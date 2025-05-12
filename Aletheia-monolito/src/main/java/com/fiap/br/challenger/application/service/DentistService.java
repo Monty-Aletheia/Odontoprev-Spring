@@ -4,6 +4,7 @@ import com.fiap.br.challenger.application.dto.dentist.DentistRequestDTO;
 import com.fiap.br.challenger.application.dto.dentist.DentistResponseDTO;
 import com.fiap.br.challenger.application.dto.dentist.DentistUpdateDTO;
 import com.fiap.br.challenger.application.service.mapper.DentistMapper;
+import com.fiap.br.challenger.application.service.utils.NameFormatter;
 import com.fiap.br.challenger.domain.model.Dentist;
 import com.fiap.br.challenger.domain.model.User;
 import com.fiap.br.challenger.domain.model.enums.RiskStatus;
@@ -42,9 +43,10 @@ public class DentistService {
     @Transactional
     public DentistResponseDTO createDentist(DentistRequestDTO dentistRequestDTO) {
         Dentist dentist = dentistMapper.toEntity(dentistRequestDTO);
+        String name =  NameFormatter.formatName(dentistRequestDTO.getName());
         dentist.setClaimsRate(0.0);
         dentist.setRiskStatus(RiskStatus.NENHUM);
-        User user = new User(Role.DENTIST, dentistRequestDTO.getPassword(), dentistRequestDTO.getEmail(), dentistRequestDTO.getName());
+        User user = new User(Role.DENTIST, dentistRequestDTO.getPassword(), dentistRequestDTO.getEmail(), name);
         userService.createUser(user);
         dentist.setUser(user);
         Dentist savedDentist = dentistRepository.save(dentist);

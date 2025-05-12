@@ -7,6 +7,7 @@ import com.fiap.br.challenger.application.dto.patient.PatientRiskAssessmentDTO;
 import com.fiap.br.challenger.application.service.mapper.PatientMapper;
 import com.fiap.br.challenger.application.service.mq.MessageProducer;
 import com.fiap.br.challenger.application.service.mq.PatientRiskMessageBuilder;
+import com.fiap.br.challenger.application.service.utils.NameFormatter;
 import com.fiap.br.challenger.domain.model.User;
 import com.fiap.br.challenger.domain.model.enums.RiskStatus;
 import com.fiap.br.challenger.domain.model.enums.Role;
@@ -61,11 +62,13 @@ public class PatientService {
     @Transactional
     public void createPatient(PatientRequestDTO patientRequestDTO, PatientRiskAssessmentDTO patientRiskAssessmentDTO) {
         Patient patient = patientMapper.toEntity(patientRequestDTO);
+        String name = NameFormatter.formatName(patientRequestDTO.getName());
+        patient.setName(name);
         patient.setAssociatedClaims("");
         patient.setConsultationFrequency(0);
         patient.setRiskStatus(RiskStatus.NENHUM); // default
 
-        User user = new User(Role.PATIENT, patientRequestDTO.getPassword(), patientRequestDTO.getEmail(), patientRequestDTO.getName());
+        User user = new User(Role.PATIENT, patientRequestDTO.getPassword(), patientRequestDTO.getEmail(), name);
         userService.createUser(user);
         patient.setUser(user);
 
@@ -102,5 +105,4 @@ public class PatientService {
         JSONObject message = messageBuilder.build(pacienteId, dto);
         producer.sendMessage(message);
     }
-
 }
