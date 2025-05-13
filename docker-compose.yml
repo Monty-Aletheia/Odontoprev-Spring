@@ -3,13 +3,41 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
-      - "5672:5672"    # Porta para comunicação entre apps
-      - "15672:15672"  # Porta da interface web de gerenciamento
+      - "5672:5672"
+      - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
+    networks:
+      - app_net
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+
+  monolito:
+    build:
+      context: ./Aletheia-monolito
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rabbitmq
+    networks:
+      - app_net
+
+  microservice:
+    build:
+      context: ./microservice
+      dockerfile: ./Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - rabbitmq
+    networks:
+      - app_net
+
+networks:
+  app_net:
+    driver: bridge
 
 volumes:
   rabbitmq_data:
