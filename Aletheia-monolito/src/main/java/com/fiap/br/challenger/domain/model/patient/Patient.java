@@ -47,4 +47,7 @@ public class Patient {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @Column(name = "ai_report")
+    private String aiReport;
 }

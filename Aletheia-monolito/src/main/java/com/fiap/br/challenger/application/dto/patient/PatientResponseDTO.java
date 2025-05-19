@@ -21,5 +21,6 @@ public class PatientResponseDTO  {
     private RiskStatus riskStatus;
     private Integer consultationFrequency;
     private String associatedClaims;
+    private String aiReport;
 }
 

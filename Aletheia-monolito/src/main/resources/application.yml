@@ -4,6 +4,9 @@
   spring:
     application:
       name: challenger
+    ai:
+      openai:
+        api-key:
     datasource:
       url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl
       username: rm553873 #rm553912 #rm553873 #rm552626
@@ -26,7 +29,7 @@
     thymeleaf:
       cache: false
     rabbitmq:
-      host: rabbitmq
+      host: localhost
       port: 5672
       username: admin
       password: admin

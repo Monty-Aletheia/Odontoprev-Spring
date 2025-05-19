@@ -2,6 +2,7 @@ package com.fiap.br.challenger.application.service.mapper;
 
 import com.fiap.br.challenger.application.dto.consultation.ConsultationRequestDTO;
 import com.fiap.br.challenger.application.dto.consultation.ConsultationResponseDTO;
+import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
 import com.fiap.br.challenger.domain.model.Consultation;
 import com.fiap.br.challenger.domain.model.Dentist;
 import com.fiap.br.challenger.domain.model.patient.Patient;
@@ -57,5 +58,12 @@ public abstract class ConsultationMapper {
     protected Dentist getDentistById(UUID id) {
         return dentistRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Dentist not found with id: " + id));
+    }
+
+    public void updateEntityFromDto(Consultation entity, ConsultationRequestDTO dto) {
+        entity.setDate(dto.date());
+        entity.setPatient(getPatientById(dto.patient()));
+        entity.setDentist(getDentistById(dto.dentist()));
+        entity.setValue(BigDecimal.valueOf(dto.value()));
     }
 }

@@ -19,6 +19,7 @@ import jakarta.transaction.Transactional;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -43,7 +44,9 @@ public class PatientService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final UserRepository userRepository;
     private final UserService userService;
+    private final PatientAiReporterService patientAiReporterService;
 //    private final String apiUrl = "https://aletheia-ai.azurewebsites.net/predict";
+
 
     public List<PatientResponseDTO> getAllPatients() {
         return patientRepository.findAll().stream()
@@ -101,8 +104,10 @@ public class PatientService {
         patientRepository.delete(patient);
     }
 
-    public void processRisk(UUID pacienteId, PatientRiskAssessmentDTO dto) {
-        JSONObject message = messageBuilder.build(pacienteId, dto);
+    public void processRisk(UUID patientId, PatientRiskAssessmentDTO dto) {
+        JSONObject message = messageBuilder.build(patientId, dto);
         producer.sendMessage(message);
+        String aiReport = patientAiReporterService.createReport(message.toString());
+        patientRepository.updatePatientAiReport(patientId, aiReport);
     }
 }

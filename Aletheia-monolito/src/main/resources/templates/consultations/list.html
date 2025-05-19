@@ -86,7 +86,6 @@
                     <th th:text="#{consultation.patient}">Paciente</th>
                     <th th:text="#{consultation.dentist}">Dentista</th>
                     <th th:text="#{consultation.riskStatus}">Risco</th>
-                    <th th:text="#{consultation.description}">Descrição</th>
                     <th class="text-center" th:text="#{table.actions}">Ações</th>
                 </tr>
                 </thead>
@@ -98,7 +97,6 @@
                     <td th:text="${consultation.dentist.name}"></td>
                     <td th:classappend="${consultation.riskStatus == 'ALTO' ? 'red-text' : ''}"
                         th:text="${consultation.riskStatus}"></td>
-                    <td th:text="${consultation.description}"></td>
                     <td class="text-center">
                         <a th:href="@{/consultations/form/{id}(id=${consultation.id})}" class="btn btn-warning btn-sm">
                             <i class="bi bi-pencil-square"></i>

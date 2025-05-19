@@ -2,10 +2,12 @@ package com.fiap.br.challenger.application.service;
 
 import com.fiap.br.challenger.application.dto.consultation.ConsultationRequestDTO;
 import com.fiap.br.challenger.application.dto.consultation.ConsultationResponseDTO;
+import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
 import com.fiap.br.challenger.application.service.mapper.ConsultationMapper;
 import com.fiap.br.challenger.domain.model.Consultation;
 import com.fiap.br.challenger.domain.model.Dentist;
 import com.fiap.br.challenger.domain.model.User;
+import com.fiap.br.challenger.domain.model.enums.RiskStatus;
 import com.fiap.br.challenger.domain.model.enums.Role;
 import com.fiap.br.challenger.domain.model.patient.Patient;
 import com.fiap.br.challenger.infra.repository.ConsultationRepository;
@@ -66,5 +68,16 @@ public class ConsultationService {
 
     public List<ConsultationResponseDTO> findAllConsultation(){
         return consultationRepository.findAll().stream().map(consultationMapper::toDTO).collect(Collectors.toList());
+    }
+
+    public ConsultationResponseDTO findById(UUID id){
+        return consultationMapper.toDTO(consultationRepository.findById(id).get());
+    }
+
+
+    public void updateConsultation(UUID id, ConsultationRequestDTO consultationRequestDTO) {
+        Consultation existingConsultation = consultationRepository.findById(id).get();
+        consultationMapper.updateEntityFromDto(existingConsultation, consultationRequestDTO);
+        consultationRepository.save(existingConsultation);
     }
 }

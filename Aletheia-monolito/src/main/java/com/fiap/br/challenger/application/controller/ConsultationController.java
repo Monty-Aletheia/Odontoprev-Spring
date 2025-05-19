@@ -2,6 +2,8 @@ package com.fiap.br.challenger.application.controller;
 
 import com.fiap.br.challenger.application.dto.consultation.ConsultationRequestDTO;
 import com.fiap.br.challenger.application.dto.consultation.ConsultationResponseDTO;
+import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
+import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
 import com.fiap.br.challenger.application.service.ConsultationService;
 import com.fiap.br.challenger.application.service.DentistService;
 import com.fiap.br.challenger.application.service.PatientService;
@@ -74,6 +76,20 @@ public class ConsultationController {
         Role userRole = currentUser.getRole();
         model.addAttribute("consultations", consultationService.findByUserId(currentUser.getId(), userRole));
         return "consultations/list";
+    }
+
+    @GetMapping("/form/{uuid}")
+    public String showUpdateForm(@PathVariable UUID uuid, Model model) {
+        model.addAttribute("consultation", consultationService.findById(uuid));
+        model.addAttribute("uuid", uuid);
+        return "patients/update";
+    }
+
+
+    @PostMapping("/update/{uuid}")
+    public String updateConsultation(@PathVariable UUID uuid, @ModelAttribute ConsultationRequestDTO consultationRequestDTO) {
+        consultationService.updateConsultation(uuid, consultationRequestDTO);
+        return "redirect:/patients/list";
     }
 
 }
