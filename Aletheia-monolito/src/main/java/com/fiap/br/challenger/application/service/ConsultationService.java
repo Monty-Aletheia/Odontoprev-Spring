@@ -80,4 +80,8 @@ public class ConsultationService {
         consultationMapper.updateEntityFromDto(existingConsultation, consultationRequestDTO);
         consultationRepository.save(existingConsultation);
     }
+
+    public void deleteConsultation(UUID id) {
+        consultationRepository.deleteById(id);
+    }
 }

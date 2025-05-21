@@ -93,4 +93,10 @@ public class ConsultationController {
         return "redirect:/consultations";
     }
 
+    @GetMapping("/delete/{uuid}")
+    public String deleteConsultation(@PathVariable UUID uuid) {
+        consultationService.deleteConsultation(uuid);
+        return "redirect:/consultations";
+    }
+
 }
