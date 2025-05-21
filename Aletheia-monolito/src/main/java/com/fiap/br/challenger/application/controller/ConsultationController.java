@@ -81,15 +81,16 @@ public class ConsultationController {
     @GetMapping("/form/{uuid}")
     public String showUpdateForm(@PathVariable UUID uuid, Model model) {
         model.addAttribute("consultation", consultationService.findById(uuid));
+        model.addAttribute("dentists", dentistService.getAllDentists());
         model.addAttribute("uuid", uuid);
-        return "patients/update";
+        return "consultations/update";
     }
 
 
     @PostMapping("/update/{uuid}")
     public String updateConsultation(@PathVariable UUID uuid, @ModelAttribute ConsultationRequestDTO consultationRequestDTO) {
         consultationService.updateConsultation(uuid, consultationRequestDTO);
-        return "redirect:/patients/list";
+        return "redirect:/consultations";
     }
 
 }

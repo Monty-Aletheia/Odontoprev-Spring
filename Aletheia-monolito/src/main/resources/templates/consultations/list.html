@@ -85,18 +85,15 @@
                     <th th:text="#{consultation.value}">Valor</th>
                     <th th:text="#{consultation.patient}">Paciente</th>
                     <th th:text="#{consultation.dentist}">Dentista</th>
-                    <th th:text="#{consultation.riskStatus}">Risco</th>
                     <th class="text-center" th:text="#{table.actions}">Ações</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="consultation : ${consultations}">
                     <td th:text="${#temporals.format(consultation.date, #messages.msg('date.format'))}"></td>
-                    <td th:text="${#numbers.formatCurrency(consultation.value)}"></td>
+                    <td th:text="#{consultation.priceLabel} + ${#numbers.formatDecimal(consultation.value, 1, 2)}"></td>
                     <td th:text="${consultation.patient.name}"></td>
                     <td th:text="${consultation.dentist.name}"></td>
-                    <td th:classappend="${consultation.riskStatus == 'ALTO' ? 'red-text' : ''}"
-                        th:text="${consultation.riskStatus}"></td>
                     <td class="text-center">
                         <a th:href="@{/consultations/form/{id}(id=${consultation.id})}" class="btn btn-warning btn-sm">
                             <i class="bi bi-pencil-square"></i>

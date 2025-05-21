@@ -62,7 +62,6 @@ public abstract class ConsultationMapper {
 
     public void updateEntityFromDto(Consultation entity, ConsultationRequestDTO dto) {
         entity.setDate(dto.date());
-        entity.setPatient(getPatientById(dto.patient()));
         entity.setDentist(getDentistById(dto.dentist()));
         entity.setValue(BigDecimal.valueOf(dto.value()));
     }

@@ -12,7 +12,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 600px;
         }
 
         .btn-save {
@@ -40,19 +40,7 @@
         }
 
         .form-control {
-            max-width: 500px;
             margin-bottom: 15px;
-        }
-
-        .form-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-
-        .form-container .form-group {
-            width: 48%;
-            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -63,18 +51,24 @@
 </h2>
 
 <form th:action="@{/consultations/update/{uuid}(uuid=${uuid})}" th:object="${consultation}" method="post" class="needs-validation" novalidate>
-    <div class="form-container">
-        <div class="form-group">
-            <label for="date" class="form-label" th:text="#{consultation.dateLabel}">Data da Consulta:</label>
-            <input type="date" id="date" th:field="*{date}" class="form-control" required />
-            <div class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
-        </div>
 
-        <div class="form-group">
-            <label for="value" class="form-label" th:text="#{consultation.valueLabel}">Valor:</label>
-            <input type="number" id="value" th:field="*{value}" class="form-control" step="0.01" min="0" required />
-            <div class="text-danger" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></div>
-        </div>
+    <div class="form-group">
+        <label for="date" class="form-label" th:text="#{consultation.dateLabel}">Data da Consulta:</label>
+        <input type="date"
+               id="date"
+               name="date"
+               th:value="${#temporals.format(consultation.date, 'yyyy-MM-dd')}"
+               th:min="${#temporals.format(T(java.time.LocalDate).now().plusDays(1), 'yyyy-MM-dd')}"
+               class="form-control"
+               required />
+        <div class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="value" class="form-label" th:text="#{consultation.valueLabel}">Valor:</label>
+        <input type="number" id="value" th:field="*{value}" class="form-control" step="0.01" min="0" required />
+        <div class="text-danger" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></div>
+    </div>
 
         <div class="form-group">
             <label for="riskStatus" class="form-label" th:text="#{consultation.riskStatusLabel}">Status de Risco:</label>
