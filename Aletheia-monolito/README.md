@@ -2,11 +2,12 @@
 
 ### Integrantes:
 
-Natan Junior Rodrigues Lopes   RM: 552626
+| Nome                              | RM     |
+|------------------------------------|--------|
+| Natan Junior Rodrigues Lopes      | 552626 |
+| Pedro Lucca Medeiros Miranda      | 553873 |
+| Pedro Moreira de Jesus            | 553912 |
 
-Pedro Lucca Medeiros Miranda   RM: 553873
-
-Pedro Moreira de Jesus         RM: 553912
 
 ## Apresentação do projeto
 
@@ -54,10 +55,15 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
    cd odontoprev-spring
    ```
    
-3. **Adicione a chave de API presente no txt enviado**
+3. **Adicione sua chave de API**
    
-   No arquivo enviado via portal do aluno, adicionamos nossa 
-   chave de API da OpenAI, pois a mesma não pode ser enviada para o github.
+   No arquivo application.yml, adicione sua chave de API da OpenAI:
+   
+   ```yml
+       ai:
+         openai:
+           api-key: Insira sua API key no application.yml
+   `````
 
 
 4. **Rode o programa**
@@ -68,16 +74,12 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
    docker compose up --build
    ```
 
-   Este comando irá subir todos os serviços, o monolito, o servidor rabbitmq e o nosso microserviço. 
-   Para acessar os serviços, entre em localhost:8080 e se logue como admin:
+   ### Este comando irá subir todos os serviços, o monolito, o servidor rabbitmq e o nosso microserviço. 
+   ### Para acessar os serviços, entre em localhost:8080 e se logue como admin:
    
-   email: admin@aletheia.com
-   senha: admin123
+   ### email: admin@aletheia.com
+   ### senha: admin123
 
-
-## Link para o vídeo pitch do projeto
-
-[Acesse clicando aqui](https://youtu.be/MHIPHuJgK2s)
-
+   
 ## Link para o vídeo explicando o projeto Java (Sprint 4)
-[Acesse clicando aqui]()
+[Acesse clicando aqui](https://youtu.be/g2-bYvoWPkE)
