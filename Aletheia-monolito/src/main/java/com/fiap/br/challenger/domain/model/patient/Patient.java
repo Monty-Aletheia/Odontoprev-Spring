@@ -1,6 +1,7 @@
 package com.fiap.br.challenger.domain.model.patient;
 
 import com.fiap.br.challenger.domain.model.Consultation;
+import com.fiap.br.challenger.domain.model.User;
 import com.fiap.br.challenger.domain.model.enums.Gender;
 import com.fiap.br.challenger.domain.model.enums.RiskStatus;
 import jakarta.persistence.*;
@@ -42,4 +43,11 @@ public class Patient {
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     private List<Consultation> consultations;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(name = "ai_report")
+    private String aiReport;
 }

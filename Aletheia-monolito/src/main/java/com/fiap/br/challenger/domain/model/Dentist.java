@@ -19,9 +19,6 @@ public class Dentist {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String password;
-
     @Column()
     private String specialty;
 
@@ -35,6 +32,10 @@ public class Dentist {
     @Column(name = "risk_status")
     private RiskStatus riskStatus;
 
-    @ManyToMany(mappedBy = "dentists", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "dentist", cascade = CascadeType.ALL)
     private List<Consultation> consultations;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

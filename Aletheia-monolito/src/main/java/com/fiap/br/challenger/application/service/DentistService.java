@@ -4,9 +4,13 @@ import com.fiap.br.challenger.application.dto.dentist.DentistRequestDTO;
 import com.fiap.br.challenger.application.dto.dentist.DentistResponseDTO;
 import com.fiap.br.challenger.application.dto.dentist.DentistUpdateDTO;
 import com.fiap.br.challenger.application.service.mapper.DentistMapper;
+import com.fiap.br.challenger.application.service.utils.NameFormatter;
 import com.fiap.br.challenger.domain.model.Dentist;
+import com.fiap.br.challenger.domain.model.User;
 import com.fiap.br.challenger.domain.model.enums.RiskStatus;
+import com.fiap.br.challenger.domain.model.enums.Role;
 import com.fiap.br.challenger.infra.repository.DentistRepository;
+import com.fiap.br.challenger.infra.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.Data;
@@ -25,6 +29,8 @@ public class DentistService {
 
     private final DentistRepository dentistRepository;
     private final DentistMapper dentistMapper;
+    private final UserRepository userRepository;
+    private final UserService userService;
 
     public List<DentistResponseDTO> getAllDentists() {
         return dentistRepository.findAll().stream().map(dentistMapper::toDto).toList();
@@ -37,8 +43,12 @@ public class DentistService {
     @Transactional
     public DentistResponseDTO createDentist(DentistRequestDTO dentistRequestDTO) {
         Dentist dentist = dentistMapper.toEntity(dentistRequestDTO);
+        String name =  NameFormatter.formatName(dentistRequestDTO.getName());
         dentist.setClaimsRate(0.0);
         dentist.setRiskStatus(RiskStatus.NENHUM);
+        User user = new User(Role.DENTIST, dentistRequestDTO.getPassword(), dentistRequestDTO.getEmail(), name);
+        userService.createUser(user);
+        dentist.setUser(user);
         Dentist savedDentist = dentistRepository.save(dentist);
         return dentistMapper.toDto(savedDentist);
     }

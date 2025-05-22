@@ -16,10 +16,10 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ConsultationResponseDTO {
     private UUID id;
-    private LocalDate consultationDate;
-    private Double consultationValue;
+    private LocalDate date;
+    private Double value;
     private RiskStatus riskStatus;
     private String description;
     private PatientResponseDTO patient;
-    private List<DentistResponseDTO> dentists;
+    private DentistResponseDTO dentist;
 }

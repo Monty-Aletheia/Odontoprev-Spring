@@ -1,9 +1,12 @@
 package com.fiap.br.microservice.application.service;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fiap.br.microservice.application.entity.RiskStatus;
 import com.fiap.br.microservice.application.repository.PatientExternalRepository;
+import jakarta.persistence.Access;
+import org.bson.Document;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,7 +23,8 @@ public class MessageService {
     private final PatientExternalRepository patientExternalRepository;
     private final RestTemplate restTemplate;
     private final String apiUrl = "https://aletheia-ai.azurewebsites.net/predict";
-
+    @Autowired
+    private MongoTemplate mongoTemplate;
     public MessageService(PatientExternalRepository patientExternalRepository) {
         this.patientExternalRepository = patientExternalRepository;
         this.restTemplate = new RestTemplate();
@@ -40,6 +44,8 @@ public class MessageService {
         RiskStatus risk = RiskStatus.calcRiskStatus(riskProbability);
         UUID patientId = UUID.fromString(rootJson.get("patient_id").asText());
         patientExternalRepository.updateRiskStatus(patientId, risk.toString());
+        Document document = Document.parse(rootJson.toString());
+        mongoTemplate.save(document, "patient_risk_gassessment");
     }
 
     private JSONObject sendPatientDataToAletheIA(JSONObject patientRiskAssessmentJSON) {

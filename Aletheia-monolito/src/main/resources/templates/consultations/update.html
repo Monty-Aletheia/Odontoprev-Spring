@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{project.consultationEditionLabel}">Edição de Consulta</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 600px;
+        }
+
+        .btn-save {
+            background-color: #007BFF;
+            color: white;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .btn-save:hover {
+            background-color: #0056b3;
+        }
+
+        .form-title {
+            color: #007BFF;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .text-danger {
+            font-size: 0.875rem;
+            margin-top: 5px;
+        }
+
+        .form-control {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body class="container mt-5">
+
+<h2 class="mb-4 form-title">
+    <i class="bi bi-pencil-square"></i> Editar Consulta
+</h2>
+
+<form th:action="@{/consultations/update/{uuid}(uuid=${uuid})}" th:object="${consultation}" method="post" class="needs-validation" novalidate>
+
+    <div class="form-group">
+        <label for="date" class="form-label" th:text="#{consultation.dateLabel}">Data da Consulta:</label>
+        <input type="date"
+               id="date"
+               name="date"
+               th:value="${#temporals.format(consultation.date, 'yyyy-MM-dd')}"
+               th:min="${#temporals.format(T(java.time.LocalDate).now().plusDays(1), 'yyyy-MM-dd')}"
+               class="form-control"
+               required />
+        <div class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="value" class="form-label" th:text="#{consultation.valueLabel}">Valor:</label>
+        <input type="number" id="value" th:field="*{value}" class="form-control" step="0.01" min="0" required />
+        <div class="text-danger" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></div>
+    </div>
+
+        <div class="form-group">
+            <label for="riskStatus" class="form-label" th:text="#{consultation.riskStatusLabel}">Status de Risco:</label>
+            <select id="riskStatus" th:field="*{riskStatus}" class="form-control" required>
+                <option value="" disabled selected th:text="#{consultation.selectRiskStatus}">Selecione</option>
+                <option th:each="status : ${T(com.fiap.br.challenger.domain.model.enums.RiskStatus).values()}"
+                        th:value="${status}" th:text="${status}"></option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('riskStatus')}" th:errors="*{riskStatus}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="patient" class="form-label" th:text="#{consultation.patientLabel}">Paciente:</label>
+            <select id="patient" th:field="*{patient}" class="form-control" required>
+                <option value="" disabled selected th:text="#{consultation.selectPatient}">Selecione o Paciente</option>
+                <option th:each="pat : ${patients}" th:value="${pat.id}" th:text="${pat.name}"></option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('patient')}" th:errors="*{patient}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="dentist" class="form-label" th:text="#{consultation.dentistLabel}">Dentista:</label>
+            <select id="dentist" th:field="*{dentist}" class="form-control" required>
+                <option value="" disabled selected th:text="#{consultation.selectDentist}">Selecione o Dentista</option>
+                <option th:each="dent : ${dentists}" th:value="${dent.id}" th:text="${dent.name}"></option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('dentist')}" th:errors="*{dentist}"></div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-save">Atualizar</button>
+</form>
+
+<footer style="color: #6c757d; position: fixed; bottom: 0; left: 0; width: 100%; background-color: #f8f9fa;">
+    <div class="d-flex justify-content-center mt-3 mb-3">
+        <a href="/consultations/list?lang=pt" class="btn btn-light btn-sm mx-2 d-flex align-items-center" style="border-radius: 20px;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" alt="Português" class="me-2" style="width: 20px; height: 14px;">
+            Português
+        </a>
+        <a href="/consultations/list?lang=en" class="btn btn-light btn-sm mx-2 d-flex align-items-center" style="border-radius: 20px;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" alt="English" class="me-2" style="width: 20px; height: 14px;">
+            English
+        </a>
+    </div>
+</footer>
+</body>
+</html>

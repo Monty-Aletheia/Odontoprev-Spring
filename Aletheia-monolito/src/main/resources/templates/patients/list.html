@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title th:text="#{project.patientListingLabel}">Listagem de Pacientes</title>
@@ -58,6 +58,9 @@
       margin-bottom: 10px;
       color: #6c757d;
     }
+    .table-row-clickable {
+      cursor: pointer;
+    }
 
   </style>
 </head>
@@ -86,19 +89,17 @@
           <th th:text="#{patient.birthday}">Data de Nascimento</th>
           <th th:text="#{patient.gender}">Gênero</th>
           <th th:text="#{patient.riskStatus}">Status de Risco</th>
-          <th th:text="#{patient.consultationFrequency}">Frequência de Consultas</th>
-          <th th:text="#{patient.associatedClaims}">Reclamações Associadas</th>
           <th class="text-center" th:text="#{table.actions}">Ações</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="patient : ${patients}">
+        <tr th:each="patient : ${patients}"
+            class="table-row-clickable"
+            th:onclick="'window.location.href=\'' + @{/patients/{id}(id=${patient.id})} + '\''">
           <td th:text="${patient.name}"></td>
           <td th:text="${#temporals.format(patient.birthday, #messages.msg('date.format'))}"></td>
           <td th:text="${patient.gender}"></td>
-          <td th:classappend="${patient.riskStatus == T(com.fiap.br.challenger.domain.model.enums.RiskStatus).ALTO ? 'red-text' : ''}" th:text="${patient.riskStatus}"></td>
-          <td th:text="${patient.consultationFrequency}"></td>
-          <td th:text="${patient.associatedClaims}"></td>
+          <td th:text="${patient.riskStatus.getDescription(lang)}"></td>
           <td class="text-center">
             <a th:href="@{/patients/form/{id}(id=${patient.id})}" class="btn btn-warning btn-sm">
               <i class="bi bi-pencil-square"></i>

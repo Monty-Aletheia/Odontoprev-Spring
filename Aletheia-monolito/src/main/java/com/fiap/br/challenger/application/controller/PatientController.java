@@ -4,9 +4,11 @@ import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientRiskAssessmentDTO;
 import com.fiap.br.challenger.application.service.PatientService;
-import com.fiap.br.challenger.domain.model.patient.Patient;
 import com.fiap.br.challenger.domain.model.patient.PatientRiskAssessment;
 import jakarta.servlet.http.HttpSession;
+import org.json.JSONObject;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.*;
+import java.util.Locale;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/patients")
@@ -27,20 +30,16 @@ public class PatientController {
     }
 
     @GetMapping("/list")
-    public String getAllPatients(Model model) {
+    public String getAllPatients(Model model, Locale locale) {
         model.addAttribute("patients", patientService.getAllPatients());
-        return "patients/list";
-    }
-
-    @GetMapping("/{id}")
-    public String getPatientByUUID(@PathVariable UUID id) {
-        patientService.getPatientByUUID(id);
+        model.addAttribute("lang", locale.getLanguage());
         return "patients/list";
     }
 
     @GetMapping("/new")
-    public String showForm(Model model) {
-        model.addAttribute("patient", new Patient());
+    public String showForm(HttpSession session, Model model) {
+
+        model.addAttribute("patient", new PatientRequestDTO());
         return "patients/form";
     }
 
@@ -50,9 +49,9 @@ public class PatientController {
             return "redirect:/patients/new";
         }
         PatientRiskAssessment patientRiskAssessment = new PatientRiskAssessment();
-        patientRiskAssessment.setAge(Period.between(patientRequest.birthday(), LocalDate.now()).getYears());
+        patientRiskAssessment.setAge(Period.between(patientRequest.getBirthday(), LocalDate.now()).getYears());
 
-        patientRiskAssessment.setGender(patientRequest.gender().toString());
+        patientRiskAssessment.setGender(patientRequest.getGender().toString());
 
         session.setAttribute("patient", patientRequest);
 
@@ -75,6 +74,14 @@ public class PatientController {
         PatientRequestDTO patientRequestDTO = (PatientRequestDTO) session.getAttribute("patient");
         patientService.createPatient(patientRequestDTO, patientRiskAssessmentDTO);
         session.removeAttribute("patient");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isLoggedIn = auth != null &&
+                auth.isAuthenticated() &&
+                !(auth.getPrincipal() instanceof String && auth.getPrincipal().equals("anonymousUser"));
+
+        if (!isLoggedIn) {
+            return "redirect:/login";
+        }
         return "redirect:list";
     }
 
@@ -99,4 +106,28 @@ public class PatientController {
         return "redirect:/patients/list";
     }
 
+    @GetMapping("/{id}")
+    public String detailsPage(@PathVariable UUID id, Locale locale, Model model) {
+        PatientResponseDTO patient = patientService.getPatientByUUID(id);
+        String lang = locale.getLanguage();
+
+        if (patient.getAiReport() != null) {
+            if (!patient.getAiReport().startsWith("{")){
+                model.addAttribute("patient", patient);
+                model.addAttribute("lang", lang);
+                return "patients/details";
+            }
+            JSONObject jsonObject = new JSONObject(patient.getAiReport());
+
+            if (lang.equals("en")) {
+                patient.setAiReport(jsonObject.getString("english"));
+            } else {
+                patient.setAiReport(jsonObject.getString("portuguese"));
+            }
+        }
+
+        model.addAttribute("patient", patient);
+        model.addAttribute("lang", lang);
+        return "patients/details";
+    }
 }
