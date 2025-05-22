@@ -73,7 +73,12 @@
 
     <div class="form-group">
         <label for="birthday" class="form-label" th:text="#{patient.birthdayLabel}">Data de nascimento:</label>
-        <input type="date" id="birthday" th:field="*{birthday}" class="form-control" required />
+        <input type="date"
+               id="birthday"
+               name="birthday"
+               th:value="${#temporals.format(patient.birthday, 'yyyy-MM-dd')}"
+               class="form-control"
+               required />
         <div class="text-danger" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
     </div>
 

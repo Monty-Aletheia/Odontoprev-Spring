@@ -3,7 +3,9 @@ package com.fiap.br.challenger.application.service;
 import com.fiap.br.challenger.application.dto.consultation.ConsultationRequestDTO;
 import com.fiap.br.challenger.application.dto.consultation.ConsultationResponseDTO;
 import com.fiap.br.challenger.application.dto.patient.PatientRequestDTO;
+import com.fiap.br.challenger.application.dto.patient.PatientResponseDTO;
 import com.fiap.br.challenger.application.service.mapper.ConsultationMapper;
+import com.fiap.br.challenger.application.service.mapper.PatientMapper;
 import com.fiap.br.challenger.domain.model.Consultation;
 import com.fiap.br.challenger.domain.model.Dentist;
 import com.fiap.br.challenger.domain.model.User;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -42,9 +45,12 @@ public class ConsultationService {
 
     @Autowired
     private ConsultationMapper consultationMapper;
+    @Autowired
+    private PatientMapper patientMapper;
 
-    public void createConsultation(ConsultationRequestDTO consultationRequestDTO) {
-        Patient consultationPatient =  patientRepository.findById(consultationRequestDTO.patient()).get();
+    public void createConsultation(ConsultationRequestDTO consultationRequestDTO, Patient patient) {
+        Patient consultationPatient;
+        consultationPatient = Objects.requireNonNullElseGet(patient, () -> patientRepository.findById(consultationRequestDTO.patient()).get());
         Dentist consultationDentist = dentistRepository.findById(consultationRequestDTO.dentist()).get();
         Consultation consultation =
                 new Consultation(

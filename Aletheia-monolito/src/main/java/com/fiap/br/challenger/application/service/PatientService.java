@@ -110,4 +110,11 @@ public class PatientService {
         String aiReport = patientAiReporterService.createReport(message.toString());
         patientRepository.updatePatientAiReport(patientId, aiReport);
     }
+
+    public Patient getPatientByUserId(UUID userId) {
+        Patient optionalPatient = patientRepository.findByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Patient not found with id " + userId));
+        return optionalPatient;
+    }
 }
+

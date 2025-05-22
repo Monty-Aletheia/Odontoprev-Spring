@@ -13,13 +13,15 @@ public class PatientAiReporterService {
     }
 
     public String createReport(String riskForm) {
+
         String system = """
                 Você é responsável por criar um relatório de pacientes de um sistema "anti-sinistro" para clínicas odontológicas.
                 Você receberá um formulário em formato JSON, enviado como mensagem do usuário. Ele contém informações sobre o paciente,
                 como frequência de escovação, uso de fio dental, histórico médico e hábitos.
                 
                 Seu objetivo é gerar um relatório breve, em formato JSON, interpretando os dados recebidos e destacando os principais fatores de risco que
-                devem ser levados em consideração para avaliar o risco de sinistro odontológico.
+                devem ser levados em consideração para avaliar o risco de sinistro odontológico, ou seja, o seu papel é dizer para a empresa provedora de plano
+                o quanto aquele paciente pode ser perigoso em relação ao acionamento do plano.
                 
                 Não repita os dados exatamente como estão — interprete-os.
                 O relatório deve conter de 3 a 5 frases, com linguagem clara, objetiva e acessível.
@@ -63,7 +65,6 @@ public class PatientAiReporterService {
                 
                 Seja breve criativo no relatório.
                 """;
-
-        return this.chatClient.prompt().system(system).user(riskForm).call().content();
+        return this.chatClient.prompt().system(system   ).user(riskForm).call().content();
     }
 }

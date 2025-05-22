@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title th:text="#{project.name}">Cadastro de Consultas</title>
@@ -74,8 +75,14 @@
     <form th:action="@{/consultations/save}" th:object="${consultation}" method="post" class="w-[100%] items-center needs-validation">
 
         <div class="form-group">
-            <label for="consultationDate" class="form-label" th:text="#{consultation.date}">Data da Consulta:</label>
-            <input type="date" id="consultationDate" th:field="*{date}" class="form-control" required />
+            <label for="date" class="form-label" th:text="#{consultation.date}">Data da Consulta:</label>
+            <input type="date"
+                   id="date"
+                   name="date"
+                   th:value="${#temporals.format(consultation.date, 'yyyy-MM-dd')}"
+                   th:min="${#temporals.format(T(java.time.LocalDate).now().plusDays(1), 'yyyy-MM-dd')}"
+                   class="form-control"
+                   required />
             <div class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
         </div>
 
@@ -85,7 +92,7 @@
             <div class="text-danger" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" sec:authorize="hasRole('ADMIN')">
             <label for="patient" class="form-label" th:text="#{consultation.patient}">Paciente:</label>
             <select id="patient" th:field="*{patient}" class="form-control" required>
                 <option value="" disabled selected>Selecione um paciente</option>

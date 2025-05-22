@@ -15,8 +15,13 @@ import java.util.UUID;
 public interface PatientRepository extends JpaRepository<Patient, UUID> {
 
     Optional<Patient> findById(UUID id);
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE tb_patient SET ai_report = :aiReport WHERE id = :id", nativeQuery = true)
     void updatePatientAiReport(@Param("id") UUID id, @Param("aiReport") String aiReport);
+
+    @Query(value = "SELECT * FROM tb_patient WHERE user_id = :userId", nativeQuery = true)
+    Optional<Patient> findByUserId(UUID userId);
+
 }

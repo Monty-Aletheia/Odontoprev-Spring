@@ -56,7 +56,19 @@ public class ConsultationController {
 
     @PostMapping("/save")
     public String saveConsultation(@ModelAttribute("consultation") ConsultationRequestDTO consultationRequestDTO) {
-        consultationService.createConsultation(consultationRequestDTO);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean hasRolePatient = authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_PATIENT"));
+
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Patient patient = null;
+        if (hasRolePatient) {
+            patient = patientService.getPatientByUserId(currentUser.getId());
+        }
+        consultationService.createConsultation(consultationRequestDTO, patient);
+
         return "redirect:/consultations";
     }
 
